@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+	  <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Dao.cs" />
+    <Compile Remove="Dao\AlbumDao.cs" />
+    <Compile Remove="Dao\ArtistDao.cs" />
+    <Compile Remove="Dao\CompanyDao.cs" />
+    <Compile Remove="Dao\EntityDao.cs" />
+    <Compile Remove="Dao\PlaylistDao.cs" />
+    <Compile Remove="Dao\PlaylistTrackDao.cs" />
+    <Compile Remove="Dao\PlaylistTrackHistoryDao.cs" />
+    <Compile Remove="Dao\TrackDao.cs" />
+    <Compile Remove="DbContextFactory.cs" />
+    <Compile Remove="Entities\Album.cs" />
+    <Compile Remove="Entities\Artist.cs" />
+    <Compile Remove="Entities\Company.cs" />
+    <Compile Remove="Entities\Entity.cs" />
+    <Compile Remove="Entities\Playlist.cs" />
+    <Compile Remove="Entities\PlaylistTrack.cs" />
+    <Compile Remove="Entities\PlaylistTrackHistory.cs" />
+    <Compile Remove="Entities\Track.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dao\" />
+    <Folder Include="Entities\" />
+  </ItemGroup>
+
+</Project>
