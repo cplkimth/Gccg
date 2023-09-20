@@ -4,6 +4,16 @@ public static class Utility
 {
     private const string DefaultTemplateDirectory = "templates";
 
+    public static DirectoryInfo GetSolutionRoot(string currentPath = null)
+    {
+        var directory = new DirectoryInfo(currentPath ?? Directory.GetCurrentDirectory());
+
+        while (directory != null && !directory.GetFiles("*.sln").Any())
+            directory = directory.Parent;
+        
+        return directory;
+    }
+
     public static bool IsEmptyOrDefault(this Dictionary<string, string> dictionary, string key)
     {
         if (dictionary.ContainsKey(key) == false) 

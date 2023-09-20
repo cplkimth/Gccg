@@ -21,6 +21,8 @@ public static class Generator
 
     private static string _templateDirectoryPath;
 
+    private static string _solutionDirectoryPath;
+
     public static string Generate(DbContext dbContext, [CallerFilePath] string templateDirectoryPath = null)
     {
         var schemaExtractor = new DbContextSchemaExtractor(dbContext);
