@@ -18,7 +18,7 @@ public class ConfigManager
     }
     #endregion
 
-    private const string ConfigFile = "Gccg.config";
+    private const string ConfigFile = "Gccg.config.json";
 
     private Dictionary<string, string> _variables = new();
 
@@ -33,18 +33,17 @@ public class ConfigManager
     
     public string RootPath { get; private set; }
 
-    public void Inialize(string templateDirectory, DbContext dbContext)
+    public void Inialize(DbContext dbContext)
     {
-        var jsonPath = Path.Combine(templateDirectory, ConfigFile);
+        (RootPath, RootName) = GetRootPath();
+
+        var jsonPath = Path.Combine(RootPath, ConfigFile);
 
         if (File.Exists(jsonPath) is false)
             throw new FileNotFoundException($@"{ConfigFile} file does NOT exist!");
 
         var json = File.ReadAllText(jsonPath);
         _variables = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
-
-        RootPath = GetRootPath().FullName;
-        RootName = GetRootPath().Name;
 
         if (dbContext != null)
         {
@@ -109,13 +108,13 @@ public class ConfigManager
             builder.Replace($"`{key}`", _variables[key]);
     }
 
-    private DirectoryInfo GetRootPath()
+    private (string path, string name) GetRootPath()
     {
         var directory = new DirectoryInfo(Directory.GetCurrentDirectory());
 
         while (directory != null && !directory.GetFiles(ConfigFile).Any())
             directory = directory.Parent;
         
-        return directory;
+        return (directory.FullName, directory.Name);
     }
 }

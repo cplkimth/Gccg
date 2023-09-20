@@ -19,13 +19,13 @@ public static class Inflater
             var replaced = InflateTables(tableMatch.Groups[1].Value, tables);
 
 #if DEBUG
-            Console.WriteLine(replaced);
+            // Console.WriteLine(replaced);
 #endif
             builder.Replace(tableMatch.Value, replaced);
         }
 
 #if DEBUG
-        Console.WriteLine(builder.ToString());
+        // Console.WriteLine(builder.ToString());
 #endif
 
         return builder.ToString();

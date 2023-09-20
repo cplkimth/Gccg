@@ -5,6 +5,25 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	  <Nullable>disable</Nullable>
   </PropertyGroup>
+	<PropertyGroup>
+		<Authors>Taehyun Kim</Authors>
+		<Product>Generic Crud Code Generator</Product>
+		<PackageId>Gccg</PackageId>
+		<PackageTags>Generic Crud Code Generator</PackageTags>
+		<Copyright>Copyright © Lovanpis 2023</Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Description>A generic code generator for simplicity.</Description>
+		<PackageProjectUrl>https://github.com/cplkimth/gccg</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/cplkimth/gccg.git</RepositoryUrl>
+		<PackageIcon>Gccg.png</PackageIcon>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Version>1.0.0</Version>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<AssemblyVersion></AssemblyVersion>
+		<FileVersion></FileVersion>
+		<Title>Generic Crud Code Generator</Title>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
@@ -12,18 +31,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <None Update="Gccg.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,6 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using Gccg.Core.Elements;
 using Gccg.Core.Models;
-using Gccg.Core.Properties;
 using Gccg.Core.SchemaExtractors;
 using Gccg.Core.Utilities;
 using Microsoft.EntityFrameworkCore;
@@ -17,93 +16,54 @@ namespace Gccg.Core;
 
 public static class Generator
 {
-    private const string TemplatePostfix = ".jsonmp";
+    public const string TemplatePostfix = ".jsonmp";
 
-    private static string _templateDirectoryPath;
-
-    private static string _solutionDirectoryPath;
-
-    public static string Generate(DbContext dbContext, [CallerFilePath] string templateDirectoryPath = null)
+    public static string Generate(DbContext dbContext)
     {
         var schemaExtractor = new DbContextSchemaExtractor(dbContext);
 
-        return GenerateCore(schemaExtractor, templateDirectoryPath, dbContext);
+        return GenerateCore(schemaExtractor, dbContext);
     }
 
-    public static string Generate(string modelFilePath, [CallerFilePath] string templateDirectoryPath = null)
+    public static string Generate(string modelFilePath)
     {
         var schemaExtractor = new JsonFileSchemaExtractor(modelFilePath);
 
-        return GenerateCore(schemaExtractor, templateDirectoryPath, null);
+        return GenerateCore(schemaExtractor, null);
     }
 
-    private static string GenerateCore(SchemaExtractor schemaExtractor, string templateDirectoryPath, DbContext dbContext)
+    private static string GenerateCore(SchemaExtractor schemaExtractor, DbContext dbContext)
     {
-        // if (Directory.Exists(templateDirectoryPath) == false)
-        // {
-        //     _templateDirectoryPath = Utility.GetTemplateDirectory(templateDirectoryPath);
-        //
-        //     if (Directory.Exists(_templateDirectoryPath) == false)
-        //     {
-        //         Console.WriteLine("Generaing templates ...");
-        //         WriteTemplateText();
-        //     }
-        // }
-        // else
-        // {
-        //     _templateDirectoryPath = templateDirectoryPath;
-        // }
+        ConfigManager.Instance.Inialize(dbContext);
 
-        _templateDirectoryPath = templateDirectoryPath;
-
-        ConfigManager.Instance.Inialize(_templateDirectoryPath, dbContext);
+        string[] templatePathes = ReadTemplates();
 
         var tables = schemaExtractor.Extract();
 
         Console.WriteLine("Inflating templates ...");
-        InflatePackage(tables);
+        InflatePackage(templatePathes, tables);
 
         Console.WriteLine("Finished without error(s)");
 
         return JsonSerializer.Serialize(tables);
     }
 
-    private static void WriteTemplateText()
+    private static string[] ReadTemplates()
     {
-        var resourceKeys = new HashSet<string>();
+        var files = Directory
+            .GetFiles(ConfigManager.Instance.RootPath, $"*{TemplatePostfix}", SearchOption.AllDirectories)
+            .Where(x => Path.GetFileName(x).StartsWith("_") == false)
+            .ToArray();
 
-        foreach (DictionaryEntry entry in Resources.ResourceManager.GetResourceSet(CultureInfo.CurrentCulture, true, true))
-        {
-            var fileName = (string) entry.Key;
-            resourceKeys.Add(fileName);
-        }
+        Console.WriteLine($"{files.Length:N0} template files are found.");
+        foreach (var file in files)
+            Console.WriteLine("  " + file);
 
-        foreach (var resourceKey in resourceKeys)
-        {
-            var extension = resourceKey switch
-            {
-                "Variables" => ".json",
-                _ => TemplatePostfix
-            };
-            var templatePath = Path.Combine(_templateDirectoryPath, resourceKey) + extension;
-
-            if (File.Exists(templatePath))
-                continue;
-
-            var resource = (byte[]) Resources.ResourceManager.GetObject(resourceKey, CultureInfo.CurrentCulture);
-            var templateText = Encoding.UTF8.GetString(resource);
-            WriteFileIfNone(templatePath, templateText, false);
-
-            Console.WriteLine($"\t[{Path.GetFileNameWithoutExtension(templatePath)}] has generated at {templatePath}.");
-        }
+        return files;
     }
 
-    private static void InflatePackage(Table[] tables)
+    private static void InflatePackage(string[] templatePathes, Table[] tables)
     {
-        var templatePathes = Directory
-            .GetFiles(_templateDirectoryPath, $"*{TemplatePostfix}", SearchOption.AllDirectories)
-            .Where(x => Path.GetFileName(x).StartsWith("_") == false);
-
         foreach (var templatePath in templatePathes)
         {
             var templateText = File.ReadAllText(templatePath);
@@ -112,24 +72,24 @@ public static class Generator
             Console.WriteLine($"{Path.GetFileName(templatePath)}");
 
             if (template.Scope == TemplateScope.Database)
-                InflatePackageCore(template, tables.ToArray());
+                InflatePackageCore(template, templatePath, tables.ToArray());
             else if (template.Scope == TemplateScope.Table)
                 foreach (var table in tables)
-                    InflatePackageCore(template, table);
+                    InflatePackageCore(template, templatePath, table);
         }
     }
 
-    private static void InflatePackageCore(Template template, params Table[] tables)
+    private static void InflatePackageCore(Template template, string templatePath, params Table[] tables)
     {
         var code = Inflater.Inflate(template.Body, tables);
 
-        var pathToWrite = GetPathToWrite(template.TargetPath, tables.Length > 0 ? tables[0].Name : "");
+        var pathToWrite = GetPathToWrite(template.TargetPath, tables.Length > 0 ? tables[0].Name : "", templatePath);
         WriteFileIfNone(pathToWrite, code, template.Overwritable);
 
         Console.WriteLine($"  => {pathToWrite}");
     }
 
-    private static string GetPathToWrite(string pathToWrite, string tableName)
+    private static string GetPathToWrite(string pathToWrite, string tableName, string templatePath)
     {
         if (tableName != null)
             pathToWrite = ConfigManager.Instance.Fill(pathToWrite);
@@ -139,11 +99,9 @@ public static class Generator
             if (match.Value == "`Name`")
                 pathToWrite = pathToWrite.Replace(match.Value, tableName);
 
-        // absolute path
-        if (pathToWrite.Contains(":") || pathToWrite.StartsWith("/"))
-            return pathToWrite;
-
-        return Path.Combine(ConfigManager.Instance.RootPath, pathToWrite);
+        var templateDirecotry = new FileInfo(templatePath).Directory.FullName;
+        pathToWrite = Path.Combine(templateDirecotry, pathToWrite);
+        return pathToWrite;
     }
 
     private static void WriteFileIfNone(string path, string code, bool overwritable)
