@@ -1,5 +1,4 @@
 {
-  "DataProjectNamespace": "",
-"ApiProjectNamespace" : "Chinook.WebApi.Controllers",
-"ApiClientProjectNamespace" : "Chinook.WebApiClient"
+  "ApiProjectNamespace": "Chinook.WebApi.Controllers",
+  "ServiceProjectNamespace": "Chinook.Services"
 }

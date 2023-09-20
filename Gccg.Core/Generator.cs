@@ -52,7 +52,7 @@ public static class Generator
     {
         var files = Directory
             .GetFiles(ConfigManager.Instance.RootPath, $"*{TemplatePostfix}", SearchOption.AllDirectories)
-            .Where(x => Path.GetFileName(x).StartsWith("_") == false)
+            .Where(x => Path.GetFileName(x).StartsWith(" ") == false)
             .ToArray();
 
         Console.WriteLine($"{files.Length:N0} template files are found.");

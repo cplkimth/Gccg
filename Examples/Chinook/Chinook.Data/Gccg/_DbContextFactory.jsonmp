@@ -1,7 +1,7 @@
 {
 	"Version":2,
 	"Scope":0,
-	"TargetPath":"`DataProjectDirectory`/DbContextFactory.cs",
+	"TargetPath":"DbContextFactory.cs",
 	"Overwritable": false
 }
 *** body starts here ***

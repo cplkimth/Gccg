@@ -1,7 +1,7 @@
 {
 	"Version":2,
 	"Scope":0,
-	"TargetPath":"Api.g.cs",
+	"TargetPath":"Service.g.cs",
 	"Overwritable": true
 }
 *** body starts here ***
@@ -14,9 +14,9 @@ using System.Text.Json.Serialization;
 using `DataProjectNamespace`;
 #endregion
 
-namespace `ApiClientProjectNamespace`;
+namespace `ServiceProjectNamespace`;
 
-public partial class Api
+public partial class Service
 {
     public static string JwtToken { get; set; }
 
@@ -28,10 +28,10 @@ public partial class Api
     internal static HttpClient CreateHttpClient()
     {
         HttpClient client = new HttpClient();
-        client.BaseAddress = new Uri(Api.BaseAddress);
+        client.BaseAddress = new Uri(Service.BaseAddress);
 
-        if (Api.JwtToken != null)
-            client.DefaultRequestHeaders.Add(Authorization, $"{Bearer} {Api.JwtToken}");
+        if (Service.JwtToken != null)
+            client.DefaultRequestHeaders.Add(Authorization, $"{Bearer} {Service.JwtToken}");
 
         return client;
     }
@@ -44,11 +44,11 @@ public partial class Api
     }
 
     #region clients
-    `T public static `Name`Api `Name` => new `Name`Api(); T`
+    `T public static `Name`Service `Name` => new `Name`Service(); T`
     #endregion
 }
 
-public abstract partial class EntityApi<T>
+public abstract partial class EntityService<T>
 {
     protected const string Authorization = "Authorization";
     protected const string Bearer = "Bearer";
@@ -63,7 +63,7 @@ public abstract partial class EntityApi<T>
         return builder.ToString();
     }
 
-    protected HttpClient CreateHttpClient() => Api.CreateHttpClient();
+    protected HttpClient CreateHttpClient() => Service.CreateHttpClient();
 
     protected static JsonSerializerOptions Options { get; } = new ()
       {
@@ -106,7 +106,7 @@ public abstract partial class EntityApi<T>
 
 #region clients
 `T
-public partial class `Name`Api : EntityApi<`Name`>
+public partial class `Name`Service : EntityService<`Name`>
 {
     protected override string EntityName => nameof(`Name`);
 

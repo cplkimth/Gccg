@@ -1,7 +1,7 @@
 {
 	"Version":2,
 	"Scope":1,
-	"TargetPath":"`Name`Api.cs",
+	"TargetPath":"`Name`Service.cs",
 	"Overwritable": false
 }
 *** body starts here ***
@@ -10,10 +10,10 @@
 using `DataProjectNamespace`;
 #endregion
 
-namespace `ApiClientProjectNamespace`;
+namespace `ServiceProjectNamespace`;
 
 `T
-public partial class AlbumApi
+public partial class `Name`Service
 {
 }
 T`

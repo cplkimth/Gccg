@@ -17,7 +17,7 @@
 		<RepositoryUrl>https://github.com/cplkimth/gccg.git</RepositoryUrl>
 		<PackageIcon>Gccg.png</PackageIcon>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Version>1.0.0</Version>
+		<Version>1.0.1</Version>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<AssemblyVersion></AssemblyVersion>
 		<FileVersion></FileVersion>
