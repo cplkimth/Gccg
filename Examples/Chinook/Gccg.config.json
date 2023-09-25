@@ -1,4 +1,3 @@
 {
-  "ApiProjectNamespace": "Chinook.WebApi.Controllers",
-  "ServiceProjectNamespace": "Chinook.Services"
+  "WebProjectNamespace": "Chinook.Web"
 }

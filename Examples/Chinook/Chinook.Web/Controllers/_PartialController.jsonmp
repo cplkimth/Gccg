@@ -1,0 +1,19 @@
+﻿{
+	"Version":2,
+	"Scope":1,
+	"TargetPath":"`Name`Controller.cs",
+	"Overwritable": false
+}
+*** body starts here ***
+#region using
+using `DataProjectNamespace`;
+using Microsoft.AspNetCore.Mvc;
+#endregion
+
+namespace `WebProjectNamespace`.Controllers;
+
+`T
+public partial class `Name`Controller
+{
+}
+T`

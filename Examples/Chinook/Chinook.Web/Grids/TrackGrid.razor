@@ -1,0 +1,289 @@
+
+
+@inherits EntityGrid<Track>
+
+<RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" class="mt-2 mb-4" Text="Add New Track" Click="@InsertRow" />
+
+<RadzenDataGrid @ref="_grid" AllowAlternatingRows="false" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true" EditMode="DataGridEditMode.Single"
+                Data="@list" TItem="Track"
+                RowUpdate="@UpdateEntity" RowCreate="@InsertEntity"
+                Sort="@Reset" Page="@Reset" Filter="@Reset">
+    <Columns>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.TrackId)" Title="TrackId" />
+        
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.AlbumId)" Title="AlbumId">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.AlbumId" Style="width:100%; display: block" Name="@nameof(Track.AlbumId)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.BigIntCol)" Title="BigIntCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.BigIntCol" Style="width:100%; display: block" Name="@nameof(Track.BigIntCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.BigIntColNull)" Title="BigIntColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.BigIntColNull" Style="width:100%; display: block" Name="@nameof(Track.BigIntColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.BinaryCol)" Title="BinaryCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.BinaryCol" Style="width:100%; display: block" Name="@nameof(Track.BinaryCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.BinaryColNull)" Title="BinaryColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.BinaryColNull" Style="width:100%; display: block" Name="@nameof(Track.BinaryColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.BitCol)" Title="BitCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.BitCol" Style="width:100%; display: block" Name="@nameof(Track.BitCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.BitColNull)" Title="BitColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.BitColNull" Style="width:100%; display: block" Name="@nameof(Track.BitColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.CharCol)" Title="CharCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.CharCol" Style="width:100%; display: block" Name="@nameof(Track.CharCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.CharColNull)" Title="CharColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.CharColNull" Style="width:100%; display: block" Name="@nameof(Track.CharColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.DateCol)" Title="DateCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.DateCol" Style="width:100%; display: block" Name="@nameof(Track.DateCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.DateColNull)" Title="DateColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.DateColNull" Style="width:100%; display: block" Name="@nameof(Track.DateColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.DateTimeCol)" Title="DateTimeCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.DateTimeCol" Style="width:100%; display: block" Name="@nameof(Track.DateTimeCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.DateTimeColNull)" Title="DateTimeColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.DateTimeColNull" Style="width:100%; display: block" Name="@nameof(Track.DateTimeColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.DecimalCol)" Title="DecimalCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.DecimalCol" Style="width:100%; display: block" Name="@nameof(Track.DecimalCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.DecimalColNull)" Title="DecimalColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.DecimalColNull" Style="width:100%; display: block" Name="@nameof(Track.DecimalColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.FloatCol)" Title="FloatCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.FloatCol" Style="width:100%; display: block" Name="@nameof(Track.FloatCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.FloatColNull)" Title="FloatColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.FloatColNull" Style="width:100%; display: block" Name="@nameof(Track.FloatColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.GenreId)" Title="GenreId">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.GenreId" Style="width:100%; display: block" Name="@nameof(Track.GenreId)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.GuidCol)" Title="GuidCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.GuidCol" Style="width:100%; display: block" Name="@nameof(Track.GuidCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.GuidColNull)" Title="GuidColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.GuidColNull" Style="width:100%; display: block" Name="@nameof(Track.GuidColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.MediaTypeId)" Title="MediaTypeId">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.MediaTypeId" Style="width:100%; display: block" Name="@nameof(Track.MediaTypeId)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.Name)" Title="Name">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.Name" Style="width:100%; display: block" Name="@nameof(Track.Name)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.NcharCol)" Title="NcharCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.NcharCol" Style="width:100%; display: block" Name="@nameof(Track.NcharCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.NcharColNull)" Title="NcharColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.NcharColNull" Style="width:100%; display: block" Name="@nameof(Track.NcharColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.NvarCharCol)" Title="NvarCharCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.NvarCharCol" Style="width:100%; display: block" Name="@nameof(Track.NvarCharCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.NvarCharColNull)" Title="NvarCharColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.NvarCharColNull" Style="width:100%; display: block" Name="@nameof(Track.NvarCharColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.RealCol)" Title="RealCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.RealCol" Style="width:100%; display: block" Name="@nameof(Track.RealCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.RealColNull)" Title="RealColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.RealColNull" Style="width:100%; display: block" Name="@nameof(Track.RealColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.SmallDateTimeCol)" Title="SmallDateTimeCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.SmallDateTimeCol" Style="width:100%; display: block" Name="@nameof(Track.SmallDateTimeCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.SmallDateTimeColNull)" Title="SmallDateTimeColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.SmallDateTimeColNull" Style="width:100%; display: block" Name="@nameof(Track.SmallDateTimeColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.SmallIntCol)" Title="SmallIntCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.SmallIntCol" Style="width:100%; display: block" Name="@nameof(Track.SmallIntCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.SmallIntColNull)" Title="SmallIntColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.SmallIntColNull" Style="width:100%; display: block" Name="@nameof(Track.SmallIntColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.SmallMoneyCol)" Title="SmallMoneyCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.SmallMoneyCol" Style="width:100%; display: block" Name="@nameof(Track.SmallMoneyCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.SmallMoneyColNull)" Title="SmallMoneyColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.SmallMoneyColNull" Style="width:100%; display: block" Name="@nameof(Track.SmallMoneyColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.TimeCol)" Title="TimeCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.TimeCol" Style="width:100%; display: block" Name="@nameof(Track.TimeCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.TimeColNull)" Title="TimeColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.TimeColNull" Style="width:100%; display: block" Name="@nameof(Track.TimeColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.TimeStampCol)" Title="TimeStampCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.TimeStampCol" Style="width:100%; display: block" Name="@nameof(Track.TimeStampCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.TinyIntCol)" Title="TinyIntCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.TinyIntCol" Style="width:100%; display: block" Name="@nameof(Track.TinyIntCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.TinyIntColNull)" Title="TinyIntColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.TinyIntColNull" Style="width:100%; display: block" Name="@nameof(Track.TinyIntColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.VarBinaryCol)" Title="VarBinaryCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.VarBinaryCol" Style="width:100%; display: block" Name="@nameof(Track.VarBinaryCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.VarBinaryColNull)" Title="VarBinaryColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.VarBinaryColNull" Style="width:100%; display: block" Name="@nameof(Track.VarBinaryColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.VarCharCol)" Title="VarCharCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.VarCharCol" Style="width:100%; display: block" Name="@nameof(Track.VarCharCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.VarCharColNull)" Title="VarCharColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.VarCharColNull" Style="width:100%; display: block" Name="@nameof(Track.VarCharColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Context="entity" Filterable="false" Sortable="false" TextAlign="TextAlign.Right">
+            <Template Context="entity">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(_ => _grid.EditRow(entity))" @onclick:stopPropagation="true">
+                </RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(_ => DeleteRow(entity))" @onclick:stopPropagation="true">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="entity">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(_ => _grid.UpdateRow(entity))"/>
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(_ => _grid.CancelEditRow(entity))"/>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(_ => DeleteRow(entity))"/>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+

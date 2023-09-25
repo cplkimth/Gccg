@@ -1,0 +1,17 @@
+{
+	"Version":2,
+	"Scope":1,
+	"TargetPath":"`Name`Api.cs",
+	"Overwritable": false
+}
+*** body starts here ***
+#region using
+#endregion
+
+namespace `DataProjectNamespace`;
+
+`T
+public partial class `Name`Api
+{
+}
+T`

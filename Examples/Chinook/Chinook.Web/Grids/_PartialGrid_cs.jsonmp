@@ -1,0 +1,33 @@
+{
+	"Version":2,
+	"Scope":1,
+	"TargetPath":"`Name`Grid.razor.cs",
+	"Overwritable": true
+}
+*** body starts here ***
+#region usings
+using `DataProjectNamespace`;
+#endregion
+
+namespace `WebProjectNamespace`.Grids;
+
+`T
+public partial class `Name`Grid : EntityGrid<`Name`>
+{
+    protected override `Name` CreateEntity()
+    {
+        var `name` = Dao.`Name`.Create();
+        // TODO : CreateEntity
+
+        return `name`;
+    }
+
+    protected override Task<List<`Name`>> GetCoreAsync() => Dao.`Name`.GetAsync();
+
+    protected override void InsertEntity(`Name` entity) => Dao.`Name`.Insert(entity);
+
+    protected override void UpdateEntity(`Name` entity) => Dao.`Name`.Update(entity);
+
+    protected override void DeleteEntity(`Name` entity) => Dao.`Name`.Delete(entity);
+}
+T`

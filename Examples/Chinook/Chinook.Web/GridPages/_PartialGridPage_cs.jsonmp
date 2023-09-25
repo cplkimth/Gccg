@@ -1,0 +1,17 @@
+{
+	"Version":2,
+	"Scope":1,
+	"TargetPath":"`Name`GridPage.razor.cs",
+	"Overwritable": true
+}
+*** body starts here ***
+#region usings
+#endregion
+
+namespace `WebProjectNamespace`.GridPages;
+
+`T
+public partial class `Name`GridPage
+{
+}
+T`

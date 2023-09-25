@@ -1,0 +1,49 @@
+
+
+@inherits EntityGrid<TodoItem>
+
+<RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" class="mt-2 mb-4" Text="Add New TodoItem" Click="@InsertRow" />
+
+<RadzenDataGrid @ref="_grid" AllowAlternatingRows="false" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true" EditMode="DataGridEditMode.Single"
+                Data="@list" TItem="TodoItem"
+                RowUpdate="@UpdateEntity" RowCreate="@InsertEntity"
+                Sort="@Reset" Page="@Reset" Filter="@Reset">
+    <Columns>
+        
+        <RadzenDataGridColumn TItem="TodoItem" Property="@nameof(TodoItem.Id)" Title="Id" />
+        
+        
+        <RadzenDataGridColumn TItem="TodoItem" Property="@nameof(TodoItem.Description)" Title="Description">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.Description" Style="width:100%; display: block" Name="@nameof(TodoItem.Description)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="TodoItem" Property="@nameof(TodoItem.IsCompleted)" Title="IsCompleted">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.IsCompleted" Style="width:100%; display: block" Name="@nameof(TodoItem.IsCompleted)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="TodoItem" Property="@nameof(TodoItem.Title)" Title="Title">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.Title" Style="width:100%; display: block" Name="@nameof(TodoItem.Title)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="TodoItem" Context="entity" Filterable="false" Sortable="false" TextAlign="TextAlign.Right">
+            <Template Context="entity">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(_ => _grid.EditRow(entity))" @onclick:stopPropagation="true">
+                </RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(_ => DeleteRow(entity))" @onclick:stopPropagation="true">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="entity">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(_ => _grid.UpdateRow(entity))"/>
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(_ => _grid.CancelEditRow(entity))"/>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(_ => DeleteRow(entity))"/>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+

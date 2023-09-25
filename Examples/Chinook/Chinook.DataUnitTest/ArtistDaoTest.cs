@@ -1,63 +1,60 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+#region usings
 using Chinook.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+#endregion
 
-namespace Chinook.UnitTest
+namespace Chinook.UnitTest;
+
+[TestClass]
+public partial class ArtistDaoTest
 {
-    [TestClass]
-    public partial class ArtistDaoTest
+    [TestInitialize]
+    public void Initialize()
     {
-        [TestInitialize()]
-        public void Initialize()
-        {
-            ChinookContextProcedures procedures = new ChinookContextProcedures(DbContextFactory.Create());
-            // procedures.InitializeAsync().Wait();
-        }
+        var procedures = new ChinookContextProcedures(DbContextFactory.Create());
+        procedures.InitializeAsync().Wait();
+    }
 
-        [TestMethod]
-        public void InsertOrUpdate()
-        {
-            string artistName = DateTime.Now.ToString();
+    [TestMethod]
+    public void InsertOrUpdate()
+    {
+        var artistName = DateTime.Now.ToString();
 
-            var artist = Dao.Artist.GetByKey(1);
-            artist.Name = artistName;
-            Dao.Artist.InsertOrUpdate(artist);
-            
-            artist = Dao.Artist.GetByKey(1);
-            Assert.AreEqual(artistName, artist.Name);
-        }
+        var artist = Dao.Artist.GetByKey(1);
+        artist.Name = artistName;
+        Dao.Artist.InsertOrUpdate(artist);
 
-        [TestMethod]
-        public void InsertOrUpdate2()
-        {
-            string artistName = DateTime.Now.ToString();
+        artist = Dao.Artist.GetByKey(1);
+        Assert.AreEqual(artistName, artist.Name);
+    }
 
-            var artist = Dao.Artist.Create();
-            artist.Name = artistName;
-            Dao.Artist.InsertOrUpdate(artist);
-            
-            Assert.AreEqual(2, Dao.Artist.GetCount());
-        }
+    [TestMethod]
+    public void InsertOrUpdate2()
+    {
+        var artistName = DateTime.Now.ToString();
 
-        [TestMethod]
-        public void InsertIfNotExist()
-        {
-            var artist = Dao.Artist.Create();
-            artist.Name = DateTime.Now.ToString();
-            Dao.Artist.InsertIfNotExist(artist);
-            
-            Assert.AreEqual(2, Dao.Artist.GetCount());
-        }
+        var artist = Dao.Artist.Create();
+        artist.Name = artistName;
+        Dao.Artist.InsertOrUpdate(artist);
 
-        [TestMethod]
-        public void InsertIfNotExist2()
-        {
-            var artist = Dao.Artist.GetByKey(1);
-            Dao.Artist.InsertIfNotExist(artist);
-            
-            Assert.AreEqual(1, Dao.Artist.GetCount());
-        }
+        Assert.AreEqual(2, Dao.Artist.GetCount());
+    }
+
+    [TestMethod]
+    public void InsertIfNotExist()
+    {
+        var artist = Dao.Artist.Create();
+        artist.Name = DateTime.Now.ToString();
+        Dao.Artist.InsertIfNotExist(artist);
+
+        Assert.AreEqual(2, Dao.Artist.GetCount());
+    }
+
+    [TestMethod]
+    public void InsertIfNotExist2()
+    {
+        var artist = Dao.Artist.GetByKey(1);
+        Dao.Artist.InsertIfNotExist(artist);
+
+        Assert.AreEqual(1, Dao.Artist.GetCount());
     }
 }

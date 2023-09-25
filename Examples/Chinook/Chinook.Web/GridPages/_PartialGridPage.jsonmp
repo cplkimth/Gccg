@@ -1,0 +1,12 @@
+{
+	"Version":2,
+	"Scope":1,
+	"TargetPath":"`Name`GridPage.razor",
+	"Overwritable": true
+}
+*** body starts here ***
+`T
+@page "/`Name`GridPage"
+
+<`Name`Grid/>
+T`

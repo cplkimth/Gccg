@@ -1,0 +1,115 @@
+
+
+@inherits EntityGrid<Employee>
+
+<RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" class="mt-2 mb-4" Text="Add New Employee" Click="@InsertRow" />
+
+<RadzenDataGrid @ref="_grid" AllowAlternatingRows="false" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true" EditMode="DataGridEditMode.Single"
+                Data="@list" TItem="Employee"
+                RowUpdate="@UpdateEntity" RowCreate="@InsertEntity"
+                Sort="@Reset" Page="@Reset" Filter="@Reset">
+    <Columns>
+        
+        <RadzenDataGridColumn TItem="Employee" Property="@nameof(Employee.EmployeeId)" Title="EmployeeId" />
+        
+        
+        <RadzenDataGridColumn TItem="Employee" Property="@nameof(Employee.Address)" Title="Address">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.Address" Style="width:100%; display: block" Name="@nameof(Employee.Address)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Employee" Property="@nameof(Employee.BirthDate)" Title="BirthDate">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.BirthDate" Style="width:100%; display: block" Name="@nameof(Employee.BirthDate)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Employee" Property="@nameof(Employee.City)" Title="City">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.City" Style="width:100%; display: block" Name="@nameof(Employee.City)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Employee" Property="@nameof(Employee.Country)" Title="Country">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.Country" Style="width:100%; display: block" Name="@nameof(Employee.Country)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Employee" Property="@nameof(Employee.Email)" Title="Email">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.Email" Style="width:100%; display: block" Name="@nameof(Employee.Email)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Employee" Property="@nameof(Employee.Fax)" Title="Fax">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.Fax" Style="width:100%; display: block" Name="@nameof(Employee.Fax)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Employee" Property="@nameof(Employee.FirstName)" Title="FirstName">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.FirstName" Style="width:100%; display: block" Name="@nameof(Employee.FirstName)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Employee" Property="@nameof(Employee.HireDate)" Title="HireDate">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.HireDate" Style="width:100%; display: block" Name="@nameof(Employee.HireDate)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Employee" Property="@nameof(Employee.LastName)" Title="LastName">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.LastName" Style="width:100%; display: block" Name="@nameof(Employee.LastName)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Employee" Property="@nameof(Employee.Phone)" Title="Phone">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.Phone" Style="width:100%; display: block" Name="@nameof(Employee.Phone)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Employee" Property="@nameof(Employee.PostalCode)" Title="PostalCode">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.PostalCode" Style="width:100%; display: block" Name="@nameof(Employee.PostalCode)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Employee" Property="@nameof(Employee.ReportsTo)" Title="ReportsTo">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.ReportsTo" Style="width:100%; display: block" Name="@nameof(Employee.ReportsTo)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Employee" Property="@nameof(Employee.State)" Title="State">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.State" Style="width:100%; display: block" Name="@nameof(Employee.State)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Employee" Property="@nameof(Employee.Title)" Title="Title">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.Title" Style="width:100%; display: block" Name="@nameof(Employee.Title)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Employee" Context="entity" Filterable="false" Sortable="false" TextAlign="TextAlign.Right">
+            <Template Context="entity">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(_ => _grid.EditRow(entity))" @onclick:stopPropagation="true">
+                </RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(_ => DeleteRow(entity))" @onclick:stopPropagation="true">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="entity">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(_ => _grid.UpdateRow(entity))"/>
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(_ => _grid.CancelEditRow(entity))"/>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(_ => DeleteRow(entity))"/>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+

@@ -1546,5 +1546,16 @@ public partial class Dao : DaoBase
 	#region Data objects
 	`T public static `Name`Dao `Name` { get; } T`
 	#endregion
-	}
+
+	public static EntityDao<T> Get<T>() where T : Entity<T>, new()
+    {
+        object result = typeof(T).Name switch
+        {
+            `T "`Name`" => `Name`, T`
+			_ => throw new NotImplementedException("Dao.Get")
+        };
+
+        return result as EntityDao<T>;
+    }
+}
 #endregion

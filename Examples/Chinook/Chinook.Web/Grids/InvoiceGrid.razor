@@ -1,0 +1,79 @@
+
+
+@inherits EntityGrid<Invoice>
+
+<RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" class="mt-2 mb-4" Text="Add New Invoice" Click="@InsertRow" />
+
+<RadzenDataGrid @ref="_grid" AllowAlternatingRows="false" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true" EditMode="DataGridEditMode.Single"
+                Data="@list" TItem="Invoice"
+                RowUpdate="@UpdateEntity" RowCreate="@InsertEntity"
+                Sort="@Reset" Page="@Reset" Filter="@Reset">
+    <Columns>
+        
+        <RadzenDataGridColumn TItem="Invoice" Property="@nameof(Invoice.InvoiceId)" Title="InvoiceId" />
+        
+        
+        <RadzenDataGridColumn TItem="Invoice" Property="@nameof(Invoice.BillingAddress)" Title="BillingAddress">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.BillingAddress" Style="width:100%; display: block" Name="@nameof(Invoice.BillingAddress)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Invoice" Property="@nameof(Invoice.BillingCity)" Title="BillingCity">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.BillingCity" Style="width:100%; display: block" Name="@nameof(Invoice.BillingCity)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Invoice" Property="@nameof(Invoice.BillingCountry)" Title="BillingCountry">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.BillingCountry" Style="width:100%; display: block" Name="@nameof(Invoice.BillingCountry)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Invoice" Property="@nameof(Invoice.BillingPostalCode)" Title="BillingPostalCode">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.BillingPostalCode" Style="width:100%; display: block" Name="@nameof(Invoice.BillingPostalCode)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Invoice" Property="@nameof(Invoice.BillingState)" Title="BillingState">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.BillingState" Style="width:100%; display: block" Name="@nameof(Invoice.BillingState)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Invoice" Property="@nameof(Invoice.CustomerId)" Title="CustomerId">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.CustomerId" Style="width:100%; display: block" Name="@nameof(Invoice.CustomerId)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Invoice" Property="@nameof(Invoice.InvoiceDate)" Title="InvoiceDate">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.InvoiceDate" Style="width:100%; display: block" Name="@nameof(Invoice.InvoiceDate)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Invoice" Property="@nameof(Invoice.Total)" Title="Total">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.Total" Style="width:100%; display: block" Name="@nameof(Invoice.Total)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Invoice" Context="entity" Filterable="false" Sortable="false" TextAlign="TextAlign.Right">
+            <Template Context="entity">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(_ => _grid.EditRow(entity))" @onclick:stopPropagation="true">
+                </RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(_ => DeleteRow(entity))" @onclick:stopPropagation="true">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="entity">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(_ => _grid.UpdateRow(entity))"/>
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(_ => _grid.CancelEditRow(entity))"/>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(_ => DeleteRow(entity))"/>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
