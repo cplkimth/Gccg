@@ -6,6 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Chinook.WebApi.Controllers;
 
+
 public partial class AlbumController
 {
+    [HttpPost("initialize")]
+    public virtual async Task<int> InitializeAsync()
+    {
+        var procedures = new ChinookContextProcedures(DbContextFactory.Create());
+        return await procedures.InitializeAsync();
+    }
 }
+

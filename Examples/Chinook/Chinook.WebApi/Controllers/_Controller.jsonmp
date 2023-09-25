@@ -14,57 +14,75 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 #endregion
 
-namespace `ApiProjectNamespace`;
+namespace `ControllerNamespace`;
+
+public abstract partial class EntityController<T> : ControllerBase where T : Entity<T>, new()
+{
+    [HttpGet]
+    public virtual async Task<List<T>> GetAsync()
+    {
+        return await Dao.Get<T>().GetAsync();
+    }
+    
+    [HttpGet("first")]
+    public virtual async Task<T> GetFirstAsync()
+    {
+        return await Dao.Get<T>().GetFirstAsync();
+    }
+
+    [HttpGet("count")]
+    public virtual async Task<int> GetCountAsync()
+    {
+        return await Dao.Get<T>().GetCountAsync();
+    }
+
+    [HttpPost]
+    public virtual async Task<T> InsertAsync(T entity)
+    {
+        return await Dao.Get<T>().InsertAsync(entity);
+    }
+
+    [HttpPut]
+    public virtual async Task<int> UpdateAsync(T entity)
+    {
+        return await Dao.Get<T>().UpdateAsync(entity);
+    }
+}
 
 `T
 #region `Name`Controller
-[Route("api/[controller]")]
-[ApiController]
-[Produces("application/json")]
-[Authorize]
-public partial class `Name`Controller : ControllerBase
+public abstract partial class `Name`ControllerBase : EntityController<`Name`>
 {
-    [HttpGet]
-    public async Task<List<`Name`>> GetAsync()
-    {
-        return await Dao.`Name`.GetAsync();
-    }
-
     [HttpGet("`P:/:{`name`}``")]
-    public async Task<`Name`> GetByKeyAsync(`P:, :`Type` `name` ``)
+    public virtual async Task<`Name`> GetByKeyAsync(`P:, :`Type` `name` ``)
     {
         return await Dao.`Name`.GetByKeyAsync(`P:, :`name` ``);
     }
 
-    [HttpGet("first")]
-    public async Task<`Name`> GetFirstAsync()
+    [HttpGet("exists/`P:/:{`name`}``")]
+    public virtual async Task<bool> ExistsByKeyAsync(`P:, :`Type` `name` ``)
     {
-        return await Dao.`Name`.GetFirstAsync();
+        return await Dao.`Name`.ExistsByKeyAsync(`P:, :`name` ``);
     }
 
-    [HttpGet("count")]
-    public async Task<int> GetCountAsync()
+    `F:: [HttpGet("`Name`/{`name`}")]
+    public virtual async Task<List<`Table`>> GetBy`Name`Async(`Type` `name`)
     {
-        return await Dao.`Name`.GetCountAsync();
+        return await Dao.`Table`.GetBy`Name`Async(`name`);
     }
-
-    [HttpPost]
-    public async Task<`Name`> InsertAsync(`Name` entity)
-    {
-        return await Dao.`Name`.InsertAsync(entity);
-    }
-
-    [HttpPut]
-    public async Task<int> UpdateAsync(`Name` entity)
-    {
-        return await Dao.`Name`.UpdateAsync(entity);
-    }
+    ``
 
     [HttpDelete("`P:/:{`name`}``")]
-    public async Task<int> DeleteByKeyAsync(`P:, :`Type` `name` ``)
+    public virtual async Task<int> DeleteByKeyAsync(`P:, :`Type` `name` ``)
     {
         return await Dao.`Name`.DeleteByKeyAsync(`P:, :`name` ``);
     }
+}
+
+[Route("api/[controller]")]
+[ApiController]
+public partial class `Name`Controller : `Name`ControllerBase
+{
 }
 #endregion
 T`
