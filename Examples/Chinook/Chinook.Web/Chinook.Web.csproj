@@ -1,25 +1,97 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
-
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
+  <ItemGroup>
+    <Compile Remove="GridPages\AlbumGridPage.razor.cs" />
+    <Compile Remove="GridPages\ArtistGridPage.razor.cs" />
+    <Compile Remove="GridPages\CompanyGridPage.razor.cs" />
+    <Compile Remove="GridPages\CustomerGridPage.razor.cs" />
+    <Compile Remove="GridPages\EmployeeGridPage.razor.cs" />
+    <Compile Remove="GridPages\GenreGridPage.razor.cs" />
+    <Compile Remove="GridPages\InvoiceGridPage.razor.cs" />
+    <Compile Remove="GridPages\InvoiceLineGridPage.razor.cs" />
+    <Compile Remove="GridPages\MediaTypeGridPage.razor.cs" />
+    <Compile Remove="GridPages\PlaylistGridPage.razor.cs" />
+    <Compile Remove="GridPages\PlaylistTrackGridPage.razor.cs" />
+    <Compile Remove="GridPages\PlaylistTrackHistoryGridPage.razor.cs" />
+    <Compile Remove="GridPages\TodoItemGridPage.razor.cs" />
+    <Compile Remove="GridPages\TrackGridPage.razor.cs" />
+    <Compile Remove="Grids\AlbumGrid.razor.cs" />
+    <Compile Remove="Grids\ArtistGrid.razor.cs" />
+    <Compile Remove="Grids\CompanyGrid.razor.cs" />
+    <Compile Remove="Grids\CustomerGrid.razor.cs" />
+    <Compile Remove="Grids\EmployeeGrid.razor.cs" />
+    <Compile Remove="Grids\EntityGrid.cs" />
+    <Compile Remove="Grids\GenreGrid.razor.cs" />
+    <Compile Remove="Grids\InvoiceGrid.razor.cs" />
+    <Compile Remove="Grids\InvoiceLineGrid.razor.cs" />
+    <Compile Remove="Grids\MediaTypeGrid.razor.cs" />
+    <Compile Remove="Grids\PlaylistGrid.razor.cs" />
+    <Compile Remove="Grids\PlaylistTrackGrid.razor.cs" />
+    <Compile Remove="Grids\PlaylistTrackHistoryGrid.razor.cs" />
+    <Compile Remove="Grids\TodoItemGrid.razor.cs" />
+    <Compile Remove="Grids\TrackGrid.razor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="GridPages\AlbumGridPage.razor" />
+    <Content Remove="GridPages\ArtistGridPage.razor" />
+    <Content Remove="GridPages\CompanyGridPage.razor" />
+    <Content Remove="GridPages\CustomerGridPage.razor" />
+    <Content Remove="GridPages\EmployeeGridPage.razor" />
+    <Content Remove="GridPages\GenreGridPage.razor" />
+    <Content Remove="GridPages\InvoiceGridPage.razor" />
+    <Content Remove="GridPages\InvoiceLineGridPage.razor" />
+    <Content Remove="GridPages\MediaTypeGridPage.razor" />
+    <Content Remove="GridPages\PlaylistGridPage.razor" />
+    <Content Remove="GridPages\PlaylistTrackGridPage.razor" />
+    <Content Remove="GridPages\PlaylistTrackHistoryGridPage.razor" />
+    <Content Remove="GridPages\TodoItemGridPage.razor" />
+    <Content Remove="GridPages\TrackGridPage.razor" />
+    <Content Remove="Grids\AlbumGrid.razor" />
+    <Content Remove="Grids\ArtistGrid.razor" />
+    <Content Remove="Grids\CompanyGrid.razor" />
+    <Content Remove="Grids\CustomerGrid.razor" />
+    <Content Remove="Grids\EmployeeGrid.razor" />
+    <Content Remove="Grids\GenreGrid.razor" />
+    <Content Remove="Grids\InvoiceGrid.razor" />
+    <Content Remove="Grids\InvoiceLineGrid.razor" />
+    <Content Remove="Grids\MediaTypeGrid.razor" />
+    <Content Remove="Grids\PlaylistGrid.razor" />
+    <Content Remove="Grids\PlaylistTrackGrid.razor" />
+    <Content Remove="Grids\PlaylistTrackHistoryGrid.razor" />
+    <Content Remove="Grids\TodoItemGrid.razor" />
+    <Content Remove="Grids\TrackGrid.razor" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="GridPages\AlbumGridPage.razor.css" />
+    <None Remove="Grids\AlbumGrid.razor.css" />
+    <None Remove="Grids\ArtistGrid.razor.css" />
+    <None Remove="Grids\CompanyGrid.razor.css" />
+    <None Remove="Grids\CustomerGrid.razor.css" />
+    <None Remove="Grids\EmployeeGrid.razor.css" />
+    <None Remove="Grids\GenreGrid.razor.css" />
+    <None Remove="Grids\InvoiceGrid.razor.css" />
+    <None Remove="Grids\InvoiceLineGrid.razor.css" />
+    <None Remove="Grids\MediaTypeGrid.razor.css" />
+    <None Remove="Grids\PlaylistGrid.razor.css" />
+    <None Remove="Grids\PlaylistTrackGrid.razor.css" />
+    <None Remove="Grids\PlaylistTrackHistoryGrid.razor.css" />
+    <None Remove="Grids\TodoItemGrid.razor.css" />
+    <None Remove="Grids\TrackGrid.razor.css" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chinook.Data\Chinook.Data.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <UpToDateCheckInput Remove="GridPages\AlbumGridPage.razor" />
   </ItemGroup>
-
   <ItemGroup>
     <_ContentIncludedByDefault Remove="GridPages\AlbumGridPage.razor" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="Radzen.Blazor" Version="4.16.2" />
+    <PackageReference Include="Radzen.Blazor" Version="4.21.1" />
   </ItemGroup>
-
 </Project>

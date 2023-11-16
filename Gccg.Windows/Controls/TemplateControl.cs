@@ -26,6 +26,6 @@ public partial class TemplateControl : UserControl
             return;
 
         uscText.ViewMode = MiniHTMLTextBox.ViewModeType.Text;
-        uscText.Text = File.ReadAllText(@"C:\git\Gccg\Examples\Chinook\Chinook.Data\Gccg\_Data.jsonmp");
+        uscText.Text = File.ReadAllText(@"d:\git\Gccg\Examples\Chinook\Chinook.Data\Gccg\_Data.jsonmp");
     }
 }

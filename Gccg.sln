@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
@@ -22,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gccg.UnitTest", "Gccg.UnitT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chinook.ConsoleTest", "Examples\Chinook\Chinook.ConsoleTest\Chinook.ConsoleTest.csproj", "{5A08C49E-286A-4244-8CD7-07BBCCE8B0A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chinook.Web", "Examples\Chinook\Chinook.Web\Chinook.Web.csproj", "{6DCA73C8-2C0C-440F-93FA-4F03A59D1A29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chinook.Web", "Examples\Chinook\Chinook.Web\Chinook.Web.csproj", "{6DCA73C8-2C0C-440F-93FA-4F03A59D1A29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

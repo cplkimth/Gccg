@@ -1,6 +1,8 @@
 ﻿#region
 #endregion
 
+using Microsoft.EntityFrameworkCore;
+
 namespace Gccg.Core.Utilities
 {
     public static class TypeExtension
@@ -24,7 +26,11 @@ namespace Gccg.Core.Utilities
             _types.Add(typeof(DateTime), "DateTime");
             _types.Add(typeof(DateTimeOffset), "DateTimeOffset");
             _types.Add(typeof(TimeSpan), "TimeSpan");
+            _types.Add(typeof(DateOnly), "DateOnly");
+            _types.Add(typeof(TimeOnly), "TimeOnly");
+            _types.Add(typeof(HierarchyId), "HierarchyId");
             _types.Add(typeof(Guid), "Guid");
+            
             _types.Add(typeof(bool?), "bool?");
             _types.Add(typeof(byte?), "byte?");
             _types.Add(typeof(char?), "char?");
@@ -43,6 +49,8 @@ namespace Gccg.Core.Utilities
             _types.Add(typeof(Guid?), "Guid?");
             _types.Add(typeof(byte[]), "byte[]");
             _types.Add(typeof(string), "string");
+            _types.Add(typeof(DateOnly?), "DateOnly");
+            _types.Add(typeof(TimeOnly?), "TimeOnly");
 
 
             CSharpKeywords = new HashSet<string>
