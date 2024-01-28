@@ -372,4 +372,36 @@ public abstract class SchemaExtractorTests
 
         Assert.AreEqual(typeof(byte[]).ToClrName(), column.Type.ToClrName());
     }
+
+    [TestMethod]
+    public void DateOnlyColumn()
+    {
+        var column = Track.Columns.Find(x => x.Name == "DateOnlyColumn");
+
+        Assert.AreEqual(typeof(DateOnly).ToClrName(), column.Type.ToClrName());
+    }
+
+    [TestMethod]
+    public void TimeOnlyColumn()
+    {
+        var column = Track.Columns.Find(x => x.Name == "TimeOnlyColumn");
+
+        Assert.AreEqual(typeof(TimeOnly).ToClrName(), column.Type.ToClrName());
+    }
+
+    [TestMethod]
+    public void DateOnlyColumnNull()
+    {
+        var column = Track.Columns.Find(x => x.Name == "DateOnlyColumnNull");
+
+        Assert.AreEqual(typeof(DateOnly?).ToClrName(), column.Type.ToClrName());
+    }
+
+    [TestMethod]
+    public void TimeOnlyColumnNull()
+    {
+        var column = Track.Columns.Find(x => x.Name == "TimeOnlyColumnNull");
+
+        Assert.AreEqual(typeof(TimeOnly?).ToClrName(), column.Type.ToClrName());
+    }
 }

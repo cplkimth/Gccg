@@ -79,6 +79,18 @@
             </EditTemplate>
         </RadzenDataGridColumn>
         
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.DateOnlyCol)" Title="DateOnlyCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.DateOnlyCol" Style="width:100%; display: block" Name="@nameof(Track.DateOnlyCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.DateOnlyColNull)" Title="DateOnlyColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.DateOnlyColNull" Style="width:100%; display: block" Name="@nameof(Track.DateOnlyColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
         <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.DateTimeCol)" Title="DateTimeCol">
             <EditTemplate Context="entity">
                 <RadzenTextBox @bind-Value="entity.DateTimeCol" Style="width:100%; display: block" Name="@nameof(Track.DateTimeCol)" />
@@ -226,6 +238,18 @@
         <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.TimeColNull)" Title="TimeColNull">
             <EditTemplate Context="entity">
                 <RadzenTextBox @bind-Value="entity.TimeColNull" Style="width:100%; display: block" Name="@nameof(Track.TimeColNull)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.TimeOnlyCol)" Title="TimeOnlyCol">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.TimeOnlyCol" Style="width:100%; display: block" Name="@nameof(Track.TimeOnlyCol)" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.TimeOnlyColNull)" Title="TimeOnlyColNull">
+            <EditTemplate Context="entity">
+                <RadzenTextBox @bind-Value="entity.TimeOnlyColNull" Style="width:100%; display: block" Name="@nameof(Track.TimeOnlyColNull)" />
             </EditTemplate>
         </RadzenDataGridColumn>
         

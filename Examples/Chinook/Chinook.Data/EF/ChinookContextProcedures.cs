@@ -34,8 +34,7 @@ namespace Chinook.Data
 
         protected void OnModelCreatingGeneratedProcedures(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Album_SearchResult>().HasNoKey().ToView(null);
-            modelBuilder.Entity<Track_SearchResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<InitializeResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<usp_GetSystemTimeResult>().HasNoKey().ToView(null);
         }
     }
@@ -49,40 +48,7 @@ namespace Chinook.Data
             _context = context;
         }
 
-        public virtual async Task<List<Album_SearchResult>> Album_SearchAsync(int? ArtistId, string Title, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
-        {
-            var parameterreturnValue = new SqlParameter
-            {
-                ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.Output,
-                SqlDbType = System.Data.SqlDbType.Int,
-            };
-
-            var sqlParameters = new []
-            {
-                new SqlParameter
-                {
-                    ParameterName = "ArtistId",
-                    Value = ArtistId ?? Convert.DBNull,
-                    SqlDbType = System.Data.SqlDbType.Int,
-                },
-                new SqlParameter
-                {
-                    ParameterName = "Title",
-                    Size = 100,
-                    Value = Title ?? Convert.DBNull,
-                    SqlDbType = System.Data.SqlDbType.NVarChar,
-                },
-                parameterreturnValue,
-            };
-            var _ = await _context.SqlQueryAsync<Album_SearchResult>("EXEC @returnValue = [dbo].[Album_Search] @ArtistId, @Title", sqlParameters, cancellationToken);
-
-            returnValue?.SetValue(parameterreturnValue.Value);
-
-            return _;
-        }
-
-        public virtual async Task<int> InitializeAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<InitializeResult>> InitializeAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -95,40 +61,7 @@ namespace Chinook.Data
             {
                 parameterreturnValue,
             };
-            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[Initialize]", sqlParameters, cancellationToken);
-
-            returnValue?.SetValue(parameterreturnValue.Value);
-
-            return _;
-        }
-
-        public virtual async Task<List<Track_SearchResult>> Track_SearchAsync(string Name, int? ArtistId, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
-        {
-            var parameterreturnValue = new SqlParameter
-            {
-                ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.Output,
-                SqlDbType = System.Data.SqlDbType.Int,
-            };
-
-            var sqlParameters = new []
-            {
-                new SqlParameter
-                {
-                    ParameterName = "Name",
-                    Size = 100,
-                    Value = Name ?? Convert.DBNull,
-                    SqlDbType = System.Data.SqlDbType.NVarChar,
-                },
-                new SqlParameter
-                {
-                    ParameterName = "ArtistId",
-                    Value = ArtistId ?? Convert.DBNull,
-                    SqlDbType = System.Data.SqlDbType.Int,
-                },
-                parameterreturnValue,
-            };
-            var _ = await _context.SqlQueryAsync<Track_SearchResult>("EXEC @returnValue = [dbo].[Track_Search] @Name, @ArtistId", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<InitializeResult>("EXEC @returnValue = [dbo].[Initialize]", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 

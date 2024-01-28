@@ -95,8 +95,8 @@ namespace Gccg.Core.Utilities
 
         public static string ToClrName(this Type type)
         {
-            if (_types.ContainsKey(type))
-                return _types[type];
+            if (_types.TryGetValue(type, out var name))
+                return name;
 
             throw new NotImplementedException("Extension.ToClrName");
         }

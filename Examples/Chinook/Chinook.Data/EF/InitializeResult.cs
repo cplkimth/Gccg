@@ -5,10 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Chinook.Data
 {
-    public partial class Track_SearchResult
+    public partial class InitializeResult
     {
-        public int TrackId { get; set; }
-        public string Name { get; set; }
-        public int? AlbumId { get; set; }
     }
 }

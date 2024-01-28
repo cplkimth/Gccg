@@ -13,7 +13,9 @@ public partial class AlbumController
     public virtual async Task<int> InitializeAsync()
     {
         var procedures = new ChinookContextProcedures(DbContextFactory.Create());
-        return await procedures.InitializeAsync();
+        OutputParameter<int> output = new();
+        await procedures.InitializeAsync(output);
+        return output.Value;
     }
 }
 

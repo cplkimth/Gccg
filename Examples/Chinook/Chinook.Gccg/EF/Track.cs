@@ -49,9 +49,9 @@ public partial class Track
 
     public byte[] BinaryColNull { get; set; }
 
-    public DateTime DateCol { get; set; }
+    public DateOnly DateCol { get; set; }
 
-    public DateTime? DateColNull { get; set; }
+    public DateOnly? DateColNull { get; set; }
 
     public DateTime DateTimeCol { get; set; }
 
@@ -79,9 +79,9 @@ public partial class Track
 
     public byte[] TimeStampCol { get; set; }
 
-    public TimeSpan TimeCol { get; set; }
+    public TimeOnly TimeCol { get; set; }
 
-    public TimeSpan? TimeColNull { get; set; }
+    public TimeOnly? TimeColNull { get; set; }
 
     public Guid GuidCol { get; set; }
 
@@ -90,6 +90,14 @@ public partial class Track
     public byte[] VarBinaryCol { get; set; }
 
     public byte[] VarBinaryColNull { get; set; }
+
+    public DateOnly DateOnlyCol { get; set; }
+
+    public TimeOnly TimeOnlyCol { get; set; }
+
+    public DateOnly? DateOnlyColNull { get; set; }
+
+    public TimeOnly? TimeOnlyColNull { get; set; }
 
     public int MediaTypeId { get; set; }
 

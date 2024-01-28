@@ -25,6 +25,8 @@ public partial class ChinookContext : DbContext
 
     public virtual DbSet<Customer> Customers { get; set; }
 
+    public virtual DbSet<DateTable> DateTables { get; set; }
+
     public virtual DbSet<Employee> Employees { get; set; }
 
     public virtual DbSet<Genre> Genres { get; set; }
@@ -41,13 +43,15 @@ public partial class ChinookContext : DbContext
 
     public virtual DbSet<PlaylistTrackHistory> PlaylistTrackHistories { get; set; }
 
+    public virtual DbSet<TimeTable> TimeTables { get; set; }
+
     public virtual DbSet<TodoItem> TodoItems { get; set; }
 
     public virtual DbSet<Track> Tracks { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=lovanpis.com,3433;Initial Catalog=Chinook;Integrated Security=True");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=.,3433;Initial Catalog=Chinook;Integrated Security=True;Encrypt=False", x => x.UseHierarchyId());
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -110,6 +114,13 @@ public partial class ChinookContext : DbContext
             entity.HasOne(d => d.SupportRep).WithMany(p => p.Customers)
                 .HasForeignKey(d => d.SupportRepId)
                 .HasConstraintName("FK_CustomerSupportRepId");
+        });
+
+        modelBuilder.Entity<DateTable>(entity =>
+        {
+            entity.HasKey(e => e.Date);
+
+            entity.ToTable("DateTable");
         });
 
         modelBuilder.Entity<Employee>(entity =>
@@ -214,7 +225,7 @@ public partial class ChinookContext : DbContext
             entity.Property(e => e.Memo)
                 .IsRequired()
                 .HasMaxLength(120)
-                .HasDefaultValueSql("(N'')");
+                .HasDefaultValue("");
 
             entity.HasOne(d => d.Playlist).WithMany(p => p.PlaylistTracks)
                 .HasForeignKey(d => d.PlaylistId)
@@ -236,11 +247,18 @@ public partial class ChinookContext : DbContext
             entity.Property(e => e.Memo)
                 .IsRequired()
                 .HasMaxLength(120)
-                .HasDefaultValueSql("(N'')");
+                .HasDefaultValue("");
 
             entity.HasOne(d => d.PlaylistTrack).WithMany(p => p.PlaylistTrackHistories)
                 .HasForeignKey(d => new { d.PlaylistId, d.TrackId })
                 .HasConstraintName("FK_PlaylistTrackHistory_PlaylistTrack");
+        });
+
+        modelBuilder.Entity<TimeTable>(entity =>
+        {
+            entity.HasKey(e => e.Time);
+
+            entity.ToTable("TimeTable");
         });
 
         modelBuilder.Entity<TodoItem>(entity =>
@@ -250,11 +268,11 @@ public partial class ChinookContext : DbContext
             entity.Property(e => e.Description)
                 .IsRequired()
                 .HasMaxLength(1000)
-                .HasDefaultValueSql("('')");
+                .HasDefaultValue("");
             entity.Property(e => e.Title)
                 .IsRequired()
                 .HasMaxLength(50)
-                .HasDefaultValueSql("('')");
+                .HasDefaultValue("");
         });
 
         modelBuilder.Entity<Track>(entity =>
@@ -262,6 +280,10 @@ public partial class ChinookContext : DbContext
             entity.ToTable("Track");
 
             entity.HasIndex(e => e.AlbumId, "IFK_TrackAlbumId");
+
+            entity.HasIndex(e => e.GenreId, "IX_Track_GenreId");
+
+            entity.HasIndex(e => e.MediaTypeId, "IX_Track_MediaTypeId");
 
             entity.Property(e => e.BinaryCol)
                 .IsRequired()
@@ -275,32 +297,29 @@ public partial class ChinookContext : DbContext
                 .IsRequired()
                 .HasMaxLength(10)
                 .IsUnicode(false)
-                .HasDefaultValueSql("('')")
+                .HasDefaultValue("")
                 .IsFixedLength();
             entity.Property(e => e.CharColNull)
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .IsFixedLength();
-            entity.Property(e => e.DateCol)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("date");
-            entity.Property(e => e.DateColNull).HasColumnType("date");
+            entity.Property(e => e.DateCol).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.DateTimeCol)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.DateTimeColNull).HasColumnType("datetime");
             entity.Property(e => e.DecimalCol).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.DecimalColNull).HasColumnType("decimal(18, 2)");
-            entity.Property(e => e.GenreId).HasDefaultValueSql("((1))");
+            entity.Property(e => e.GenreId).HasDefaultValue(1);
             entity.Property(e => e.GuidCol).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.MediaTypeId).HasDefaultValueSql("((1))");
+            entity.Property(e => e.MediaTypeId).HasDefaultValue(1);
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(200);
             entity.Property(e => e.NcharCol)
                 .IsRequired()
                 .HasMaxLength(10)
-                .HasDefaultValueSql("('')")
+                .HasDefaultValue("")
                 .IsFixedLength();
             entity.Property(e => e.NcharColNull)
                 .HasMaxLength(10)
@@ -308,11 +327,11 @@ public partial class ChinookContext : DbContext
             entity.Property(e => e.NvarCharCol)
                 .IsRequired()
                 .HasMaxLength(50)
-                .HasDefaultValueSql("('')");
+                .HasDefaultValue("");
             entity.Property(e => e.NvarCharColNull)
                 .IsRequired()
                 .HasMaxLength(50)
-                .HasDefaultValueSql("('')");
+                .HasDefaultValue("");
             entity.Property(e => e.SmallDateTimeCol)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("smalldatetime");
@@ -333,7 +352,7 @@ public partial class ChinookContext : DbContext
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false)
-                .HasDefaultValueSql("('')");
+                .HasDefaultValue("");
             entity.Property(e => e.VarCharColNull)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -353,7 +372,6 @@ public partial class ChinookContext : DbContext
         });
 
         OnModelCreatingGeneratedProcedures(modelBuilder);
-        OnModelCreatingGeneratedFunctions(modelBuilder);
         OnModelCreatingPartial(modelBuilder);
     }
 
