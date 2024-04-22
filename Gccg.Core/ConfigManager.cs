@@ -39,11 +39,16 @@ public class ConfigManager
 
         var jsonPath = Path.Combine(RootPath, ConfigFile);
 
-        if (File.Exists(jsonPath) is false)
-            throw new FileNotFoundException($@"{ConfigFile} file does NOT exist!");
-
-        var json = File.ReadAllText(jsonPath);
-        _variables = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+        if (File.Exists(jsonPath))
+        {
+            var json = File.ReadAllText(jsonPath);
+            _variables = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+        }
+        else
+        {
+            Console.WriteLine($@"{ConfigFile} file does NOT exist. $_variables$ will not load.");
+            _variables = new();
+        }
 
         if (dbContext != null)
         {
