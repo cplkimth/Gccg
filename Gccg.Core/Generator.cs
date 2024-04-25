@@ -18,14 +18,14 @@ public static class Generator
 {
     public const string TemplatePostfix = ".jsonmp";
 
-    internal static string Generate(DbContext dbContext)
+    public static string Generate(DbContext dbContext)
     {
         var schemaExtractor = new DbContextSchemaExtractor(dbContext);
 
         return GenerateCore(schemaExtractor, dbContext);
     }
 
-    internal static string Generate(string modelFilePath)
+    public static string Generate(string modelFilePath)
     {
         var schemaExtractor = new JsonFileSchemaExtractor(modelFilePath);
 
