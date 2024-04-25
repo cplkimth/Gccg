@@ -46,6 +46,6 @@ internal class Program
         int result = context.Tracks.Where(x => x.TrackId == 4).ExecuteDelete();
         Console.WriteLine(result);
 
-        Console.WriteLine(DbContextFactory.Create().Procedures.InitializeAsync().Result);
+        // Console.WriteLine(DbContextFactory.Create().Procedures.InitializeAsync().Result);
     }
 }

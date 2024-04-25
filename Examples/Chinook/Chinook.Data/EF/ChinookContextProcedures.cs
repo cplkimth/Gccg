@@ -31,12 +31,6 @@ namespace Chinook.Data
         {
             return Procedures;
         }
-
-        protected void OnModelCreatingGeneratedProcedures(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<InitializeResult>().HasNoKey().ToView(null);
-            modelBuilder.Entity<usp_GetSystemTimeResult>().HasNoKey().ToView(null);
-        }
     }
 
     public partial class ChinookContextProcedures : IChinookContextProcedures

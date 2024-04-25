@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+	</PropertyGroup>
+	<PropertyGroup>
+		<Authors>Taehyun Kim</Authors>
+		<Product>Generic Crud Code Generator Tools</Product>
+		<PackageId>Gccg.Tools</PackageId>
+		<PackageTags>Generic Crud Code Generator Tools</PackageTags>
+		<Copyright>Copyright © Lovanpis 2024</Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Description>Tools for gccg package.</Description>
+		<PackageProjectUrl>https://github.com/cplkimth/gccg</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/cplkimth/gccg.git</RepositoryUrl>
+		<PackageIcon>Gccg.Tools.png</PackageIcon>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Version>1.0.0</Version>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<AssemblyVersion>
+		</AssemblyVersion>
+		<FileVersion>
+		</FileVersion>
+		<Title>Generic Crud Code Generator Tools</Title>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Update="Gccg.Tools.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Update="README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+</Project>

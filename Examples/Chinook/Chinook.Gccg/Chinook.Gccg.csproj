@@ -17,4 +17,8 @@
     <ProjectReference Include="..\..\..\Gccg.Core\Gccg.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Templates\" />
+  </ItemGroup>
+
 </Project>
