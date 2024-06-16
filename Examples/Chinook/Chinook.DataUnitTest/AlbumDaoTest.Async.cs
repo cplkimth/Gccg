@@ -1,221 +1,227 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+#region
+
 using Chinook.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Chinook.UnitTest
+#endregion
+
+namespace Chinook.UnitTest;
+
+[TestClass]
+public partial class AlbumDaoTest
 {
-    public partial class AlbumDaoTest
+    [TestInitialize]
+    public void Initialize()
     {
-        [TestMethod]
-        public void GetCountAsync()
+        Dao.Initialize();
+    }
+
+    [TestMethod]
+    public void GetCountAsync()
+    {
+        var count = Dao.Album.GetCountAsync().Result;
+        Assert.AreEqual(8, count);
+    }
+
+    [TestMethod]
+    public void GetByArtistIdAsync()
+    {
+        var albums = Dao.Album.GetByArtistIdAsync(2).Result;
+        Assert.AreEqual(2, albums.Count);
+    }
+
+    [TestMethod]
+    public void GetByKeyAsync()
+    {
+        var album = Dao.Album.GetByKeyAsync(3).Result;
+        Assert.AreEqual(3, album.AlbumId);
+    }
+
+    [TestMethod]
+    public void ExistsByKeyAsync()
+    {
+        var exist = Dao.Album.ExistsByKeyAsync(2).Result;
+        Assert.IsTrue(exist);
+    }
+
+    [TestMethod]
+    public void ExistsAsync()
+    {
+        var exist = Dao.Album.ExistsAsync(x => x.AlbumId == 3).Result;
+        Assert.IsTrue(exist);
+    }
+
+    [TestMethod]
+    public void DeleteByKeyAsync()
+    {
+        Dao.Album.DeleteByKey(1);
+        Assert.IsFalse(Dao.Album.ExistsByKeyAsync(1).Result);
+    }
+
+    [TestMethod]
+    public void DeleteAllAsync()
+    {
+        var count = Dao.Album.DeleteAllAsync(x => x.Title.Contains("Money")).Result;
+        Assert.AreEqual(1, count);
+        Assert.IsFalse(Dao.Album.ExistsByKey(1));
+    }
+
+    [TestMethod]
+    public void InsertAsync()
+    {
+        var oldCount = Dao.Album.GetCount();
+
+        var album = new Album();
+        album.Title = DateTime.Now.ToString();
+        album.ArtistId = 1;
+        album = Dao.Album.InsertAsync(album).Result;
+
+        var newCount = Dao.Album.GetCount();
+
+        Assert.AreEqual(oldCount + 1, newCount);
+        Assert.IsTrue(album.AlbumId != 0);
+    }
+
+    [TestMethod]
+    public void InsertManyAsync()
+    {
+        var title = DateTime.Now.ToString();
+
+        var albums = new List<Album>
         {
-            var count = Dao.Album.GetCountAsync().Result;
-            Assert.AreEqual(2, count);
-        }
+            new() { Title = title, ArtistId = 1 },
+            new() { Title = title, ArtistId = 1 }
+        };
 
-        [TestMethod]
-        public void GetByArtistIdAsync()
-        {
-            var albums = Dao.Album.GetByArtistIdAsync(1).Result;
-            Assert.AreEqual(2, albums.Count);
-        }
+        var oldCount = Dao.Album.GetCount();
+        var insertedCount = Dao.Album.InsertManyAsync(albums).Result;
+        var newCount = Dao.Album.GetCount();
 
-        [TestMethod]
-        public void GetByKeyAsync()
-        {
-            var album = Dao.Album.GetByKeyAsync(1).Result;
-            Assert.AreEqual(1, album.AlbumId);
-        }
+        Assert.AreEqual(2, insertedCount);
+        Assert.AreEqual(oldCount + 2, newCount);
+    }
 
-        [TestMethod]
-        public void ExistsByKeyAsync()
-        {
-            var exist = Dao.Album.ExistsByKeyAsync(1).Result;
-            Assert.IsTrue(exist);
-        }
+    [TestMethod]
+    public void UpdateAsync()
+    {
+        var title = DateTime.Now.ToString();
 
-        [TestMethod]
-        public void ExistsAsync()
-        {
-            var exist = Dao.Album.ExistsAsync(x => x.AlbumId == 1).Result;
-            Assert.IsTrue(exist);
-        }
+        var album = Dao.Album.GetLast(x => x.AlbumId);
+        album.Title = title;
+        Dao.Album.UpdateAsync(album).Wait();
 
-        [TestMethod]
-        public void DeleteByKeyAsync()
-        {
-            Dao.Album.DeleteByKey(1);
-            Assert.IsFalse(Dao.Album.ExistsByKeyAsync(1).Result);
-        }
+        album = Dao.Album.GetLast(x => x.AlbumId);
 
-        [TestMethod]
-        public void DeleteAllAsync()
-        {
-            int count = Dao.Album.DeleteAllAsync(x => x.Title.Contains("Those")).Result;
-            Assert.AreEqual(1, count);
-            Assert.IsFalse(Dao.Album.ExistsByKey(1));
-        }
+        Assert.AreEqual(title, album.Title);
+    }
 
-        [TestMethod]
-        public void InsertAsync()
-        {
-            var oldCount = Dao.Album.GetCount();
+    [TestMethod]
+    public void UpdateManyAsync()
+    {
+        var albums = Dao.Album.Get();
+        foreach (var album in albums)
+            album.Title = album.AlbumId.ToString();
 
-            var album = new Album();
-            album.Title = DateTime.Now.ToString();
-            album.ArtistId = 1;
-            album = Dao.Album.InsertAsync(album).Result;
+        Dao.Album.UpdateManyAsync(albums).Wait();
 
-            var newCount = Dao.Album.GetCount();
+        foreach (var album in albums)
+            Assert.AreEqual(album.AlbumId, int.Parse(album.Title));
+    }
 
-            Assert.AreEqual(oldCount + 1, newCount);
-            Assert.IsTrue(album.AlbumId != 0);
-        }
-        
-        [TestMethod]
-        public void InsertManyAsync()
-        {
-            string title = DateTime.Now.ToString();
+    [TestMethod]
+    public void GetFirstAsync()
+    {
+        var album = Dao.Album.GetFirstAsync().Result;
+        Assert.AreEqual(2, album.AlbumId);
+    }
 
-            var albums = new List<Album>
-                         {
-                             new Album {Title = title, ArtistId = 1},
-                             new Album {Title = title, ArtistId = 1},
-                         };
+    [TestMethod]
+    public void GetFirst2Async()
+    {
+        var album = Dao.Album.GetFirstAsync(x => x.Title.Contains("Money")).Result;
+        Assert.AreEqual(2, album.AlbumId);
+    }
 
-            var oldCount = Dao.Album.GetCount();
-            var insertedCount = Dao.Album.InsertManyAsync(albums).Result;
-            var newCount = Dao.Album.GetCount();
+    [TestMethod]
+    public void GetFirst3Async()
+    {
+        var album = Dao.Album.GetFirstAsync(x => x.Title).Result;
+        Assert.AreEqual(8, album.AlbumId);
+    }
 
-            Assert.AreEqual(2, insertedCount);
-            Assert.AreEqual(oldCount + 2, newCount);
-        }
+    [TestMethod]
+    public void GetFirst4Async()
+    {
+        var album = Dao.Album.GetFirstAsync(x => x.Title.Contains("Money"), x => x.Title).Result;
+        Assert.AreEqual(2, album.AlbumId);
+    }
 
-        [TestMethod]
-        public void UpdateAsync()
-        {
-            var title = DateTime.Now.ToString();
+    [TestMethod]
+    public void GetLastAsync()
+    {
+        var album = Dao.Album.GetLastAsync(x => x.AlbumId).Result;
+        Assert.AreEqual(9, album.AlbumId);
+    }
 
-            var album = Dao.Album.GetLast(x => x.AlbumId);
-            album.Title = title;
-            Dao.Album.UpdateAsync(album).Wait();
+    [TestMethod]
+    public void GetLast2Async()
+    {
+        var album = Dao.Album.GetLastAsync(x => x.Title.Contains("Yellow Submarine")).Result;
+        Assert.AreEqual(9, album.AlbumId);
+    }
 
-            album = Dao.Album.GetLast(x => x.AlbumId);
+    [TestMethod]
+    public void GetLast3Async()
+    {
+        var album = Dao.Album.GetLastAsync(x => x.Title.Contains("Help!"), x => x.AlbumId).Result;
+        Assert.AreEqual(8, album.AlbumId);
+    }
 
-            Assert.AreEqual(title, album.Title);
-        }
+    [TestMethod]
+    public void SelectFirstAsync()
+    {
+        var title = Dao.Album.SelectFirstAsync(x => x.Title).Result;
+        Assert.AreEqual("Money", title);
+    }
 
-        [TestMethod]
-        public void UpdateManyAsync()
-        {
-            var albums = Dao.Album.Get();
-            foreach (var album in albums)
-                album.Title = album.AlbumId.ToString();
+    [TestMethod]
+    public void SelectFirst2Async()
+    {
+        var title = Dao.Album.SelectFirstAsync(x => x.Title.Contains("The Wall"), x => x.Title).Result;
+        Assert.AreEqual("The Wall", title);
+    }
 
-            Dao.Album.UpdateManyAsync(albums).Wait();
+    [TestMethod]
+    public void SelectFirst3Async()
+    {
+        var title = Dao.Album.SelectFirstAsync(x => x.AlbumId, x => x.Title).Result;
+        Assert.AreEqual("Money", title);
+    }
 
-            foreach (var album in albums)
-                Assert.AreEqual(album.AlbumId, int.Parse(album.Title));
-        }
+    [TestMethod]
+    public void SelectFirst4Async()
+    {
+        var title = Dao.Album.SelectFirstAsync(x => x.Title.Contains("Money"), x => x.AlbumId, x => x.Title).Result;
+        Assert.AreEqual("Money", title);
+    }
 
-        [TestMethod]
-        public void GetFirstAsync()
-        {
-            var album = Dao.Album.GetFirstAsync().Result;
-            Assert.AreEqual(1, album.AlbumId);
-        }
+    [TestMethod]
+    public void SelectLastAsync()
+    {
+        var title = Dao.Album.SelectLastAsync(x => x.AlbumId, x => x.Title).Result;
+        Assert.AreEqual("Yellow Submarine", title);
+    }
 
-        [TestMethod]
-        public void GetFirst2Async()
-        {
-            var album = Dao.Album.GetFirstAsync(x => x.Title.Contains("Rock")).Result;
-            Assert.AreEqual(1, album.AlbumId);
-        }
+    [TestMethod]
+    public void SelectLast2Async()
+    {
+        var title = Dao.Album.SelectLastAsync(x => x.Title.Contains("Money"), x => x.Title).Result;
+        Assert.AreEqual("Money", title);
+    }
 
-        [TestMethod]
-        public void GetFirst3Async()
-        {
-            var album = Dao.Album.GetFirstAsync(x => x.Title).Result;
-            Assert.AreEqual(1, album.AlbumId);
-        }
-
-        [TestMethod]
-        public void GetFirst4Async()
-        {
-            var album = Dao.Album.GetFirstAsync(x => x.Title.Contains("Rock"), x => x.Title).Result;
-            Assert.AreEqual(1, album.AlbumId);
-        }
-
-        [TestMethod]
-        public void GetLastAsync()
-        {
-            var album = Dao.Album.GetLastAsync(x => x.AlbumId).Result;
-            Assert.AreEqual(2, album.AlbumId);
-        }
-
-        [TestMethod]
-        public void GetLast2Async()
-        {
-            var album = Dao.Album.GetLastAsync(x => x.Title.Contains("Rock")).Result;
-            Assert.AreEqual(2, album.AlbumId);
-        }
-
-        [TestMethod]
-        public void GetLast3Async()
-        {
-            var album = Dao.Album.GetLastAsync(x => x.Title.Contains("Rock"), x => x.AlbumId).Result;
-            Assert.AreEqual(2, album.AlbumId);
-        }
-
-        [TestMethod]
-        public void SelectFirstAsync()
-        {
-            var title = Dao.Album.SelectFirstAsync(x => x.Title).Result;
-            Assert.AreEqual("For Those About To Rock We Salute You", title);
-        }
-
-        [TestMethod]
-        public void SelectFirst2Async()
-        {
-            var title = Dao.Album.SelectFirstAsync(x => x.Title.Contains("Rock"), x => x.Title).Result;
-            Assert.AreEqual("For Those About To Rock We Salute You", title);
-        }
-
-        [TestMethod]
-        public void SelectFirst3Async()
-        {
-            var title = Dao.Album.SelectFirstAsync(x => x.AlbumId, x => x.Title).Result;
-            Assert.AreEqual("For Those About To Rock We Salute You", title);
-        }
-
-        [TestMethod]
-        public void SelectFirst4Async()
-        {
-            var title = Dao.Album.SelectFirstAsync(x => x.Title.Contains("Rock"), x => x.AlbumId, x => x.Title).Result;
-            Assert.AreEqual("For Those About To Rock We Salute You", title);
-        }
-
-        [TestMethod]
-        public void SelectLastAsync()
-        {
-            var title = Dao.Album.SelectLastAsync(x => x.AlbumId, x => x.Title).Result;
-            Assert.AreEqual("Let There Be Rock", title);
-        }
-
-        [TestMethod]
-        public void SelectLast2Async()
-        {
-            var title = Dao.Album.SelectLastAsync(x => x.Title.Contains("Rock"), x => x.Title).Result;
-            Assert.AreEqual("Let There Be Rock", title);
-        }
-
-        [TestMethod]
-        public void SelectLast3Async()
-        {
-            var title = Dao.Album.SelectLastAsync(x => x.Title.Contains("Rock"), x => x.AlbumId, x => x.Title).Result;
-            Assert.AreEqual("Let There Be Rock", title);
-        }
+    [TestMethod]
+    public void SelectLast3Async()
+    {
+        var title = Dao.Album.SelectLastAsync(x => x.Title.Contains("Money"), x => x.AlbumId, x => x.Title).Result;
+        Assert.AreEqual("Money", title);
     }
 }

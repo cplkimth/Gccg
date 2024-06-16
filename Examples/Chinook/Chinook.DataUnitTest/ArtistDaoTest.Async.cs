@@ -1,55 +1,61 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+#region
+
 using Chinook.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Chinook.UnitTest
+#endregion
+
+namespace Chinook.UnitTest;
+
+[TestClass]
+public class ArtistDaoTest
 {
-    public partial class ArtistDaoTest
+    [TestInitialize]
+    public void Initialize()
     {
-        [TestMethod]
-        public void InsertOrUpdateAsync()
-        {
-            string artistName = DateTime.Now.ToString();
+        Dao.Initialize();
+    }
 
-            var artist = Dao.Artist.GetByKey(1);
-            artist.Name = artistName;
-            Dao.Artist.InsertOrUpdateAsync(artist).Wait();
-            
-            artist = Dao.Artist.GetByKey(1);
-            Assert.AreEqual(artistName, artist.Name);
-        }
+    [TestMethod]
+    public void InsertOrUpdateAsync()
+    {
+        var artistName = DateTime.Now.ToString();
 
-        [TestMethod]
-        public void InsertOrUpdate2Async()
-        {
-            string artistName = DateTime.Now.ToString();
+        var artist = Dao.Artist.GetByKey(1);
+        artist.Name = artistName;
+        Dao.Artist.InsertOrUpdateAsync(artist).Wait();
 
-            var artist = Dao.Artist.Create();
-            artist.Name = artistName;
-            Dao.Artist.InsertOrUpdateAsync(artist).Wait();
-            
-            Assert.AreEqual(2, Dao.Artist.GetCount());
-        }
+        artist = Dao.Artist.GetByKey(1);
+        Assert.AreEqual(artistName, artist.Name);
+    }
 
-        [TestMethod]
-        public void InsertIfNotExistAsync()
-        {
-            var artist = Dao.Artist.Create();
-            artist.Name = DateTime.Now.ToString();
-            Dao.Artist.InsertIfNotExistAsync(artist).Wait();
-            
-            Assert.AreEqual(2, Dao.Artist.GetCount());
-        }
+    [TestMethod]
+    public void InsertOrUpdate2Async()
+    {
+        var artistName = DateTime.Now.ToString();
 
-        [TestMethod]
-        public void InsertIfNotExist2Async()
-        {
-            var artist = Dao.Artist.GetByKey(1);
-            Dao.Artist.InsertIfNotExistAsync(artist).Wait();
-            
-            Assert.AreEqual(1, Dao.Artist.GetCount());
-        }
+        var artist = Dao.Artist.Create();
+        artist.Name = artistName;
+        Dao.Artist.InsertOrUpdateAsync(artist).Wait();
+
+        Assert.AreEqual(7, Dao.Artist.GetCount());
+    }
+
+    [TestMethod]
+    public void InsertIfNotExistAsync()
+    {
+        var artist = Dao.Artist.Create();
+        artist.Name = DateTime.Now.ToString();
+        Dao.Artist.InsertIfNotExistAsync(artist).Wait();
+
+        Assert.AreEqual(7, Dao.Artist.GetCount());
+    }
+
+    [TestMethod]
+    public void InsertIfNotExist2Async()
+    {
+        var artist = Dao.Artist.GetByKey(1);
+        Dao.Artist.InsertIfNotExistAsync(artist).Wait();
+
+        Assert.AreEqual(6, Dao.Artist.GetCount());
     }
 }

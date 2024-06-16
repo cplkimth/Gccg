@@ -13,12 +13,6 @@ namespace Chinook.Data.Configurations
         {
             entity.ToTable("Track");
 
-            entity.HasIndex(e => e.AlbumId, "IFK_TrackAlbumId");
-
-            entity.HasIndex(e => e.GenreId, "IX_Track_GenreId");
-
-            entity.HasIndex(e => e.MediaTypeId, "IX_Track_MediaTypeId");
-
             entity.Property(e => e.BinaryCol)
                 .IsRequired()
                 .HasMaxLength(50)
@@ -73,8 +67,7 @@ namespace Chinook.Data.Configurations
             entity.Property(e => e.SmallMoneyCol).HasColumnType("smallmoney");
             entity.Property(e => e.SmallMoneyColNull).HasColumnType("smallmoney");
             entity.Property(e => e.TimeCol).HasDefaultValueSql("(getdate())");
-            entity.Property(e => e.TimeStampCol)
-                .IsRequired()
+            entity.Property(e => e.TimestampCol)
                 .IsRowVersion()
                 .IsConcurrencyToken();
             entity.Property(e => e.VarBinaryCol)

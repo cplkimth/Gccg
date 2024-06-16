@@ -13,16 +13,12 @@ namespace Chinook.Data.Configurations
         {
             entity.ToTable("Album");
 
-            entity.HasIndex(e => e.ArtistId, "IFK_AlbumArtistId");
-
             entity.Property(e => e.Title)
                 .IsRequired()
-                .HasMaxLength(160);
+                .HasMaxLength(160)
+                .HasDefaultValue("");
 
-            entity.HasOne(d => d.Artist).WithMany(p => p.Albums)
-                .HasForeignKey(d => d.ArtistId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_AlbumArtistId");
+            entity.HasOne(d => d.Artist).WithMany(p => p.Albums).HasForeignKey(d => d.ArtistId);
 
             OnConfigurePartial(entity);
         }
