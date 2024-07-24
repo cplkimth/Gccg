@@ -7,24 +7,27 @@ using System.Collections.Generic;
 
 namespace Chinook.Data.Configurations
 {
-    public partial class TodoItemConfiguration : IEntityTypeConfiguration<TodoItem>
+    public partial class CodeConfiguration : IEntityTypeConfiguration<Code>
     {
-        public void Configure(EntityTypeBuilder<TodoItem> entity)
+        public void Configure(EntityTypeBuilder<Code> entity)
         {
-            entity.ToTable("TodoItem");
+            entity.ToTable("Code");
 
-            entity.Property(e => e.Description)
+            entity.Property(e => e.CodeId).ValueGeneratedNever();
+            entity.Property(e => e.Memo)
                 .IsRequired()
                 .HasMaxLength(1000)
                 .HasDefaultValue("");
-            entity.Property(e => e.Title)
+            entity.Property(e => e.Text)
                 .IsRequired()
                 .HasMaxLength(50)
                 .HasDefaultValue("");
 
+            entity.HasOne(d => d.CodeCategory).WithMany(p => p.Codes).HasForeignKey(d => d.CodeCategoryId);
+
             OnConfigurePartial(entity);
         }
 
-        partial void OnConfigurePartial(EntityTypeBuilder<TodoItem> entity);
+        partial void OnConfigurePartial(EntityTypeBuilder<Code> entity);
     }
 }

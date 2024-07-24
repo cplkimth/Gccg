@@ -13,29 +13,58 @@ namespace Chinook.Data.Configurations
         {
             entity.ToTable("Employee");
 
-            entity.HasIndex(e => e.ReportsTo, "IFK_EmployeeReportsTo");
-
-            entity.Property(e => e.Address).HasMaxLength(70);
-            entity.Property(e => e.BirthDate).HasColumnType("datetime");
-            entity.Property(e => e.City).HasMaxLength(40);
-            entity.Property(e => e.Country).HasMaxLength(40);
-            entity.Property(e => e.Email).HasMaxLength(60);
-            entity.Property(e => e.Fax).HasMaxLength(24);
+            entity.Property(e => e.Address)
+                .IsRequired()
+                .HasMaxLength(70)
+                .HasDefaultValue("");
+            entity.Property(e => e.BirthDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.City)
+                .IsRequired()
+                .HasMaxLength(40)
+                .HasDefaultValue("");
+            entity.Property(e => e.Country)
+                .IsRequired()
+                .HasMaxLength(40)
+                .HasDefaultValue("");
+            entity.Property(e => e.Email)
+                .IsRequired()
+                .HasMaxLength(60)
+                .HasDefaultValue("");
+            entity.Property(e => e.Fax)
+                .IsRequired()
+                .HasMaxLength(24)
+                .HasDefaultValue("");
             entity.Property(e => e.FirstName)
                 .IsRequired()
-                .HasMaxLength(20);
-            entity.Property(e => e.HireDate).HasColumnType("datetime");
+                .HasMaxLength(20)
+                .HasDefaultValue("");
+            entity.Property(e => e.HireDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
             entity.Property(e => e.LastName)
                 .IsRequired()
-                .HasMaxLength(20);
-            entity.Property(e => e.Phone).HasMaxLength(24);
-            entity.Property(e => e.PostalCode).HasMaxLength(10);
-            entity.Property(e => e.State).HasMaxLength(40);
-            entity.Property(e => e.Title).HasMaxLength(30);
+                .HasMaxLength(20)
+                .HasDefaultValue("");
+            entity.Property(e => e.Phone)
+                .IsRequired()
+                .HasMaxLength(24)
+                .HasDefaultValue("");
+            entity.Property(e => e.PostalCode)
+                .IsRequired()
+                .HasMaxLength(10)
+                .HasDefaultValue("");
+            entity.Property(e => e.State)
+                .IsRequired()
+                .HasMaxLength(40)
+                .HasDefaultValue("");
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(30)
+                .HasDefaultValue("");
 
-            entity.HasOne(d => d.ReportsToNavigation).WithMany(p => p.InverseReportsToNavigation)
-                .HasForeignKey(d => d.ReportsTo)
-                .HasConstraintName("FK_EmployeeReportsTo");
+            entity.HasOne(d => d.ReportsToNavigation).WithMany(p => p.InverseReportsToNavigation).HasForeignKey(d => d.ReportsTo);
 
             OnConfigurePartial(entity);
         }

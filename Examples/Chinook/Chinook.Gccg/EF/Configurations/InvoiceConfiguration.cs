@@ -13,20 +13,32 @@ namespace Chinook.Data.Configurations
         {
             entity.ToTable("Invoice");
 
-            entity.HasIndex(e => e.CustomerId, "IFK_InvoiceCustomerId");
-
-            entity.Property(e => e.BillingAddress).HasMaxLength(70);
-            entity.Property(e => e.BillingCity).HasMaxLength(40);
-            entity.Property(e => e.BillingCountry).HasMaxLength(40);
-            entity.Property(e => e.BillingPostalCode).HasMaxLength(10);
-            entity.Property(e => e.BillingState).HasMaxLength(40);
-            entity.Property(e => e.InvoiceDate).HasColumnType("datetime");
+            entity.Property(e => e.BillingAddress)
+                .IsRequired()
+                .HasMaxLength(70)
+                .HasDefaultValue("");
+            entity.Property(e => e.BillingCity)
+                .IsRequired()
+                .HasMaxLength(40)
+                .HasDefaultValue("");
+            entity.Property(e => e.BillingCountry)
+                .IsRequired()
+                .HasMaxLength(40)
+                .HasDefaultValue("");
+            entity.Property(e => e.BillingPostalCode)
+                .IsRequired()
+                .HasMaxLength(10)
+                .HasDefaultValue("");
+            entity.Property(e => e.BillingState)
+                .IsRequired()
+                .HasMaxLength(40)
+                .HasDefaultValue("");
+            entity.Property(e => e.InvoiceDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
             entity.Property(e => e.Total).HasColumnType("numeric(10, 2)");
 
-            entity.HasOne(d => d.Customer).WithMany(p => p.Invoices)
-                .HasForeignKey(d => d.CustomerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InvoiceCustomerId");
+            entity.HasOne(d => d.Customer).WithMany(p => p.Invoices).HasForeignKey(d => d.CustomerId);
 
             OnConfigurePartial(entity);
         }

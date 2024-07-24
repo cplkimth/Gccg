@@ -11,11 +11,7 @@ public partial class PlaylistTrack
 
     public int TrackId { get; set; }
 
-    public string Memo { get; set; }
-
     public virtual Playlist Playlist { get; set; }
 
     public virtual ICollection<PlaylistTrackHistory> PlaylistTrackHistories { get; set; } = new List<PlaylistTrackHistory>();
-
-    public virtual Track Track { get; set; }
 }

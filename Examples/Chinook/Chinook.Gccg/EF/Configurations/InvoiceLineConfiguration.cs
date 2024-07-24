@@ -13,21 +13,9 @@ namespace Chinook.Data.Configurations
         {
             entity.ToTable("InvoiceLine");
 
-            entity.HasIndex(e => e.InvoiceId, "IFK_InvoiceLineInvoiceId");
-
-            entity.HasIndex(e => e.TrackId, "IFK_InvoiceLineTrackId");
-
             entity.Property(e => e.UnitPrice).HasColumnType("numeric(10, 2)");
 
-            entity.HasOne(d => d.Invoice).WithMany(p => p.InvoiceLines)
-                .HasForeignKey(d => d.InvoiceId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InvoiceLineInvoiceId");
-
-            entity.HasOne(d => d.Track).WithMany(p => p.InvoiceLines)
-                .HasForeignKey(d => d.TrackId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InvoiceLineTrackId");
+            entity.HasOne(d => d.Invoice).WithMany(p => p.InvoiceLines).HasForeignKey(d => d.InvoiceId);
 
             OnConfigurePartial(entity);
         }

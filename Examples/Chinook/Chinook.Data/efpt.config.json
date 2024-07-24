@@ -23,7 +23,11 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Company]",
+         "Name": "[dbo].[Code]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CodeCategory]",
          "ObjectType": 0
       },
       {
@@ -71,15 +75,15 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[TodoItem]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[Track]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Initialize]",
+         "Name": "[dbo].[BuildTables]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[LoadData]",
          "ObjectType": 1
       },
       {
@@ -93,6 +97,7 @@
    ],
    "UiHint": null,
    "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
    "UseBoolPropertiesWithoutDefaultSql": true,
    "UseDatabaseNames": false,
    "UseDateOnlyTimeOnly": true,

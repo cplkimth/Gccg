@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Chinook.Data
 {
-    public partial class InitializeResult
+    public partial class BuildTablesResult
     {
     }
 }

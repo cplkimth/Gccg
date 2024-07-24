@@ -10,27 +10,26 @@ public class PlaylistTrackDaoTest
     [TestInitialize]
     public void Initialize()
     {
-        var procedures = new ChinookContextProcedures(DbContextFactory.Create());
-        procedures.InitializeAsync().Wait();
+        Dao.Initialize();
     }
 
     [TestMethod]
-    public void Insert()
+    public void InsertAsync()
     {
         var entity = new PlaylistTrack();
-        entity.PlaylistId = 2;
-        entity.TrackId = 2;
+        entity.PlaylistId = 1;
+        entity.TrackId = 70;
 
-        Dao.PlaylistTrack.Insert(entity);
+        Dao.PlaylistTrack.InsertAsync(entity).Wait();
 
-        Assert.AreEqual(4, Dao.PlaylistTrack.GetCount());
+        Assert.AreEqual(7, Dao.PlaylistTrack.GetCountAsync().Result);
     }
 
     [TestMethod]
     public void Delete()
     {
-        Dao.PlaylistTrack.DeleteByKey(2, 1);
+        Dao.PlaylistTrack.DeleteByKeyAsync(2, 2).Wait();
 
-        Assert.AreEqual(2, Dao.PlaylistTrack.GetCount());
+        Assert.AreEqual(5, Dao.PlaylistTrack.GetCountAsync().Result);
     }
 }
