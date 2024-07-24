@@ -1,4 +1,3 @@
-
 #region using
 using System;
 using System.Linq;
@@ -10,6 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Chinook.Data;
 
+[MetadataType(typeof(AlbumMetaData))]
 public partial class Album
 {
     [NotMapped]

@@ -10,15 +10,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Chinook.Data;
 
-
-#region GenreMetadata
-public class GenreMetaData
-{
-    public int GenreId {get; set;} 
-		public string Name {get; set;} 
-}
-#endregion
-
 [MetadataType(typeof(GenreMetaData))]
 public partial class Genre
 {

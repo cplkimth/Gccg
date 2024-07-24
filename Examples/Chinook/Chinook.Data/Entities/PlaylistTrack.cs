@@ -14,13 +14,4 @@ namespace Chinook.Data
     public partial class PlaylistTrack
     {
     }
-
-    #region PlaylistTrackMetadata
-    public class PlaylistTrackMetaData
-    {
-        public int PlaylistId {get; set;}
-		public int TrackId {get; set;}
-		public bool? Dummy {get; set;}
-    }
-    #endregion
 }
