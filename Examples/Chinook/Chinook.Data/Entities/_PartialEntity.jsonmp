@@ -18,13 +18,6 @@ using System.ComponentModel.DataAnnotations;
 namespace `DataProjectNamespace`;
 
 `T
-#region `Name`Metadata
-public class `Name`MetaData
-{
-    `A:[N][T][T]:public `Type` `Name` {get; set;} ``
-}
-#endregion
-
 [MetadataType(typeof(`Name`MetaData))]
 public partial class `Name`
 {

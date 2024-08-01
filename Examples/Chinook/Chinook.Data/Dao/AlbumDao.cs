@@ -1,7 +1,5 @@
-
 #region using
-using System.Collections.Generic;
-using System.Linq;
+
 #endregion
 
 namespace Chinook.Data;
@@ -22,9 +20,9 @@ public partial class AlbumDao
             query = query.Where(x => x.Tracks.Any(t => t.Name.Contains(trackName)));
 
         var list = query
-            .Select(x => new {Album = x, ArtistName = x.Artist.Name, TrackCount = x.Tracks.Count})
+            .Select(x => new { Album = x, ArtistName = x.Artist.Name, TrackCount = x.Tracks.Count })
             .ToList();
-            
+
         foreach (var x in list)
         {
             x.Album.ArtistName = x.ArtistName;

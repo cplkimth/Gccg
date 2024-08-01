@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Gccg.Tools\Gccg.Tools.csproj" />
+    <ProjectReference Include="..\..\Gccg\Gccg.Tools\Gccg.Tools.csproj" />
     <ProjectReference Include="..\Chinook.Data\Chinook.Data.csproj" />
   </ItemGroup>
 

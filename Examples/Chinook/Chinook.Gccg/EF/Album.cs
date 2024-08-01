@@ -13,6 +13,11 @@ public partial class Album
 
     public int ArtistId { get; set; }
 
+    /// <summary>
+    /// [2]
+    /// </summary>
+    public int TypeCode { get; set; }
+
     public virtual Artist Artist { get; set; }
 
     public virtual ICollection<Track> Tracks { get; set; } = new List<Track>();

@@ -18,6 +18,4 @@ public partial class InvoiceLine
     public int Quantity { get; set; }
 
     public virtual Invoice Invoice { get; set; }
-
-    public virtual Track Track { get; set; }
 }

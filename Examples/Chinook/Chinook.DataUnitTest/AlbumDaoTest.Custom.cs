@@ -12,9 +12,9 @@ namespace Chinook.UnitTest
         [TestMethod]
         public void SearchWithArtistName()
         {
-            var albums = Dao.Album.Search("AC/DC", null);
+            var albums = Dao.Album.Search("Beatles", null);
 
-            Assert.AreEqual(2, albums.Count);
+            Assert.AreEqual(6, albums.Count);
         }
 
         [TestMethod]
@@ -28,9 +28,9 @@ namespace Chinook.UnitTest
         [TestMethod]
         public void SearchWithArtistNameAndTrackName()
         {
-            var albums = Dao.Album.Search("AC/DC", "You");
+            var albums = Dao.Album.Search("Beatles", "You");
 
-            Assert.AreEqual(1, albums.Count);
+            Assert.AreEqual(0, albums.Count);
         }
         #endregion
 

@@ -14,13 +14,4 @@ namespace Chinook.Data
     public partial class Artist
     {
     }
-
-    #region ArtistMetadata
-    public class ArtistMetaData
-    {
-        public int ArtistId {get; set;}
-		public int? CompanyId {get; set;}
-		public string Name {get; set;}
-    }
-    #endregion
 }

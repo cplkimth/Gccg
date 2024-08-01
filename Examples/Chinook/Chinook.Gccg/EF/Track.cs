@@ -77,8 +77,6 @@ public partial class Track
 
     public decimal? SmallMoneyColNull { get; set; }
 
-    public byte[] TimeStampCol { get; set; }
-
     public TimeOnly TimeCol { get; set; }
 
     public TimeOnly? TimeColNull { get; set; }
@@ -107,9 +105,5 @@ public partial class Track
 
     public virtual Genre Genre { get; set; }
 
-    public virtual ICollection<InvoiceLine> InvoiceLines { get; set; } = new List<InvoiceLine>();
-
     public virtual MediaType MediaType { get; set; }
-
-    public virtual ICollection<PlaylistTrack> PlaylistTracks { get; set; } = new List<PlaylistTrack>();
 }

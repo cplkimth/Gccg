@@ -11,25 +11,11 @@ namespace Chinook.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<PlaylistTrack> entity)
         {
-            entity.HasKey(e => new { e.PlaylistId, e.TrackId }).IsClustered(false);
+            entity.HasKey(e => new { e.PlaylistId, e.TrackId });
 
             entity.ToTable("PlaylistTrack");
 
-            entity.HasIndex(e => e.TrackId, "IFK_PlaylistTrackTrackId");
-
-            entity.Property(e => e.Memo)
-                .IsRequired()
-                .HasMaxLength(120)
-                .HasDefaultValue("");
-
-            entity.HasOne(d => d.Playlist).WithMany(p => p.PlaylistTracks)
-                .HasForeignKey(d => d.PlaylistId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PlaylistTrackPlaylistId");
-
-            entity.HasOne(d => d.Track).WithMany(p => p.PlaylistTracks)
-                .HasForeignKey(d => d.TrackId)
-                .HasConstraintName("FK_PlaylistTrackTrackId");
+            entity.HasOne(d => d.Playlist).WithMany(p => p.PlaylistTracks).HasForeignKey(d => d.PlaylistId);
 
             OnConfigurePartial(entity);
         }

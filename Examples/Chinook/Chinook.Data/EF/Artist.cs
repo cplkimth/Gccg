@@ -11,5 +11,10 @@ public partial class Artist
 
     public string Name { get; set; }
 
+    /// <summary>
+    /// [1]
+    /// </summary>
+    public int TypeCode { get; set; }
+
     public virtual ICollection<Album> Albums { get; set; } = new List<Album>();
 }

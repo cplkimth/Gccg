@@ -23,15 +23,15 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Company]",
+         "Name": "[dbo].[Code]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CodeCategory]",
          "ObjectType": 0
       },
       {
          "Name": "[dbo].[Customer]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[DateTable]",
          "ObjectType": 0
       },
       {
@@ -67,20 +67,8 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[TimeTable]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[TodoItem]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[Track]",
          "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Initialize]",
-         "ObjectType": 1
       },
       {
          "Name": "[dbo].[usp_GetMaxId]",
@@ -89,10 +77,15 @@
       {
          "Name": "[dbo].[usp_GetSystemTime]",
          "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[usp_Initialize]",
+         "ObjectType": 1
       }
    ],
    "UiHint": null,
    "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
    "UseBoolPropertiesWithoutDefaultSql": true,
    "UseDatabaseNames": false,
    "UseDateOnlyTimeOnly": true,

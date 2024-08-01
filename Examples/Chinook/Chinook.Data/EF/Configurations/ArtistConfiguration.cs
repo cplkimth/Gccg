@@ -13,7 +13,11 @@ namespace Chinook.Data.Configurations
         {
             entity.ToTable("Artist");
 
-            entity.Property(e => e.Name).HasMaxLength(120);
+            entity.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(120)
+                .HasDefaultValue("");
+            entity.Property(e => e.TypeCode).HasComment("[1]");
 
             OnConfigurePartial(entity);
         }

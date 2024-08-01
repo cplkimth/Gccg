@@ -253,12 +253,6 @@
             </EditTemplate>
         </RadzenDataGridColumn>
         
-        <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.TimeStampCol)" Title="TimeStampCol">
-            <EditTemplate Context="entity">
-                <RadzenTextBox @bind-Value="entity.TimeStampCol" Style="width:100%; display: block" Name="@nameof(Track.TimeStampCol)" />
-            </EditTemplate>
-        </RadzenDataGridColumn>
-        
         <RadzenDataGridColumn TItem="Track" Property="@nameof(Track.TinyIntCol)" Title="TinyIntCol">
             <EditTemplate Context="entity">
                 <RadzenTextBox @bind-Value="entity.TinyIntCol" Style="width:100%; display: block" Name="@nameof(Track.TinyIntCol)" />

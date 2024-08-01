@@ -7,19 +7,21 @@ using System.Collections.Generic;
 
 namespace Chinook.Data.Configurations
 {
-    public partial class CompanyConfiguration : IEntityTypeConfiguration<Company>
+    public partial class CodeCategoryConfiguration : IEntityTypeConfiguration<CodeCategory>
     {
-        public void Configure(EntityTypeBuilder<Company> entity)
+        public void Configure(EntityTypeBuilder<CodeCategory> entity)
         {
-            entity.ToTable("Company");
+            entity.ToTable("CodeCategory");
 
+            entity.Property(e => e.CodeCategoryId).ValueGeneratedNever();
             entity.Property(e => e.Name)
                 .IsRequired()
-                .HasMaxLength(120);
+                .HasMaxLength(50)
+                .HasDefaultValue("");
 
             OnConfigurePartial(entity);
         }
 
-        partial void OnConfigurePartial(EntityTypeBuilder<Company> entity);
+        partial void OnConfigurePartial(EntityTypeBuilder<CodeCategory> entity);
     }
 }

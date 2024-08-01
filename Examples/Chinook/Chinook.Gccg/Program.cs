@@ -10,7 +10,7 @@ namespace Chinook.Gccg;
 internal static class Program
 {
     private const string SolutionName = "Chinook";
-    private const string Root = @$"D:\git\Gccg\Examples\{SolutionName}";
+    private const string Root = @$"D:\git\{SolutionName}";
 
     private const string DataEF = $@"{Root}\{SolutionName}.Data\EF";
     private const string GccgEF = $@"{Root}\{SolutionName}.Gccg\EF";

@@ -15,12 +15,6 @@
         <RadzenDataGridColumn TItem="PlaylistTrack" Property="@nameof(PlaylistTrack.TrackId)" Title="TrackId" />
         
         
-        <RadzenDataGridColumn TItem="PlaylistTrack" Property="@nameof(PlaylistTrack.Memo)" Title="Memo">
-            <EditTemplate Context="entity">
-                <RadzenTextBox @bind-Value="entity.Memo" Style="width:100%; display: block" Name="@nameof(PlaylistTrack.Memo)" />
-            </EditTemplate>
-        </RadzenDataGridColumn>
-        
         <RadzenDataGridColumn TItem="PlaylistTrack" Context="entity" Filterable="false" Sortable="false" TextAlign="TextAlign.Right">
             <Template Context="entity">
                 <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(_ => _grid.EditRow(entity))" @onclick:stopPropagation="true">

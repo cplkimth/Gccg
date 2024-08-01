@@ -11,7 +11,7 @@ public partial class ArtistDaoTest
     public void Initialize()
     {
         var procedures = new ChinookContextProcedures(DbContextFactory.Create());
-        procedures.InitializeAsync().Wait();
+        procedures.usp_InitializeAsync().Wait();
     }
 
     [TestMethod]
@@ -36,7 +36,7 @@ public partial class ArtistDaoTest
         artist.Name = artistName;
         Dao.Artist.InsertOrUpdate(artist);
 
-        Assert.AreEqual(2, Dao.Artist.GetCount());
+        Assert.AreEqual(7, Dao.Artist.GetCount());
     }
 
     [TestMethod]
@@ -46,7 +46,7 @@ public partial class ArtistDaoTest
         artist.Name = DateTime.Now.ToString();
         Dao.Artist.InsertIfNotExist(artist);
 
-        Assert.AreEqual(2, Dao.Artist.GetCount());
+        Assert.AreEqual(7, Dao.Artist.GetCount());
     }
 
     [TestMethod]
@@ -55,6 +55,6 @@ public partial class ArtistDaoTest
         var artist = Dao.Artist.GetByKey(1);
         Dao.Artist.InsertIfNotExist(artist);
 
-        Assert.AreEqual(1, Dao.Artist.GetCount());
+        Assert.AreEqual(6, Dao.Artist.GetCount());
     }
 }

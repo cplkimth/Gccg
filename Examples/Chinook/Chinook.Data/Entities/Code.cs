@@ -11,17 +11,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Chinook.Data;
 
-
-#region CodeMetadata
-public class CodeMetaData
-{
-    public int CodeId {get; set;} 
-		public int CodeCategoryId {get; set;} 
-		public string Memo {get; set;} 
-		public string Text {get; set;} 
-}
-#endregion
-
 [MetadataType(typeof(CodeMetaData))]
 public partial class Code
 {

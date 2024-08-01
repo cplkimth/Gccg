@@ -1,21 +1,22 @@
-
 #region
-using System;
+
 using Microsoft.EntityFrameworkCore;
+
 #endregion
 
 namespace Chinook.Data;
 
 public partial class DbContextFactory
 {
-    public static string ConnectionString => "Data Source=lovanpis.com,3433;Initial Catalog=Chinook;Integrated Security=True;Trust Server Certificate=true";
+    public static string ConnectionString =>
+        "Data Source=lovanpis.com,3433;Initial Catalog=Chinook;uid=Chinook;password=1;Trust Server Certificate=true";
 
     public static ChinookContext Create()
     {
-        DbContextOptionsBuilder<ChinookContext> builder = new DbContextOptionsBuilder<ChinookContext>();
+        var builder = new DbContextOptionsBuilder<ChinookContext>();
 
         OnConfigure(builder);
-            
+
         // 콘솔에 로그 출력
         builder.UseLoggerFactory(ChinookContextLoggerFactory.GetInstance(LogPath.Console, LogPath.Debug));
 
@@ -29,4 +30,3 @@ public partial class DbContextFactory
 
     static partial void OnConfigure(DbContextOptionsBuilder<ChinookContext> builder);
 }
-

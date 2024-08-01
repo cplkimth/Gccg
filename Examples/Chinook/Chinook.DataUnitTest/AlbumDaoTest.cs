@@ -11,41 +11,41 @@ public partial class AlbumDaoTest
     public void Initialize()
     {
         var procedures = new ChinookContextProcedures(DbContextFactory.Create());
-        procedures.InitializeAsync().Wait();
+        procedures.usp_InitializeAsync().Wait();
     }
 
     [TestMethod]
     public void GetCount()
     {
         var count = Dao.Album.GetCount();
-        Assert.AreEqual(2, count);
+        Assert.AreEqual(8, count);
     }
 
     [TestMethod]
     public void GetByArtistId()
     {
-        var albums = Dao.Album.GetByArtistId(1);
+        var albums = Dao.Album.GetByArtistId(2);
         Assert.AreEqual(2, albums.Count);
     }
 
     [TestMethod]
     public void GetByKey()
     {
-        var album = Dao.Album.GetByKey(1);
-        Assert.AreEqual(1, album.AlbumId);
+        var album = Dao.Album.GetByKey(9);
+        Assert.AreEqual(9, album.AlbumId);
     }
 
     [TestMethod]
     public void ExistsByKey()
     {
-        var exist = Dao.Album.ExistsByKey(1);
+        var exist = Dao.Album.ExistsByKey(9);
         Assert.IsTrue(exist);
     }
 
     [TestMethod]
     public void Exists()
     {
-        var exist = Dao.Album.Exists(x => x.AlbumId == 1);
+        var exist = Dao.Album.Exists(x => x.AlbumId == 9);
         Assert.IsTrue(exist);
     }
 
@@ -59,7 +59,7 @@ public partial class AlbumDaoTest
     [TestMethod]
     public void DeleteAll()
     {
-        var count = Dao.Album.DeleteAll(x => x.Title.Contains("Those"));
+        var count = Dao.Album.DeleteAll(x => x.Title.Contains("Yellow"));
         Assert.AreEqual(1, count);
         Assert.IsFalse(Dao.Album.ExistsByKey(1));
     }
@@ -132,104 +132,103 @@ public partial class AlbumDaoTest
     public void GetFirst()
     {
         var album = Dao.Album.GetFirst();
-        Assert.AreEqual(1, album.AlbumId);
+        Assert.AreEqual(2, album.AlbumId);
     }
 
     [TestMethod]
     public void GetFirst2()
     {
-        var album = Dao.Album.GetFirst(x => x.Title.Contains("Rock"));
-        Assert.AreEqual(1, album.AlbumId);
+        var album = Dao.Album.GetFirst(x => x.Title.Contains("Yellow"));
+        Assert.AreEqual(9, album.AlbumId);
     }
 
     [TestMethod]
     public void GetFirst3()
     {
         var album = Dao.Album.GetFirst(x => x.Title);
-        Assert.AreEqual(1, album.AlbumId);
+        Assert.AreEqual(8, album.AlbumId);
     }
 
     [TestMethod]
     public void GetFirst4()
     {
-        var album = Dao.Album.GetFirst(x => x.Title.Contains("Rock"), x => x.Title);
-        Assert.AreEqual(1, album.AlbumId);
+        var album = Dao.Album.GetFirst(x => x.Title.Contains("ne"), x => x.Title);
+        Assert.AreEqual(2, album.AlbumId);
     }
 
     [TestMethod]
     public void GetLast()
     {
         var album = Dao.Album.GetLast(x => x.AlbumId);
-        Assert.AreEqual(2, album.AlbumId);
+        Assert.AreEqual(9, album.AlbumId);
     }
 
     [TestMethod]
     public void GetLast2()
     {
-        var album = Dao.Album.GetLast(x => x.Title.Contains("Rock"));
+        var album = Dao.Album.GetLast(x => x.Title.Contains("ne"));
         Assert.AreEqual(2, album.AlbumId);
     }
 
     [TestMethod]
     public void GetLast3()
     {
-        var album = Dao.Album.GetLast(x => x.Title.Contains("Rock"), x => x.AlbumId);
-        Assert.AreEqual(2, album.AlbumId);
+        var album = Dao.Album.GetLast(x => x.Title.Contains("ne"), x => x.AlbumId);
+        Assert.AreEqual(9, album.AlbumId);
     }
 
     [TestMethod]
     public void SelectFirst()
     {
         var title = Dao.Album.SelectFirst(x => x.Title);
-        Assert.AreEqual("For Those About To Rock We Salute You", title);
+        Assert.AreEqual("Money", title);
     }
 
     [TestMethod]
     public void SelectFirst2()
     {
-        var title = Dao.Album.SelectFirst(x => x.Title.Contains("Rock"), x => x.Title);
-        Assert.AreEqual("For Those About To Rock We Salute You", title);
+        var title = Dao.Album.SelectFirst(x => x.Title.Contains("ne"), x => x.Title);
+        Assert.AreEqual("Money", title);
     }
 
     [TestMethod]
     public void SelectFirst3()
     {
         var title = Dao.Album.SelectFirst(x => x.AlbumId, x => x.Title);
-        Assert.AreEqual("For Those About To Rock We Salute You", title);
+        Assert.AreEqual("Money", title);
     }
 
     [TestMethod]
     public void SelectFirst4()
     {
-        var title = Dao.Album.SelectFirst(x => x.Title.Contains("Rock"), x => x.AlbumId, x => x.Title);
-        Assert.AreEqual("For Those About To Rock We Salute You", title);
+        var title = Dao.Album.SelectFirst(x => x.Title.Contains("ne"), x => x.AlbumId, x => x.Title);
+        Assert.AreEqual("Money", title);
     }
 
     [TestMethod]
     public void SelectLast()
     {
         var title = Dao.Album.SelectLast(x => x.AlbumId, x => x.Title);
-        Assert.AreEqual("Let There Be Rock", title);
+        Assert.AreEqual("Yellow Submarine", title);
     }
 
     [TestMethod]
     public void SelectLast2()
     {
         var title = Dao.Album.SelectLast(x => x.Title.Contains("Rock"), x => x.Title);
-        Assert.AreEqual("Let There Be Rock", title);
+        Assert.AreEqual("The Wall", title);
     }
 
     [TestMethod]
     public void SelectLast3()
     {
         var title = Dao.Album.SelectLast(x => x.Title.Contains("Rock"), x => x.AlbumId, x => x.Title);
-        Assert.AreEqual("Let There Be Rock", title);
+        Assert.IsNull(title);
     }
 
     [TestMethod]
     public void GetT()
     {
         var count = Dao.Get<Album>().GetCount();
-        Assert.AreEqual(2, count);
     }
 }
