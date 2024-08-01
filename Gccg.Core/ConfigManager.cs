@@ -33,9 +33,11 @@ public class ConfigManager
     
     public string RootPath { get; private set; }
 
-    public void Inialize(DbContext dbContext)
+    internal void Inialize(DbContext dbContext)
     {
-        (RootPath, RootName) = GetRootPath();
+        RootPath = GeneratorHelper.GccgConfig.Root;
+        RootName = Path.GetFileName(RootPath);
+        // (RootPath, RootName) = GetRootPath();
 
         var jsonPath = Path.Combine(RootPath, ConfigFile);
 
@@ -46,7 +48,7 @@ public class ConfigManager
         }
         else
         {
-            Console.WriteLine($@"{ConfigFile} file does NOT exist. $_variables$ will not load.");
+            Console.WriteLine($"{jsonPath} does NOT exist. $_variables$ will not load.");
             _variables = new();
         }
 
@@ -113,13 +115,13 @@ public class ConfigManager
             builder.Replace($"`{key}`", _variables[key]);
     }
 
-    private (string path, string name) GetRootPath()
-    {
-        var directory = new DirectoryInfo(Directory.GetCurrentDirectory());
-
-        while (directory != null && !directory.GetFiles(ConfigFile).Any())
-            directory = directory.Parent;
-        
-        return (directory.FullName, directory.Name);
-    }
+    // private (string path, string name) GetRootPath()
+    // {
+    //     var directory = new DirectoryInfo(Directory.GetCurrentDirectory());
+    //
+    //     while (directory != null && !directory.GetFiles(ConfigFile).Any())
+    //         directory = directory.Parent;
+    //     
+    //     return (directory.FullName, directory.Name);
+    // }
 }

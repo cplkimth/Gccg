@@ -6,7 +6,7 @@ namespace Chinook.Data;
 
 public partial class AlbumDao
 {
-    public virtual List<Album> Search(string artistName, string trackName)
+    public List<Album> Search(string artistName, string trackName)
     {
         using var context = DbContextFactory.Create();
 
@@ -30,5 +30,10 @@ public partial class AlbumDao
         }
 
         return list.ConvertAll(x => x.Album);
+    }
+
+    protected override void OnSaved(Album entity, LogType logType)
+    {
+        base.OnSaved(entity, logType);
     }
 }

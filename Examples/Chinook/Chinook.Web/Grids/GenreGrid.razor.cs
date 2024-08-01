@@ -3,7 +3,7 @@
 using Chinook.Data;
 #endregion
 
-namespace Chinook.Web.Grids;
+namespace `WebProjectNamespace`.Grids;
 
 
 public partial class GenreGrid : EntityGrid<Genre>

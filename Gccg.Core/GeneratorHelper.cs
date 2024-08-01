@@ -2,13 +2,13 @@
 
 public class GeneratorHelper
 {
-    private static GccgConfig _gccgConfig;
+    public static GccgConfig GccgConfig { get; private set; }
 
     public static void Generate(GccgConfig gccgConfig)
     {
-        _gccgConfig = gccgConfig;
+        GccgConfig = gccgConfig;
 
-        Console.WriteLine($"[{_gccgConfig.DataEF}] 프로젝트에서 EF Core Power Tools를 실행하였습니까?");
+        Console.WriteLine($"[{GccgConfig.DataEF}] 프로젝트에서 EF Core Power Tools를 실행하였습니까?");
 
         var commands = (Command[])Enum.GetValues(typeof(Command));
         foreach (var command in commands)
@@ -31,23 +31,23 @@ public class GeneratorHelper
 
     private static void Prepare()
     {
-        Console.WriteLine($"deleting [{_gccgConfig.GccgEF}]");
+        Console.WriteLine($"deleting [{GccgConfig.GccgEF}]");
         try
         {
-            Directory.Delete(_gccgConfig.GccgEF, true);
+            Directory.Delete(GccgConfig.GccgEF, true);
         }
         catch
         {
             // ignored
         }
 
-        Thread.Sleep(_gccgConfig.Sleep);
+        Thread.Sleep(GccgConfig.Sleep);
 
-        Console.WriteLine($"copying [{_gccgConfig.DataEF}] to [{_gccgConfig.GccgEF}]");
-        CopyDirectory(_gccgConfig.DataEF, _gccgConfig.GccgEF, true);
-        Thread.Sleep(_gccgConfig.Sleep);
+        Console.WriteLine($"copying [{GccgConfig.DataEF}] to [{GccgConfig.GccgEF}]");
+        CopyDirectory(GccgConfig.DataEF, GccgConfig.GccgEF, true);
+        Thread.Sleep(GccgConfig.Sleep);
 
-        var contextFile = Directory.GetFiles(_gccgConfig.DataEF, _gccgConfig.ContextPostfix).FirstOrDefault();
+        var contextFile = Directory.GetFiles(GccgConfig.DataEF, GccgConfig.ContextPostfix).FirstOrDefault();
         Console.WriteLine($"removing OnConfiguring in [{contextFile}]");
         var lines = File.ReadAllLines(contextFile);
         var indexToMove = FindIndexToDelete(lines, "protected override void OnConfiguring");
@@ -59,16 +59,16 @@ public class GeneratorHelper
             result.AddRange(lines.Skip(indexToMove + 3));
 
             File.WriteAllLines(contextFile, result);
-            Thread.Sleep(_gccgConfig.Sleep);
+            Thread.Sleep(GccgConfig.Sleep);
         }
 
-        Thread.Sleep(_gccgConfig.Sleep);
+        Thread.Sleep(GccgConfig.Sleep);
     }
 
     private static void Generate()
     {
-        var json = Generator.Generate(_gccgConfig.DbContext);
-        File.WriteAllText($"{_gccgConfig.SolutionName}.json", json);
+        var json = Generator.Generate(GccgConfig.DbContext);
+        File.WriteAllText($"{GccgConfig.SolutionName}.json", json);
     }
 
     private static int FindIndexToDelete(string[] lines, string text)
@@ -82,36 +82,30 @@ public class GeneratorHelper
         return -1;
     }
 
-    static void CopyDirectory(string sourceDir, string destinationDir, bool recursive)
+    static void CopyDirectory(string source, string target, bool recursive)
     {
-        // Get information about the source directory
-        var dir = new DirectoryInfo(sourceDir);
+        var directory = new DirectoryInfo(source);
 
-        // Check if the source directory exists
-        if (!dir.Exists)
-            throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
+        if (!directory.Exists)
+            throw new DirectoryNotFoundException($"Source directory not found: {directory.FullName}");
 
-        // Cache directories before we start copying
-        DirectoryInfo[] dirs = dir.GetDirectories();
+        DirectoryInfo[] children = directory.GetDirectories();
 
-        // Create the destination directory
-        if (Directory.Exists(destinationDir) == false)
-            Directory.CreateDirectory(destinationDir);
+        if (Directory.Exists(target) == false)
+            Directory.CreateDirectory(target);
 
-        // Get the files in the source directory and copy to the destination directory
-        foreach (FileInfo file in dir.GetFiles())
+        foreach (FileInfo file in directory.GetFiles())
         {
-            string targetFilePath = Path.Combine(destinationDir, file.Name);
-            file.CopyTo(targetFilePath, true);
+            string filePath = Path.Combine(target, file.Name);
+            file.CopyTo(filePath, true);
         }
 
-        // If recursive and copying subdirectories, recursively call this method
         if (recursive)
         {
-            foreach (DirectoryInfo subDir in dirs)
+            foreach (DirectoryInfo subDir in children)
             {
-                string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
-                CopyDirectory(subDir.FullName, newDestinationDir, true);
+                string directoryPath = Path.Combine(target, subDir.Name);
+                CopyDirectory(subDir.FullName, directoryPath, true);
             }
         }
     }

@@ -18,14 +18,14 @@ public static class Generator
 {
     public const string TemplatePostfix = ".jsonmp";
 
-    public static string Generate(DbContext dbContext)
+    internal static string Generate(DbContext dbContext)
     {
         var schemaExtractor = new DbContextSchemaExtractor(dbContext);
 
         return GenerateCore(schemaExtractor, dbContext);
     }
 
-    public static string Generate(string modelFilePath)
+    internal static string Generate(string modelFilePath)
     {
         var schemaExtractor = new JsonFileSchemaExtractor(modelFilePath);
 
@@ -37,11 +37,13 @@ public static class Generator
         ConfigManager.Instance.Inialize(dbContext);
 
         string[] templatePathes = ReadTemplates();
+        Console.WriteLine();
 
         var tables = schemaExtractor.Extract();
 
         Console.WriteLine("Inflating templates ...");
         InflatePackage(templatePathes, tables);
+        Console.WriteLine();
 
         Console.WriteLine("Finished without error(s)");
 
@@ -86,7 +88,7 @@ public static class Generator
         var pathToWrite = GetPathToWrite(template.TargetPath, tables.Length > 0 ? tables[0].Name : "", templatePath);
         WriteFileIfNone(pathToWrite, code, template.Overwritable);
 
-        Console.WriteLine($"  => {pathToWrite}");
+        // Console.WriteLine($"  => {pathToWrite}");
     }
 
     private static string GetPathToWrite(string pathToWrite, string tableName, string templatePath)

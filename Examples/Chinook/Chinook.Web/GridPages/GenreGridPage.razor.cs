@@ -2,7 +2,7 @@
 #region usings
 #endregion
 
-namespace Chinook.Web.GridPages;
+namespace `WebProjectNamespace`.GridPages;
 
 
 public partial class GenreGridPage

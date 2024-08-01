@@ -2,7 +2,7 @@
 	"Version":2,
 	"Scope":1,
 	"TargetPath":"`Name`Grid.razor.cs",
-	"Overwritable": true
+	"Overwritable": false
 }
 *** body starts here ***
 #region usings

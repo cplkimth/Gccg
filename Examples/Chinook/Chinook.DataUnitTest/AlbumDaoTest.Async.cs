@@ -59,16 +59,19 @@ public partial class AlbumDaoTest
     }
 
     [TestMethod]
-    public void InsertAsync()
+    public async Task InsertAsync()
     {
+        // var oldCount = await Dao.Album.GetCountAsync();
         var oldCount = Dao.Album.GetCount();
 
-        var album = new Album();
-        album.Title = DateTime.Now.ToString();
-        album.ArtistId = 1;
-        album = Dao.Album.InsertAsync(album).Result;
+        var album = new Album
+        {
+            Title = DateTime.Now.ToString(),
+            ArtistId = 1
+        };
+        album = await Dao.Album.InsertAsync(album);
 
-        var newCount = Dao.Album.GetCount();
+        var newCount = await Dao.Album.GetCountAsync();
 
         Assert.AreEqual(oldCount + 1, newCount);
         Assert.IsTrue(album.AlbumId != 0);

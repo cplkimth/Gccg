@@ -1,15 +1,27 @@
-﻿using System.Runtime.CompilerServices;
+﻿#region
+
 using Chinook.Data;
-using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Chinook.ConsoleTest;
 
 internal class Program
 {
-    static async Task Main(string[] args)
+    private static async Task Main(string[] args)
     {
-        var count = Dao.Initialize();
-        Console.WriteLine(count);
-    }
+        var oldCount = Dao.Album.GetCount();
 
+        var album = new Album
+        {
+            Title = DateTime.Now.ToString(),
+            ArtistId = 1
+        };
+        album = await Dao.Album.InsertAsync(album);
+        // album = Dao.Album.Insert(album);
+
+        Console.WriteLine(album.AlbumId);
+        var newCount = await Dao.Album.GetCountAsync();
+        Console.WriteLine(newCount);
+    }
 }
