@@ -101,6 +101,8 @@ public partial class Track
 
     public int GenreId { get; set; }
 
+    public byte[] TimestampCol { get; set; }
+
     public virtual Album Album { get; set; }
 
     public virtual Genre Genre { get; set; }
