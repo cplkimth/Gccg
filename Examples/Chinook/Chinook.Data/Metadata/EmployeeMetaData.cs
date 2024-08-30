@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
  
 #endregion
-
 namespace Chinook.Data;
 
 
@@ -44,3 +43,4 @@ public class EmployeeMetaData
 
 	public string Title {get; set;}
 } 
+

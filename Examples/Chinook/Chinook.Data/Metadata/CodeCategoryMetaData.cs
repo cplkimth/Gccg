@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
  
 #endregion
-
 namespace Chinook.Data;
 
 
@@ -18,3 +17,4 @@ public class CodeCategoryMetaData
 
 	public string Name {get; set;}
 } 
+

@@ -1863,6 +1863,122 @@ public class CustomerEqualityComparer : IEqualityComparer<Customer>
 
 #endregion Customer
 
+ #region DateTable
+/// <summary>
+/// DateTable 엔터티
+/// </summary>
+public partial class DateTable : Entity<DateTable>, IEntity
+{
+	public const string EntityTypeName = "DateTable";
+
+	public static void Copy(DateTable source, DateTable target)
+	{
+		target.Date = source.Date; 		
+target.DateNull = source.DateNull; 
+	}
+
+	/// <summary>
+	/// DateTable 객체를 복사한다.
+	/// </summary>
+	/// <returns></returns>
+	public override DateTable Clone()
+	{
+		var clone = new DateTable();
+
+		Copy(this, clone);
+
+		return clone;
+	}
+	partial void GetEntityTextCore(ref string value);
+
+	/// <summary>
+	/// DateTable 객체를 대표하는 이름을 구한다.
+	/// </summary>
+	/// <returns></returns>
+	[JsonIgnore]
+	public override string EntityText
+	{
+		get 
+		{ 
+			string value = null;
+			GetEntityTextCore(ref value);
+
+			if (value != null)
+				return value;
+
+			return PrimaryKeyValues; 
+		}
+	}
+
+	partial void ToStringCore(ref string value);
+
+	public override string ToString()
+	{
+		string value = null;
+		ToStringCore(ref value);
+
+		if (value != null)
+			return value;
+
+		return "[Date]" + Date  + ", " + "[DateNull]" + DateNull ;
+	}
+
+	/// <summary>
+	/// IEditableObject.CancelEdit 구현
+	/// </summary>
+	public override void CancelEdit()
+	{
+		if (_clone != null)
+			Copy(_clone, this);
+	}
+
+	[JsonIgnore]
+	public override string PrimaryKeyValues
+	{
+		get { return string.Join(":", Date ); }
+	}
+
+	public override string GetEntityTypeName()
+	{
+		return EntityTypeName;
+	}
+
+	[JsonIgnore]
+	public static DateTable Empty { get; } = new ();
+	
+	public override void ClearKeyValues()
+	{
+		Date = default;
+	}
+}
+
+/// <summary>
+/// DateTable 엔터티의 컬럼 이름을 멤버로 가지고 있는 열거형
+/// </summary>
+public enum DateTableColumn
+{
+	Date ,
+DateNull 
+}
+
+/// <summary>
+/// DateTable 엔터티의 기본키를 조건으로 하여 동등성을 비교하는 비교자 (IEqualityComparer<DateTable> 구현)
+/// </summary>
+public class DateTableEqualityComparer : IEqualityComparer<DateTable>
+{
+	public bool Equals(DateTable x, DateTable y)
+	{
+		return x.Date == y.Date ;
+	}
+
+	public int GetHashCode(DateTable obj)
+	{
+		return obj.Date.GetHashCode() ;
+	}
+}
+
+#endregion DateTable
+
  #region Employee
 /// <summary>
 /// Employee 엔터티
@@ -2844,6 +2960,122 @@ public class PlaylistTrackHistoryEqualityComparer : IEqualityComparer<PlaylistTr
 
 #endregion PlaylistTrackHistory
 
+ #region TimeTable
+/// <summary>
+/// TimeTable 엔터티
+/// </summary>
+public partial class TimeTable : Entity<TimeTable>, IEntity
+{
+	public const string EntityTypeName = "TimeTable";
+
+	public static void Copy(TimeTable source, TimeTable target)
+	{
+		target.Time = source.Time; 		
+target.TimeNull = source.TimeNull; 
+	}
+
+	/// <summary>
+	/// TimeTable 객체를 복사한다.
+	/// </summary>
+	/// <returns></returns>
+	public override TimeTable Clone()
+	{
+		var clone = new TimeTable();
+
+		Copy(this, clone);
+
+		return clone;
+	}
+	partial void GetEntityTextCore(ref string value);
+
+	/// <summary>
+	/// TimeTable 객체를 대표하는 이름을 구한다.
+	/// </summary>
+	/// <returns></returns>
+	[JsonIgnore]
+	public override string EntityText
+	{
+		get 
+		{ 
+			string value = null;
+			GetEntityTextCore(ref value);
+
+			if (value != null)
+				return value;
+
+			return PrimaryKeyValues; 
+		}
+	}
+
+	partial void ToStringCore(ref string value);
+
+	public override string ToString()
+	{
+		string value = null;
+		ToStringCore(ref value);
+
+		if (value != null)
+			return value;
+
+		return "[Time]" + Time  + ", " + "[TimeNull]" + TimeNull ;
+	}
+
+	/// <summary>
+	/// IEditableObject.CancelEdit 구현
+	/// </summary>
+	public override void CancelEdit()
+	{
+		if (_clone != null)
+			Copy(_clone, this);
+	}
+
+	[JsonIgnore]
+	public override string PrimaryKeyValues
+	{
+		get { return string.Join(":", Time ); }
+	}
+
+	public override string GetEntityTypeName()
+	{
+		return EntityTypeName;
+	}
+
+	[JsonIgnore]
+	public static TimeTable Empty { get; } = new ();
+	
+	public override void ClearKeyValues()
+	{
+		Time = default;
+	}
+}
+
+/// <summary>
+/// TimeTable 엔터티의 컬럼 이름을 멤버로 가지고 있는 열거형
+/// </summary>
+public enum TimeTableColumn
+{
+	Time ,
+TimeNull 
+}
+
+/// <summary>
+/// TimeTable 엔터티의 기본키를 조건으로 하여 동등성을 비교하는 비교자 (IEqualityComparer<TimeTable> 구현)
+/// </summary>
+public class TimeTableEqualityComparer : IEqualityComparer<TimeTable>
+{
+	public bool Equals(TimeTable x, TimeTable y)
+	{
+		return x.Time == y.Time ;
+	}
+
+	public int GetHashCode(TimeTable obj)
+	{
+		return obj.Time.GetHashCode() ;
+	}
+}
+
+#endregion TimeTable
+
  #region Track
 /// <summary>
 /// Track 엔터티
@@ -2895,6 +3127,7 @@ target.TimeCol = source.TimeCol;
 target.TimeColNull = source.TimeColNull; 		
 target.TimeOnlyCol = source.TimeOnlyCol; 		
 target.TimeOnlyColNull = source.TimeOnlyColNull; 		
+target.TimestampCol = source.TimestampCol; 		
 target.TinyIntCol = source.TinyIntCol; 		
 target.TinyIntColNull = source.TinyIntColNull; 		
 target.VarBinaryCol = source.VarBinaryCol; 		
@@ -2946,7 +3179,7 @@ target.VarCharColNull = source.VarCharColNull;
 		if (value != null)
 			return value;
 
-		return "[TrackId]" + TrackId  + ", " + "[AlbumId]" + AlbumId  + ", " + "[BigIntCol]" + BigIntCol  + ", " + "[BigIntColNull]" + BigIntColNull  + ", " + "[BinaryCol]" + BinaryCol  + ", " + "[BinaryColNull]" + BinaryColNull  + ", " + "[BitCol]" + BitCol  + ", " + "[BitColNull]" + BitColNull  + ", " + "[CharCol]" + CharCol  + ", " + "[CharColNull]" + CharColNull  + ", " + "[DateCol]" + DateCol  + ", " + "[DateColNull]" + DateColNull  + ", " + "[DateOnlyCol]" + DateOnlyCol  + ", " + "[DateOnlyColNull]" + DateOnlyColNull  + ", " + "[DateTimeCol]" + DateTimeCol  + ", " + "[DateTimeColNull]" + DateTimeColNull  + ", " + "[DecimalCol]" + DecimalCol  + ", " + "[DecimalColNull]" + DecimalColNull  + ", " + "[FloatCol]" + FloatCol  + ", " + "[FloatColNull]" + FloatColNull  + ", " + "[GenreId]" + GenreId  + ", " + "[GuidCol]" + GuidCol  + ", " + "[GuidColNull]" + GuidColNull  + ", " + "[MediaTypeId]" + MediaTypeId  + ", " + "[Name]" + Name  + ", " + "[NcharCol]" + NcharCol  + ", " + "[NcharColNull]" + NcharColNull  + ", " + "[NvarCharCol]" + NvarCharCol  + ", " + "[NvarCharColNull]" + NvarCharColNull  + ", " + "[RealCol]" + RealCol  + ", " + "[RealColNull]" + RealColNull  + ", " + "[SmallDateTimeCol]" + SmallDateTimeCol  + ", " + "[SmallDateTimeColNull]" + SmallDateTimeColNull  + ", " + "[SmallIntCol]" + SmallIntCol  + ", " + "[SmallIntColNull]" + SmallIntColNull  + ", " + "[SmallMoneyCol]" + SmallMoneyCol  + ", " + "[SmallMoneyColNull]" + SmallMoneyColNull  + ", " + "[TimeCol]" + TimeCol  + ", " + "[TimeColNull]" + TimeColNull  + ", " + "[TimeOnlyCol]" + TimeOnlyCol  + ", " + "[TimeOnlyColNull]" + TimeOnlyColNull  + ", " + "[TinyIntCol]" + TinyIntCol  + ", " + "[TinyIntColNull]" + TinyIntColNull  + ", " + "[VarBinaryCol]" + VarBinaryCol  + ", " + "[VarBinaryColNull]" + VarBinaryColNull  + ", " + "[VarCharCol]" + VarCharCol  + ", " + "[VarCharColNull]" + VarCharColNull ;
+		return "[TrackId]" + TrackId  + ", " + "[AlbumId]" + AlbumId  + ", " + "[BigIntCol]" + BigIntCol  + ", " + "[BigIntColNull]" + BigIntColNull  + ", " + "[BinaryCol]" + BinaryCol  + ", " + "[BinaryColNull]" + BinaryColNull  + ", " + "[BitCol]" + BitCol  + ", " + "[BitColNull]" + BitColNull  + ", " + "[CharCol]" + CharCol  + ", " + "[CharColNull]" + CharColNull  + ", " + "[DateCol]" + DateCol  + ", " + "[DateColNull]" + DateColNull  + ", " + "[DateOnlyCol]" + DateOnlyCol  + ", " + "[DateOnlyColNull]" + DateOnlyColNull  + ", " + "[DateTimeCol]" + DateTimeCol  + ", " + "[DateTimeColNull]" + DateTimeColNull  + ", " + "[DecimalCol]" + DecimalCol  + ", " + "[DecimalColNull]" + DecimalColNull  + ", " + "[FloatCol]" + FloatCol  + ", " + "[FloatColNull]" + FloatColNull  + ", " + "[GenreId]" + GenreId  + ", " + "[GuidCol]" + GuidCol  + ", " + "[GuidColNull]" + GuidColNull  + ", " + "[MediaTypeId]" + MediaTypeId  + ", " + "[Name]" + Name  + ", " + "[NcharCol]" + NcharCol  + ", " + "[NcharColNull]" + NcharColNull  + ", " + "[NvarCharCol]" + NvarCharCol  + ", " + "[NvarCharColNull]" + NvarCharColNull  + ", " + "[RealCol]" + RealCol  + ", " + "[RealColNull]" + RealColNull  + ", " + "[SmallDateTimeCol]" + SmallDateTimeCol  + ", " + "[SmallDateTimeColNull]" + SmallDateTimeColNull  + ", " + "[SmallIntCol]" + SmallIntCol  + ", " + "[SmallIntColNull]" + SmallIntColNull  + ", " + "[SmallMoneyCol]" + SmallMoneyCol  + ", " + "[SmallMoneyColNull]" + SmallMoneyColNull  + ", " + "[TimeCol]" + TimeCol  + ", " + "[TimeColNull]" + TimeColNull  + ", " + "[TimeOnlyCol]" + TimeOnlyCol  + ", " + "[TimeOnlyColNull]" + TimeOnlyColNull  + ", " + "[TimestampCol]" + TimestampCol  + ", " + "[TinyIntCol]" + TinyIntCol  + ", " + "[TinyIntColNull]" + TinyIntColNull  + ", " + "[VarBinaryCol]" + VarBinaryCol  + ", " + "[VarBinaryColNull]" + VarBinaryColNull  + ", " + "[VarCharCol]" + VarCharCol  + ", " + "[VarCharColNull]" + VarCharColNull ;
 	}
 
 	/// <summary>
@@ -3024,6 +3257,7 @@ TimeCol ,
 TimeColNull ,
 TimeOnlyCol ,
 TimeOnlyColNull ,
+TimestampCol ,
 TinyIntCol ,
 TinyIntColNull ,
 VarBinaryCol ,
@@ -3568,6 +3802,100 @@ public partial class CustomerDao : EntityDao<Customer>
 	
 }
 #endregion CustomerDao
+
+ #region DateTableDao
+/// <summary>
+/// DateTable 데이터 클래스
+/// </summary>
+public partial class DateTableDao : EntityDao<DateTable>
+{
+	internal DateTableDao() {}
+
+	/// <summary>
+	/// 기본키가 일치하는 엔터티를 구한다.
+	/// </summary>
+	/// <param name="date">기본키</param>
+	/// <returns>기본키가 일치하는 엔터티</returns>
+    public virtual DateTable GetByKey(DateOnly date )
+	{
+        using var context = DbContextFactory.Create();
+
+        return context.Set<DateTable>().FirstOrDefault(x =>  x.Date == date ) ?? DateTable.Empty;
+	}
+
+    public virtual Task<DateTable> GetByKeyAsync(DateOnly date )
+		=> Task.Run(() => GetByKey(date ));
+
+	/// <summary>
+	/// 기본키가 일치하는 엔터티가 존재하는지 확인한다.
+	/// </summary>
+	/// <param name="date">기본키</param>
+	/// <returns>존재 여부</returns>
+    public virtual bool ExistsByKey(DateOnly date )
+	{
+        using var context = DbContextFactory.Create();
+
+		return context.Set<DateTable>().Count(x =>  x.Date == date ) > 0;
+	}
+
+    public virtual Task<bool> ExistsByKeyAsync(DateOnly date )
+	=> Task.Run(() => ExistsByKey(date ));
+
+	/// <summary>
+	/// 기본키가 일치하는 엔터티를 삭제한다.
+	/// </summary>
+	/// <param name="date">기본키</param> 
+	/// <returns>삭제된 엔터티의 갯수</returns>
+    public virtual int DeleteByKey(DateOnly date )
+	{
+        using var context = DbContextFactory.Create();
+
+		var query = from x in context.Set<DateTable>()
+		where x.Date == date 
+		select x;
+
+		var entity = query.FirstOrDefault();
+
+        if (entity == null)
+            return 0;
+
+		MarkToSave(context, LogType.Delete, entity);
+
+		return context.SaveChanges();
+	}
+
+    public virtual Task<int> DeleteByKeyAsync(DateOnly date )
+	=> Task.Run(() => DeleteByKey(date ));
+
+    public override DateTable InsertIfNotExist(DateTable entity)
+	{
+        using var context = DbContextFactory.Create();
+
+	    if (context.Set<DateTable>().Count(x =>  x.Date == entity.Date ) > 0)
+	        return DateTable.Empty;
+
+	    return Insert(entity);
+	}
+
+    public override bool InsertOrUpdate(DateTable entity, bool withAudit = false)
+	{
+        using var context = DbContextFactory.Create();
+            
+	    if (context.Set<DateTable>().Count(x =>  x.Date == entity.Date ) > 0)
+	    {
+	        Update(entity);
+            return false;
+        }
+        else
+	    {
+	        Insert(entity);
+            return true;
+        }
+	}
+	
+	
+}
+#endregion DateTableDao
 
  #region EmployeeDao
 /// <summary>
@@ -4286,6 +4614,21 @@ public partial class PlaylistTrackDao : EntityDao<PlaylistTrack>
     public virtual Task<List<PlaylistTrack>> GetByPlaylistIdAsync(int playlistId)
 	=> Task.Run(() => GetByPlaylistId(playlistId));
 	
+	/// <summary>
+	/// 외래키 TrackId 이(가) 일치하는 엔터티 컬렉션을 구한다.
+	/// </summary>
+	/// <param name="trackId">외래키</param>
+	/// <returns>TrackId 이(가) 일치하는 엔터티 컬렉션</returns>
+    public virtual List<PlaylistTrack> GetByTrackId(int trackId)
+	{
+        using var context = DbContextFactory.Create();
+
+		return context.Set<PlaylistTrack>().Where(x => x.TrackId == trackId).ToList();
+	}
+
+    public virtual Task<List<PlaylistTrack>> GetByTrackIdAsync(int trackId)
+	=> Task.Run(() => GetByTrackId(trackId));
+	
 }
 #endregion PlaylistTrackDao
 
@@ -4416,6 +4759,100 @@ public partial class PlaylistTrackHistoryDao : EntityDao<PlaylistTrackHistory>
 	
 }
 #endregion PlaylistTrackHistoryDao
+
+ #region TimeTableDao
+/// <summary>
+/// TimeTable 데이터 클래스
+/// </summary>
+public partial class TimeTableDao : EntityDao<TimeTable>
+{
+	internal TimeTableDao() {}
+
+	/// <summary>
+	/// 기본키가 일치하는 엔터티를 구한다.
+	/// </summary>
+	/// <param name="time">기본키</param>
+	/// <returns>기본키가 일치하는 엔터티</returns>
+    public virtual TimeTable GetByKey(TimeOnly time )
+	{
+        using var context = DbContextFactory.Create();
+
+        return context.Set<TimeTable>().FirstOrDefault(x =>  x.Time == time ) ?? TimeTable.Empty;
+	}
+
+    public virtual Task<TimeTable> GetByKeyAsync(TimeOnly time )
+		=> Task.Run(() => GetByKey(time ));
+
+	/// <summary>
+	/// 기본키가 일치하는 엔터티가 존재하는지 확인한다.
+	/// </summary>
+	/// <param name="time">기본키</param>
+	/// <returns>존재 여부</returns>
+    public virtual bool ExistsByKey(TimeOnly time )
+	{
+        using var context = DbContextFactory.Create();
+
+		return context.Set<TimeTable>().Count(x =>  x.Time == time ) > 0;
+	}
+
+    public virtual Task<bool> ExistsByKeyAsync(TimeOnly time )
+	=> Task.Run(() => ExistsByKey(time ));
+
+	/// <summary>
+	/// 기본키가 일치하는 엔터티를 삭제한다.
+	/// </summary>
+	/// <param name="time">기본키</param> 
+	/// <returns>삭제된 엔터티의 갯수</returns>
+    public virtual int DeleteByKey(TimeOnly time )
+	{
+        using var context = DbContextFactory.Create();
+
+		var query = from x in context.Set<TimeTable>()
+		where x.Time == time 
+		select x;
+
+		var entity = query.FirstOrDefault();
+
+        if (entity == null)
+            return 0;
+
+		MarkToSave(context, LogType.Delete, entity);
+
+		return context.SaveChanges();
+	}
+
+    public virtual Task<int> DeleteByKeyAsync(TimeOnly time )
+	=> Task.Run(() => DeleteByKey(time ));
+
+    public override TimeTable InsertIfNotExist(TimeTable entity)
+	{
+        using var context = DbContextFactory.Create();
+
+	    if (context.Set<TimeTable>().Count(x =>  x.Time == entity.Time ) > 0)
+	        return TimeTable.Empty;
+
+	    return Insert(entity);
+	}
+
+    public override bool InsertOrUpdate(TimeTable entity, bool withAudit = false)
+	{
+        using var context = DbContextFactory.Create();
+            
+	    if (context.Set<TimeTable>().Count(x =>  x.Time == entity.Time ) > 0)
+	    {
+	        Update(entity);
+            return false;
+        }
+        else
+	    {
+	        Insert(entity);
+            return true;
+        }
+	}
+	
+	
+}
+#endregion TimeTableDao
 
  #region TrackDao
 /// <summary>
@@ -4572,6 +5009,7 @@ public partial class Dao : DaoBase
  Code = new CodeDao(); 
  CodeCategory = new CodeCategoryDao(); 
  Customer = new CustomerDao(); 
+ DateTable = new DateTableDao(); 
  Employee = new EmployeeDao(); 
  Genre = new GenreDao(); 
  Invoice = new InvoiceDao(); 
@@ -4580,6 +5018,7 @@ public partial class Dao : DaoBase
  Playlist = new PlaylistDao(); 
  PlaylistTrack = new PlaylistTrackDao(); 
  PlaylistTrackHistory = new PlaylistTrackHistoryDao(); 
+ TimeTable = new TimeTableDao(); 
  Track = new TrackDao(); 
 
 	}
@@ -4590,6 +5029,7 @@ public partial class Dao : DaoBase
  public static CodeDao Code { get; } 
  public static CodeCategoryDao CodeCategory { get; } 
  public static CustomerDao Customer { get; } 
+ public static DateTableDao DateTable { get; } 
  public static EmployeeDao Employee { get; } 
  public static GenreDao Genre { get; } 
  public static InvoiceDao Invoice { get; } 
@@ -4598,6 +5038,7 @@ public partial class Dao : DaoBase
  public static PlaylistDao Playlist { get; } 
  public static PlaylistTrackDao PlaylistTrack { get; } 
  public static PlaylistTrackHistoryDao PlaylistTrackHistory { get; } 
+ public static TimeTableDao TimeTable { get; } 
  public static TrackDao Track { get; } 
 
 	#endregion
@@ -4611,6 +5052,7 @@ public partial class Dao : DaoBase
  "Code" => Code, 
  "CodeCategory" => CodeCategory, 
  "Customer" => Customer, 
+ "DateTable" => DateTable, 
  "Employee" => Employee, 
  "Genre" => Genre, 
  "Invoice" => Invoice, 
@@ -4619,6 +5061,7 @@ public partial class Dao : DaoBase
  "Playlist" => Playlist, 
  "PlaylistTrack" => PlaylistTrack, 
  "PlaylistTrackHistory" => PlaylistTrackHistory, 
+ "TimeTable" => TimeTable, 
  "Track" => Track, 
 
 			_ => throw new NotImplementedException("Dao.Get")

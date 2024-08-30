@@ -24,16 +24,15 @@ public class AuthController : ControllerBase
 
     private string SignIn(AuthInfo authInfo )
     {
-        // var employee = Dao.Employee.GetFirst(x => x.LastName == authInfo.UserName && x.FirstName == authInfo.Password);
-        var company = Dao.Company.GetFirst(x => x.CompanyId == int.Parse(authInfo.UserName));
-        if (company == null)
+        var employee = Dao.Employee.GetFirst(x => x.LastName == authInfo.UserName && x.FirstName == authInfo.Password);
+        if (employee == null)
             return "Wrong";
 
         var claims = new[] {
-                               new Claim(JwtRegisteredClaimNames.Sub, company.CompanyId.ToString()),
+                               new Claim(JwtRegisteredClaimNames.Sub, employee.EmployeeId.ToString()),
                                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                                new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString()),
-                               new Claim(JwtRegisteredClaimNames.Name, company.Name),
+                               new Claim(JwtRegisteredClaimNames.Name, employee.LastName),
                            };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));

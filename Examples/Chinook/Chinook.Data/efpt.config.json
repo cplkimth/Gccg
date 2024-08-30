@@ -35,6 +35,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[DateTable]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Employee]",
          "ObjectType": 0
       },
@@ -64,6 +68,10 @@
       },
       {
          "Name": "[dbo].[PlaylistTrackHistory]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TimeTable]",
          "ObjectType": 0
       },
       {

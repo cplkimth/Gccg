@@ -81,6 +81,12 @@ public abstract partial class EntityApi<T>
         return await client.GetFromJsonAsync<T>(GetAddress("first"), Options);
     }
 
+    public virtual async Task<T> GetLastAsync()
+    {
+        using HttpClient client = CreateHttpClient();
+        return await client.GetFromJsonAsync<T>(GetAddress("last"), Options);
+    }
+
     public virtual async Task<int> GetCountAsync()
     {
         using HttpClient client = CreateHttpClient();
@@ -127,7 +133,7 @@ public partial class `Name`BaseApi : EntityApi<`Name`>
     }
     ``
 
-    public virtual async Task<int> DeleteAsync(`P:, :`Type` `name` ``)
+    public virtual async Task<int> DeleteByKeyAsync(`P:, :`Type` `name` ``)
     {
         using HttpClient client = CreateHttpClient();
         var response  = await client.DeleteAsync(GetAddress(`P:, :`name` ``));

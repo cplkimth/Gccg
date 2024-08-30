@@ -21,7 +21,7 @@ public class GeneratorHelper
             case Command.Preparation:
                 Prepare();
                 break;
-            case Command.Generatation:
+            case Command.Generation:
                 Generate();
                 break;
         }
@@ -114,5 +114,5 @@ public class GeneratorHelper
 public enum Command
 {
     Preparation = 1,
-    Generatation
+    Generation
 }

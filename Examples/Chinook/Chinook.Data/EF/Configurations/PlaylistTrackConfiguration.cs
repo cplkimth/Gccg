@@ -17,6 +17,10 @@ namespace Chinook.Data.Configurations
 
             entity.HasOne(d => d.Playlist).WithMany(p => p.PlaylistTracks).HasForeignKey(d => d.PlaylistId);
 
+            entity.HasOne(d => d.Track).WithMany(p => p.PlaylistTracks)
+                .HasForeignKey(d => d.TrackId)
+                .HasConstraintName("FK_PlaylistTrack_Track");
+
             OnConfigurePartial(entity);
         }
 

@@ -14,4 +14,6 @@ public partial class PlaylistTrack
     public virtual Playlist Playlist { get; set; }
 
     public virtual ICollection<PlaylistTrackHistory> PlaylistTrackHistories { get; set; } = new List<PlaylistTrackHistory>();
+
+    public virtual Track Track { get; set; }
 }

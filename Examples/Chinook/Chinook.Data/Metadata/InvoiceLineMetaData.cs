@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
  
 #endregion
-
 namespace Chinook.Data;
 
 
@@ -24,3 +23,4 @@ public class InvoiceLineMetaData
 
 	public decimal UnitPrice {get; set;}
 } 
+

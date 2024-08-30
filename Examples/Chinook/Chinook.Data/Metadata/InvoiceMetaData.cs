@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
  
 #endregion
-
 namespace Chinook.Data;
 
 
@@ -32,3 +31,4 @@ public class InvoiceMetaData
 
 	public decimal Total {get; set;}
 } 
+

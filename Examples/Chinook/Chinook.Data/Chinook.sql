@@ -1,12 +1,12 @@
 USE [master]
 GO
-/****** Object:  Database [ChinookMP]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Database [ChinookMP]    Script Date: 2024-08-30 오전 12:47:01 ******/
 CREATE DATABASE [ChinookMP]
  CONTAINMENT = NONE
  ON  PRIMARY 
-( NAME = N'ChinookOriginal', FILENAME = N'd:\MSSQL15.MSSQLSERVER\MSSQL\DATA\ChinookMP.mdf' , SIZE = 73728KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+( NAME = N'ChinookOriginal', FILENAME = N'h:\MSSQL15.MSSQLSERVER\MSSQL\DATA\ChinookMP.mdf' , SIZE = 73728KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
  LOG ON 
-( NAME = N'ChinookOriginal_log', FILENAME = N'd:\MSSQL15.MSSQLSERVER\MSSQL\DATA\ChinookMP_log.ldf' , SIZE = 335872KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+( NAME = N'ChinookOriginal_log', FILENAME = N'h:\MSSQL15.MSSQLSERVER\MSSQL\DATA\ChinookMP_log.ldf' , SIZE = 991232KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
  WITH CATALOG_COLLATION = DATABASE_DEFAULT
 GO
 ALTER DATABASE [ChinookMP] SET COMPATIBILITY_LEVEL = 150
@@ -82,12 +82,17 @@ ALTER DATABASE [ChinookMP] SET QUERY_STORE = OFF
 GO
 USE [ChinookMP]
 GO
-/****** Object:  User [me2]    Script Date: 2024-06-16 오후 7:17:12 ******/
-CREATE USER [me2] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
+/****** Object:  User [me]    Script Date: 2024-08-30 오전 12:47:01 ******/
+CREATE USER [me] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
 GO
-ALTER ROLE [db_owner] ADD MEMBER [me2]
+/****** Object:  User [Chinook]    Script Date: 2024-08-30 오전 12:47:01 ******/
+CREATE USER [Chinook] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
 GO
-/****** Object:  Table [dbo].[__EFMigrationsHistory]    Script Date: 2024-06-16 오후 7:17:12 ******/
+ALTER ROLE [db_owner] ADD MEMBER [me]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [Chinook]
+GO
+/****** Object:  Table [dbo].[__EFMigrationsHistory]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -101,7 +106,7 @@ CREATE TABLE [dbo].[__EFMigrationsHistory](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Album]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Table [dbo].[Album]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -117,7 +122,7 @@ CREATE TABLE [dbo].[Album](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Artist]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Table [dbo].[Artist]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -132,7 +137,7 @@ CREATE TABLE [dbo].[Artist](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Code]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Table [dbo].[Code]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -148,7 +153,7 @@ CREATE TABLE [dbo].[Code](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CodeCategory]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Table [dbo].[CodeCategory]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -162,7 +167,7 @@ CREATE TABLE [dbo].[CodeCategory](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Customer]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Table [dbo].[Customer]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -187,7 +192,7 @@ CREATE TABLE [dbo].[Customer](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[DateTable]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Table [dbo].[DateTable]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -201,7 +206,7 @@ CREATE TABLE [dbo].[DateTable](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Employee]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Table [dbo].[Employee]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -228,7 +233,7 @@ CREATE TABLE [dbo].[Employee](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Genre]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Table [dbo].[Genre]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -242,7 +247,7 @@ CREATE TABLE [dbo].[Genre](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Invoice]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Table [dbo].[Invoice]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -263,7 +268,7 @@ CREATE TABLE [dbo].[Invoice](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[InvoiceLine]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Table [dbo].[InvoiceLine]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -280,7 +285,7 @@ CREATE TABLE [dbo].[InvoiceLine](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[MediaType]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Table [dbo].[MediaType]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -294,7 +299,7 @@ CREATE TABLE [dbo].[MediaType](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Playlist]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Table [dbo].[Playlist]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -308,7 +313,7 @@ CREATE TABLE [dbo].[Playlist](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[PlaylistTrack]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Table [dbo].[PlaylistTrack]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -323,7 +328,7 @@ CREATE TABLE [dbo].[PlaylistTrack](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[PlaylistTrackHistory]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Table [dbo].[PlaylistTrackHistory]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -341,7 +346,7 @@ CREATE TABLE [dbo].[PlaylistTrackHistory](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TimeTable]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Table [dbo].[TimeTable]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -355,7 +360,7 @@ CREATE TABLE [dbo].[TimeTable](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Track]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  Table [dbo].[Track]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -589,21 +594,25 @@ INSERT [dbo].[Playlist] ([PlaylistId], [Name]) VALUES (3, N'TV Shows')
 GO
 SET IDENTITY_INSERT [dbo].[Playlist] OFF
 GO
-INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (1, 68)
+INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (1, 4)
 GO
-INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (1, 69)
+INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (1, 5)
 GO
-INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (2, 2)
+INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (2, 4)
 GO
-INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (2, 68)
+INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (2, 5)
 GO
-INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (2, 70)
+INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (2, 6)
 GO
-INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (2, 71)
+INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (2, 7)
 GO
-INSERT [dbo].[PlaylistTrackHistory] ([PlaylistId], [TrackId], [WrittenAt], [Memo]) VALUES (1, 68, CAST(N'2024-06-16T16:34:36.000' AS DateTime), N'1')
+INSERT [dbo].[PlaylistTrackHistory] ([PlaylistId], [TrackId], [WrittenAt], [Memo]) VALUES (1, 4, CAST(N'2024-06-16T16:34:36.000' AS DateTime), N'1')
 GO
-INSERT [dbo].[PlaylistTrackHistory] ([PlaylistId], [TrackId], [WrittenAt], [Memo]) VALUES (1, 68, CAST(N'2024-06-17T16:34:36.000' AS DateTime), N'2')
+INSERT [dbo].[PlaylistTrackHistory] ([PlaylistId], [TrackId], [WrittenAt], [Memo]) VALUES (1, 5, CAST(N'2024-06-17T16:34:36.000' AS DateTime), N'2')
+GO
+INSERT [dbo].[PlaylistTrackHistory] ([PlaylistId], [TrackId], [WrittenAt], [Memo]) VALUES (2, 4, CAST(N'2024-06-16T16:34:36.000' AS DateTime), N'1')
+GO
+INSERT [dbo].[PlaylistTrackHistory] ([PlaylistId], [TrackId], [WrittenAt], [Memo]) VALUES (2, 5, CAST(N'2024-06-17T16:34:36.000' AS DateTime), N'2')
 GO
 INSERT [dbo].[TimeTable] ([Time], [TimeNull]) VALUES (CAST(N'16:33:11' AS Time), NULL)
 GO
@@ -771,6 +780,12 @@ ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[PlaylistTrack] CHECK CONSTRAINT [FK_PlaylistTrack_Playlist_PlaylistId]
 GO
+ALTER TABLE [dbo].[PlaylistTrack]  WITH CHECK ADD  CONSTRAINT [FK_PlaylistTrack_Track] FOREIGN KEY([TrackId])
+REFERENCES [dbo].[Track] ([TrackId])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[PlaylistTrack] CHECK CONSTRAINT [FK_PlaylistTrack_Track]
+GO
 ALTER TABLE [dbo].[PlaylistTrackHistory]  WITH CHECK ADD  CONSTRAINT [FK_PlaylistTrackHistory_PlaylistTrack] FOREIGN KEY([PlaylistId], [TrackId])
 REFERENCES [dbo].[PlaylistTrack] ([PlaylistId], [TrackId])
 ON DELETE CASCADE
@@ -795,7 +810,7 @@ ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[Track] CHECK CONSTRAINT [FK_TrackAlbumId]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_GetMaxId]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  StoredProcedure [dbo].[usp_GetMaxId]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -810,7 +825,7 @@ set @sql = 'select top 1 [' + @Entity + 'Id] from [' + @Entity + '] order by ' +
 
 EXEC(@sql)
 GO
-/****** Object:  StoredProcedure [dbo].[usp_GetSystemTime]    Script Date: 2024-06-16 오후 7:17:12 ******/
+/****** Object:  StoredProcedure [dbo].[usp_GetSystemTime]    Script Date: 2024-08-30 오전 12:47:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -818,6 +833,346 @@ GO
 CREATE proc [dbo].[usp_GetSystemTime]
 as
 SELECT CURRENT_TIMESTAMP
+GO
+/****** Object:  StoredProcedure [dbo].[usp_Initialize]    Script Date: 2024-08-30 오전 12:47:01 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[usp_Initialize]
+AS
+BEGIN
+    delete PlaylistTrackHistory
+    delete PlaylistTrack
+    delete Playlist
+    delete InvoiceLine
+    delete Invoice
+    delete Customer
+    delete Employee
+    delete Code
+    delete CodeCategory
+    delete Track
+    delete MediaType
+    delete Genre
+    delete Album
+    delete Artist
+    delete DateTable
+    delete TimeTable
+
+    SET IDENTITY_INSERT [dbo].[Artist] ON
+
+    INSERT [dbo].[Artist] ([ArtistId], [Name], [TypeCode]) VALUES (1, N'Beatles', 10000)
+
+    INSERT [dbo].[Artist] ([ArtistId], [Name], [TypeCode]) VALUES (2, N'Pink Floyd', 10001)
+
+    INSERT [dbo].[Artist] ([ArtistId], [Name], [TypeCode]) VALUES (3, N'Beatles', 10002)
+
+    INSERT [dbo].[Artist] ([ArtistId], [Name], [TypeCode]) VALUES (4, N'AC/DC', 10000)
+
+    INSERT [dbo].[Artist] ([ArtistId], [Name], [TypeCode]) VALUES (5, N'New Trolls', 10000)
+
+    INSERT [dbo].[Artist] ([ArtistId], [Name], [TypeCode]) VALUES (6, N'Led zeppelin', 10000)
+
+    SET IDENTITY_INSERT [dbo].[Artist] OFF
+
+    SET IDENTITY_INSERT [dbo].[Album] ON
+
+    INSERT [dbo].[Album] ([AlbumId], [Title], [ArtistId], [TypeCode]) VALUES (2, N'Money', 2, 20000)
+
+    INSERT [dbo].[Album] ([AlbumId], [Title], [ArtistId], [TypeCode]) VALUES (3, N'The Wall', 2, 20001)
+
+    INSERT [dbo].[Album] ([AlbumId], [Title], [ArtistId], [TypeCode]) VALUES (4, N'Let It Be', 1, 20002)
+
+    INSERT [dbo].[Album] ([AlbumId], [Title], [ArtistId], [TypeCode]) VALUES (5, N'The White Album', 1, 20000)
+
+    INSERT [dbo].[Album] ([AlbumId], [Title], [ArtistId], [TypeCode])
+    VALUES (6, N'Sgt. Pepper''s Lonely Hearts Club', 1, 20000)
+
+    INSERT [dbo].[Album] ([AlbumId], [Title], [ArtistId], [TypeCode]) VALUES (7, N'Rubber Soul', 1, 20000)
+
+    INSERT [dbo].[Album] ([AlbumId], [Title], [ArtistId], [TypeCode]) VALUES (8, N'Help!', 1, 20000)
+
+    INSERT [dbo].[Album] ([AlbumId], [Title], [ArtistId], [TypeCode]) VALUES (9, N'Yellow Submarine', 1, 20000)
+
+    SET IDENTITY_INSERT [dbo].[Album] OFF
+
+    SET IDENTITY_INSERT [dbo].[Genre] ON
+
+    INSERT [dbo].[Genre] ([GenreId], [Name]) VALUES (1, N'Rock')
+
+    INSERT [dbo].[Genre] ([GenreId], [Name]) VALUES (2, N'Jazz')
+
+    INSERT [dbo].[Genre] ([GenreId], [Name]) VALUES (3, N'Metal')
+
+    SET IDENTITY_INSERT [dbo].[Genre] OFF
+
+    SET IDENTITY_INSERT [dbo].[MediaType] ON
+
+    INSERT [dbo].[MediaType] ([MediaTypeId], [Name]) VALUES (1, N'MPEG audio file')
+
+    INSERT [dbo].[MediaType] ([MediaTypeId], [Name]) VALUES (2, N'Protected AAC audio file')
+
+    INSERT [dbo].[MediaType] ([MediaTypeId], [Name]) VALUES (3, N'Protected MPEG-4 video file')
+
+    INSERT [dbo].[MediaType] ([MediaTypeId], [Name]) VALUES (4, N'Purchased AAC audio file')
+
+    INSERT [dbo].[MediaType] ([MediaTypeId], [Name]) VALUES (5, N'AAC audio file')
+
+    SET IDENTITY_INSERT [dbo].[MediaType] OFF
+
+    SET IDENTITY_INSERT [dbo].[Track] ON
+
+    INSERT [dbo].[Track] ([TrackId], [Name], [AlbumId], [BitCol], [BitColNull], [TinyIntCol], [TinyIntColNull],
+                          [SmallIntCol], [SmallIntColNull], [BigIntCol], [BigIntColNull], [CharCol], [CharColNull],
+                          [VarCharCol], [VarCharColNull], [NcharCol], [NcharColNull], [NvarCharCol], [NvarCharColNull],
+                          [BinaryCol], [BinaryColNull], [DateCol], [DateColNull], [DateTimeCol], [DateTimeColNull],
+                          [SmallDateTimeCol], [SmallDateTimeColNull], [DecimalCol], [DecimalColNull], [FloatCol],
+                          [FloatColNull], [RealCol], [RealColNull], [SmallMoneyCol], [SmallMoneyColNull], [TimeCol],
+                          [TimeColNull], [GuidCol], [GuidColNull], [VarBinaryCol], [VarBinaryColNull], [DateOnlyCol],
+                          [TimeOnlyCol], [DateOnlyColNull], [TimeOnlyColNull], [MediaTypeId], [GenreId])
+    VALUES (4, N'Hey You', 3, 1, NULL, 1, NULL, 2, NULL, 3, NULL, N'4         ', NULL, N'5', NULL, N'6         ', NULL,
+            N'7', N'',
+            0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+            NULL, CAST(N'2024-06-16' AS Date), NULL, CAST(N'2024-06-16T18:19:35.147' AS DateTime), NULL,
+            CAST(N'2024-06-16T18:20:00' AS SmallDateTime), NULL, CAST(8.00 AS Decimal(18, 2)), NULL, 9.1, NULL, 10.1,
+            NULL, 11.1000, NULL, CAST(N'18:19:35.1466667' AS Time), NULL, N'dde8a31a-678d-4a9a-b758-72cf9a2032fd', NULL,
+            0x00000000, NULL, CAST(N'2024-06-16' AS Date), CAST(N'12:12:11' AS Time), NULL, NULL, 1, 1)
+
+    INSERT [dbo].[Track] ([TrackId], [Name], [AlbumId], [BitCol], [BitColNull], [TinyIntCol], [TinyIntColNull],
+                          [SmallIntCol], [SmallIntColNull], [BigIntCol], [BigIntColNull], [CharCol], [CharColNull],
+                          [VarCharCol], [VarCharColNull], [NcharCol], [NcharColNull], [NvarCharCol], [NvarCharColNull],
+                          [BinaryCol], [BinaryColNull], [DateCol], [DateColNull], [DateTimeCol], [DateTimeColNull],
+                          [SmallDateTimeCol], [SmallDateTimeColNull], [DecimalCol], [DecimalColNull], [FloatCol],
+                          [FloatColNull], [RealCol], [RealColNull], [SmallMoneyCol], [SmallMoneyColNull], [TimeCol],
+                          [TimeColNull], [GuidCol], [GuidColNull], [VarBinaryCol], [VarBinaryColNull], [DateOnlyCol],
+                          [TimeOnlyCol], [DateOnlyColNull], [TimeOnlyColNull], [MediaTypeId], [GenreId])
+    VALUES (5, N'In The Fresh?', 3, 1, 1, 1, 10, 2, 20, 3, 30, N'4         ', N'40        ', N'5', N'50', N'6         ',
+            N'60        ', N'7', N'70',
+            0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+            0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+            CAST(N'2024-06-16' AS Date), CAST(N'2024-06-17' AS Date), CAST(N'2024-06-16T18:19:35.147' AS DateTime),
+            CAST(N'2024-06-17T00:00:00.000' AS DateTime), CAST(N'2024-06-16T18:20:00' AS SmallDateTime),
+            CAST(N'2024-06-17T00:00:00' AS SmallDateTime), CAST(8.00 AS Decimal(18, 2)), CAST(80.00 AS Decimal(18, 2)),
+            9.1, 9.2, 10.1, 10.2, 11.1000, 11.2000, CAST(N'18:19:35' AS Time), CAST(N'18:19:36' AS Time),
+            N'dde8a31a-678d-4a9a-b758-72cf9a2032fd', N'dde8a31a-678d-4a9a-b758-72cf9a2032fd', 0x00000000, 0x00000000,
+            CAST(N'2024-06-16' AS Date), CAST(N'12:12:11' AS Time), CAST(N'2024-06-17' AS Date),
+            CAST(N'12:12:12' AS Time), 1, 1)
+
+    INSERT [dbo].[Track] ([TrackId], [Name], [AlbumId], [BitCol], [BitColNull], [TinyIntCol], [TinyIntColNull],
+                          [SmallIntCol], [SmallIntColNull], [BigIntCol], [BigIntColNull], [CharCol], [CharColNull],
+                          [VarCharCol], [VarCharColNull], [NcharCol], [NcharColNull], [NvarCharCol], [NvarCharColNull],
+                          [BinaryCol], [BinaryColNull], [DateCol], [DateColNull], [DateTimeCol], [DateTimeColNull],
+                          [SmallDateTimeCol], [SmallDateTimeColNull], [DecimalCol], [DecimalColNull], [FloatCol],
+                          [FloatColNull], [RealCol], [RealColNull], [SmallMoneyCol], [SmallMoneyColNull], [TimeCol],
+                          [TimeColNull], [GuidCol], [GuidColNull], [VarBinaryCol], [VarBinaryColNull], [DateOnlyCol],
+                          [TimeOnlyCol], [DateOnlyColNull], [TimeOnlyColNull], [MediaTypeId], [GenreId])
+    VALUES (6, N'Across The Universe', 4, 1, NULL, 1, NULL, 2, NULL, 3, NULL, N'4         ', NULL, N'5', NULL,
+            N'6         ', NULL, N'7', N'',
+            0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+            NULL, CAST(N'2024-06-16' AS Date), NULL, CAST(N'2024-06-16T18:19:35.147' AS DateTime), NULL,
+            CAST(N'2024-06-16T18:20:00' AS SmallDateTime), NULL, CAST(8.00 AS Decimal(18, 2)), NULL, 9.1, NULL, 10.1,
+            NULL, 11.1000, NULL, CAST(N'18:19:35' AS Time), NULL, N'dde8a31a-678d-4a9a-b758-72cf9a2032fd', NULL,
+            0x00000000, NULL, CAST(N'2024-06-16' AS Date), CAST(N'12:12:11' AS Time), NULL, NULL, 1, 1)
+
+    INSERT [dbo].[Track] ([TrackId], [Name], [AlbumId], [BitCol], [BitColNull], [TinyIntCol], [TinyIntColNull],
+                          [SmallIntCol], [SmallIntColNull], [BigIntCol], [BigIntColNull], [CharCol], [CharColNull],
+                          [VarCharCol], [VarCharColNull], [NcharCol], [NcharColNull], [NvarCharCol], [NvarCharColNull],
+                          [BinaryCol], [BinaryColNull], [DateCol], [DateColNull], [DateTimeCol], [DateTimeColNull],
+                          [SmallDateTimeCol], [SmallDateTimeColNull], [DecimalCol], [DecimalColNull], [FloatCol],
+                          [FloatColNull], [RealCol], [RealColNull], [SmallMoneyCol], [SmallMoneyColNull], [TimeCol],
+                          [TimeColNull], [GuidCol], [GuidColNull], [VarBinaryCol], [VarBinaryColNull], [DateOnlyCol],
+                          [TimeOnlyCol], [DateOnlyColNull], [TimeOnlyColNull], [MediaTypeId], [GenreId])
+    VALUES (7, N'I Me Mine', 4, 1, NULL, 1, NULL, 2, NULL, 3, NULL, N'4         ', NULL, N'5', NULL, N'6         ',
+            NULL, N'7', N'',
+            0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+            NULL, CAST(N'2024-06-16' AS Date), NULL, CAST(N'2024-06-16T18:19:35.147' AS DateTime), NULL,
+            CAST(N'2024-06-16T18:20:00' AS SmallDateTime), NULL, CAST(8.00 AS Decimal(18, 2)), NULL, 9.1, NULL, 10.1,
+            NULL, 11.1000, NULL, CAST(N'18:19:35' AS Time), NULL, N'dde8a31a-678d-4a9a-b758-72cf9a2032fd', NULL,
+            0x00000000, NULL, CAST(N'2024-06-16' AS Date), CAST(N'12:12:11' AS Time), NULL, NULL, 1, 1)
+
+    SET IDENTITY_INSERT [dbo].[Track] OFF
+
+    INSERT [dbo].[CodeCategory] ([CodeCategoryId], [Name]) VALUES (1, N'Artist Type')
+
+    INSERT [dbo].[CodeCategory] ([CodeCategoryId], [Name]) VALUES (2, N'Album Type')
+
+    INSERT [dbo].[Code] ([CodeId], [CodeCategoryId], [Text], [Memo]) VALUES (10000, 1, N'솔로', N'1')
+
+    INSERT [dbo].[Code] ([CodeId], [CodeCategoryId], [Text], [Memo]) VALUES (10001, 1, N'아이돌', N'1')
+
+    INSERT [dbo].[Code] ([CodeId], [CodeCategoryId], [Text], [Memo]) VALUES (10002, 1, N'밴드', N'1')
+
+    INSERT [dbo].[Code] ([CodeId], [CodeCategoryId], [Text], [Memo]) VALUES (10003, 1, N'인디', N'1')
+
+    INSERT [dbo].[Code] ([CodeId], [CodeCategoryId], [Text], [Memo]) VALUES (10004, 1, N'퓨전', N'1')
+
+    INSERT [dbo].[Code] ([CodeId], [CodeCategoryId], [Text], [Memo]) VALUES (20000, 2, N'Rock', N'')
+
+    INSERT [dbo].[Code] ([CodeId], [CodeCategoryId], [Text], [Memo]) VALUES (20001, 2, N'Jazz', N'')
+
+    INSERT [dbo].[Code] ([CodeId], [CodeCategoryId], [Text], [Memo]) VALUES (20002, 2, N'Metal', N'')
+
+    SET IDENTITY_INSERT [dbo].[Employee] ON
+
+    INSERT [dbo].[Employee] ([EmployeeId], [LastName], [FirstName], [Title], [ReportsTo], [BirthDate], [HireDate],
+                             [Address], [City], [State], [Country], [PostalCode], [Phone], [Fax], [Email])
+    VALUES (1, N'Adams', N'Andrew', N'General Manager', NULL, CAST(N'1962-02-18T00:00:00.000' AS DateTime),
+            CAST(N'2002-08-14T00:00:00.000' AS DateTime), N'11120 Jasper Ave NW', N'Edmonton', N'AB', N'Canada',
+            N'T5K 2N1', N'+1 (780) 428-9482', N'+1 (780) 428-3457', N'andrew@chinookcorp.com')
+
+    INSERT [dbo].[Employee] ([EmployeeId], [LastName], [FirstName], [Title], [ReportsTo], [BirthDate], [HireDate],
+                             [Address], [City], [State], [Country], [PostalCode], [Phone], [Fax], [Email])
+    VALUES (2, N'Edwards', N'Nancy', N'Sales Manager', 1, CAST(N'1958-12-08T00:00:00.000' AS DateTime),
+            CAST(N'2002-05-01T00:00:00.000' AS DateTime), N'825 8 Ave SW', N'Calgary', N'AB', N'Canada', N'T2P 2T3',
+            N'+1 (403) 262-3443', N'+1 (403) 262-3322', N'nancy@chinookcorp.com')
+
+    INSERT [dbo].[Employee] ([EmployeeId], [LastName], [FirstName], [Title], [ReportsTo], [BirthDate], [HireDate],
+                             [Address], [City], [State], [Country], [PostalCode], [Phone], [Fax], [Email])
+    VALUES (3, N'Peacock', N'Jane', N'Sales Support Agent', 2, CAST(N'1973-08-29T00:00:00.000' AS DateTime),
+            CAST(N'2002-04-01T00:00:00.000' AS DateTime), N'1111 6 Ave SW', N'Calgary', N'AB', N'Canada', N'T2P 5M5',
+            N'+1 (403) 262-3443', N'+1 (403) 262-6712', N'jane@chinookcorp.com')
+
+    INSERT [dbo].[Employee] ([EmployeeId], [LastName], [FirstName], [Title], [ReportsTo], [BirthDate], [HireDate],
+                             [Address], [City], [State], [Country], [PostalCode], [Phone], [Fax], [Email])
+    VALUES (4, N'Park', N'Margaret', N'Sales Support Agent', 2, CAST(N'1947-09-19T00:00:00.000' AS DateTime),
+            CAST(N'2003-05-03T00:00:00.000' AS DateTime), N'683 10 Street SW', N'Calgary', N'AB', N'Canada', N'T2P 5G3',
+            N'+1 (403) 263-4423', N'+1 (403) 263-4289', N'margaret@chinookcorp.com')
+
+    INSERT [dbo].[Employee] ([EmployeeId], [LastName], [FirstName], [Title], [ReportsTo], [BirthDate], [HireDate],
+                             [Address], [City], [State], [Country], [PostalCode], [Phone], [Fax], [Email])
+    VALUES (5, N'Johnson', N'Steve', N'Sales Support Agent', 2, CAST(N'1965-03-03T00:00:00.000' AS DateTime),
+            CAST(N'2003-10-17T00:00:00.000' AS DateTime), N'7727B 41 Ave', N'Calgary', N'AB', N'Canada', N'T3B 1Y7',
+            N'1 (780) 836-9987', N'1 (780) 836-9543', N'steve@chinookcorp.com')
+
+    INSERT [dbo].[Employee] ([EmployeeId], [LastName], [FirstName], [Title], [ReportsTo], [BirthDate], [HireDate],
+                             [Address], [City], [State], [Country], [PostalCode], [Phone], [Fax], [Email])
+    VALUES (6, N'Mitchell', N'Michael', N'IT Manager', 3, CAST(N'1973-07-01T00:00:00.000' AS DateTime),
+            CAST(N'2003-10-17T00:00:00.000' AS DateTime), N'5827 Bowness Road NW', N'Calgary', N'AB', N'Canada',
+            N'T3B 0C5', N'+1 (403) 246-9887', N'+1 (403) 246-9899', N'michael@chinookcorp.com')
+
+    SET IDENTITY_INSERT [dbo].[Employee] OFF
+
+    SET IDENTITY_INSERT [dbo].[Customer] ON
+
+    INSERT [dbo].[Customer] ([CustomerId], [FirstName], [LastName], [Company], [Address], [City], [State], [Country],
+                             [PostalCode], [Phone], [Fax], [Email], [SupportRepId])
+    VALUES (3, N'Luís', N'nçalves', N'Embraer - Empresa Brasileira de Aeronáutica S.A.',
+            N'Av. Brigadeiro Faria Lima, 2170', N'São José dos Campos', N'SP', N'Brazil', N'12227-000',
+            N'+55 (12) 3923-5555', N'+55 (12) 3923-5566', N'luisg@embraer.com.br', NULL)
+
+    INSERT [dbo].[Customer] ([CustomerId], [FirstName], [LastName], [Company], [Address], [City], [State], [Country],
+                             [PostalCode], [Phone], [Fax], [Email], [SupportRepId])
+    VALUES (4, N'Leonie', N'Köhler', N'1', N'Theodor-Heuss-Straße 34', N'Stuttgart', N'1', N'Germany', N'70174',
+            N'+49 0711 2842222', N'1', N'leonekohler@surfeu.de', NULL)
+
+    INSERT [dbo].[Customer] ([CustomerId], [FirstName], [LastName], [Company], [Address], [City], [State], [Country],
+                             [PostalCode], [Phone], [Fax], [Email], [SupportRepId])
+    VALUES (5, N'François', N'Tremblay', N'1', N'1498 rue Bélanger', N'Montréal', N'QC', N'Canada', N'H2G 1A7',
+            N'+1 (514) 721-4711', N'1', N'ftremblay@gmail.com', NULL)
+
+    INSERT [dbo].[Customer] ([CustomerId], [FirstName], [LastName], [Company], [Address], [City], [State], [Country],
+                             [PostalCode], [Phone], [Fax], [Email], [SupportRepId])
+    VALUES (6, N'Bjørn', N'Hansen', N'1', N'Ullevålsveien 14', N'Oslo', N'1', N'Norway', N'0171', N'+47 22 44 22 22',
+            N'1', N'bjorn.hansen@yahoo.no', NULL)
+
+    INSERT [dbo].[Customer] ([CustomerId], [FirstName], [LastName], [Company], [Address], [City], [State], [Country],
+                             [PostalCode], [Phone], [Fax], [Email], [SupportRepId])
+    VALUES (7, N'František', N'Wichterlová', N'JetBrains s.r.o.', N'Klanova 9/506', N'Prague', N'1', N'Czech Republic',
+            N'14700', N'+420 2 4172 5555', N'+420 2 4172 5555', N'frantisekw@jetbrains.com', NULL)
+
+    SET IDENTITY_INSERT [dbo].[Customer] OFF
+
+    SET IDENTITY_INSERT [dbo].[Invoice] ON
+
+    INSERT [dbo].[Invoice] ([InvoiceId], [CustomerId], [InvoiceDate], [BillingAddress], [BillingCity], [BillingState],
+                            [BillingCountry], [BillingPostalCode], [Total])
+    VALUES (4, 3, CAST(N'2021-01-01T00:00:00.000' AS DateTime), N'Theodor-Heuss-Straße 34', N'Stuttgart', N'1',
+            N'Germany', N'70174', CAST(1.98 AS Numeric(10, 2)))
+
+    INSERT [dbo].[Invoice] ([InvoiceId], [CustomerId], [InvoiceDate], [BillingAddress], [BillingCity], [BillingState],
+                            [BillingCountry], [BillingPostalCode], [Total])
+    VALUES (5, 3, CAST(N'2021-01-02T00:00:00.000' AS DateTime), N'Ullevålsveien 14', N'Oslo', N'1', N'Norway', N'0171',
+            CAST(3.96 AS Numeric(10, 2)))
+
+    INSERT [dbo].[Invoice] ([InvoiceId], [CustomerId], [InvoiceDate], [BillingAddress], [BillingCity], [BillingState],
+                            [BillingCountry], [BillingPostalCode], [Total])
+    VALUES (6, 3, CAST(N'2021-01-03T00:00:00.000' AS DateTime), N'Grétrystraat 63', N'Brussels', N'1', N'Belgium',
+            N'1000', CAST(5.94 AS Numeric(10, 2)))
+
+    INSERT [dbo].[Invoice] ([InvoiceId], [CustomerId], [InvoiceDate], [BillingAddress], [BillingCity], [BillingState],
+                            [BillingCountry], [BillingPostalCode], [Total])
+    VALUES (7, 4, CAST(N'2021-01-06T00:00:00.000' AS DateTime), N'8210 111 ST NW', N'Edmonton', N'AB', N'Canada',
+            N'T6G 2C7', CAST(8.91 AS Numeric(10, 2)))
+
+    INSERT [dbo].[Invoice] ([InvoiceId], [CustomerId], [InvoiceDate], [BillingAddress], [BillingCity], [BillingState],
+                            [BillingCountry], [BillingPostalCode], [Total])
+    VALUES (8, 4, CAST(N'2021-01-11T00:00:00.000' AS DateTime), N'69 Salem Street', N'Boston', N'MA', N'USA', N'2113',
+            CAST(13.86 AS Numeric(10, 2)))
+
+    SET IDENTITY_INSERT [dbo].[Invoice] OFF
+
+    SET IDENTITY_INSERT [dbo].[InvoiceLine] ON
+
+    INSERT [dbo].[InvoiceLine] ([InvoiceLineId], [InvoiceId], [TrackId], [UnitPrice], [Quantity])
+    VALUES (2241, 4, 68, CAST(0.99 AS Numeric(10, 2)), 1)
+
+    INSERT [dbo].[InvoiceLine] ([InvoiceLineId], [InvoiceId], [TrackId], [UnitPrice], [Quantity])
+    VALUES (2242, 4, 69, CAST(0.99 AS Numeric(10, 2)), 1)
+
+    INSERT [dbo].[InvoiceLine] ([InvoiceLineId], [InvoiceId], [TrackId], [UnitPrice], [Quantity])
+    VALUES (2243, 5, 70, CAST(0.99 AS Numeric(10, 2)), 1)
+
+    INSERT [dbo].[InvoiceLine] ([InvoiceLineId], [InvoiceId], [TrackId], [UnitPrice], [Quantity])
+    VALUES (2244, 5, 71, CAST(0.99 AS Numeric(10, 2)), 1)
+
+    INSERT [dbo].[InvoiceLine] ([InvoiceLineId], [InvoiceId], [TrackId], [UnitPrice], [Quantity])
+    VALUES (2245, 5, 72, CAST(0.99 AS Numeric(10, 2)), 1)
+
+    INSERT [dbo].[InvoiceLine] ([InvoiceLineId], [InvoiceId], [TrackId], [UnitPrice], [Quantity])
+    VALUES (2246, 6, 73, CAST(0.99 AS Numeric(10, 2)), 1)
+
+    INSERT [dbo].[InvoiceLine] ([InvoiceLineId], [InvoiceId], [TrackId], [UnitPrice], [Quantity])
+    VALUES (2247, 6, 74, CAST(0.99 AS Numeric(10, 2)), 1)
+
+    INSERT [dbo].[InvoiceLine] ([InvoiceLineId], [InvoiceId], [TrackId], [UnitPrice], [Quantity])
+    VALUES (2248, 7, 75, CAST(0.99 AS Numeric(10, 2)), 1)
+
+    SET IDENTITY_INSERT [dbo].[InvoiceLine] OFF
+
+    SET IDENTITY_INSERT [dbo].[Playlist] ON
+
+    INSERT [dbo].[Playlist] ([PlaylistId], [Name]) VALUES (1, N'Music')
+
+    INSERT [dbo].[Playlist] ([PlaylistId], [Name]) VALUES (2, N'Movies')
+
+    INSERT [dbo].[Playlist] ([PlaylistId], [Name]) VALUES (3, N'TV Shows')
+
+    SET IDENTITY_INSERT [dbo].[Playlist] OFF
+
+    INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (1, 4)
+    INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (1, 5)
+    INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (2, 4)
+    INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (2, 5)
+    INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (2, 6)
+    INSERT [dbo].[PlaylistTrack] ([PlaylistId], [TrackId]) VALUES (2, 7)
+
+    INSERT [dbo].[PlaylistTrackHistory] ([PlaylistId], [TrackId], [WrittenAt], [Memo])
+    VALUES (1, 4, CAST(N'2024-06-16T16:34:36.000' AS DateTime), N'1')
+    INSERT [dbo].[PlaylistTrackHistory] ([PlaylistId], [TrackId], [WrittenAt], [Memo])
+    VALUES (1, 5, CAST(N'2024-06-17T16:34:36.000' AS DateTime), N'2')
+    INSERT [dbo].[PlaylistTrackHistory] ([PlaylistId], [TrackId], [WrittenAt], [Memo])
+    VALUES (2, 4, CAST(N'2024-06-16T16:34:36.000' AS DateTime), N'1')
+    INSERT [dbo].[PlaylistTrackHistory] ([PlaylistId], [TrackId], [WrittenAt], [Memo])
+    VALUES (2, 5, CAST(N'2024-06-17T16:34:36.000' AS DateTime), N'2')
+
+
+    INSERT [dbo].[DateTable] ([Date], [DateNull]) VALUES (CAST(N'2024-06-16' AS Date), NULL)
+    INSERT [dbo].[DateTable] ([Date], [DateNull]) VALUES (CAST(N'2024-06-17' AS Date), CAST(N'2024-06-18' AS Date))
+
+    INSERT [dbo].[TimeTable] ([Time], [TimeNull]) VALUES (CAST(N'16:33:11' AS Time), NULL)
+    INSERT [dbo].[TimeTable] ([Time], [TimeNull]) VALUES (CAST(N'17:33:11' AS Time), CAST(N'18:33:11' AS Time))
+
+END
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'[2]' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Album', @level2type=N'COLUMN',@level2name=N'TypeCode'
 GO

@@ -68,10 +68,10 @@ public static class Generator
     {
         foreach (var templatePath in templatePathes)
         {
+            Console.WriteLine($"{Path.GetFileName(templatePath)}");
+
             var templateText = File.ReadAllText(templatePath);
             var template = Template.Load(templateText);
-
-            Console.WriteLine($"{Path.GetFileName(templatePath)}");
 
             if (template.Scope == TemplateScope.Database)
                 InflatePackageCore(template, templatePath, tables.ToArray());

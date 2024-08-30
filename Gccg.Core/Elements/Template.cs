@@ -17,13 +17,13 @@ namespace Gccg.Core.Elements
 
         public string Body { get; set; }
 
-        private const string Spliter = "*** body starts here ***";
+        private const string Splitter = "*** body starts here ***";
 
         public void WriteToFile(string path)
         {
             StringBuilder builder = new StringBuilder();
             builder.AppendLine(JsonSerializer.Serialize(this));
-            builder.AppendLine(Spliter);
+            builder.AppendLine(Splitter);
             builder.AppendLine(Body);
 
             File.WriteAllText(path, builder.ToString());
@@ -31,7 +31,7 @@ namespace Gccg.Core.Elements
 
         public static Template Load(string templateText)
         {
-            var tokens = templateText.Split(new[] {Spliter}, StringSplitOptions.RemoveEmptyEntries);
+            var tokens = templateText.Split([Splitter], StringSplitOptions.RemoveEmptyEntries);
 
             Template template = JsonSerializer.Deserialize<Template>(tokens[0]);
             template.Body = tokens[1];

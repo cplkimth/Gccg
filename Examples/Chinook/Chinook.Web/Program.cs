@@ -1,7 +1,10 @@
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using Radzen;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Identity.Web;
+using static Microsoft.AspNetCore.Mvc.JsonOptions;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-builder.Services.AddScoped<DialogService>();
+// builder.Services.AddScoped<DialogService>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
  {
@@ -18,6 +21,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
      options.JsonSerializerOptions.WriteIndented = true;
      options.JsonSerializerOptions.PropertyNamingPolicy = null;
  });
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
@@ -28,6 +33,11 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+}
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

@@ -41,6 +41,7 @@ public partial class Api
  public static CodeApi Code => new CodeApi(); 
  public static CodeCategoryApi CodeCategory => new CodeCategoryApi(); 
  public static CustomerApi Customer => new CustomerApi(); 
+ public static DateTableApi DateTable => new DateTableApi(); 
  public static EmployeeApi Employee => new EmployeeApi(); 
  public static GenreApi Genre => new GenreApi(); 
  public static InvoiceApi Invoice => new InvoiceApi(); 
@@ -49,6 +50,7 @@ public partial class Api
  public static PlaylistApi Playlist => new PlaylistApi(); 
  public static PlaylistTrackApi PlaylistTrack => new PlaylistTrackApi(); 
  public static PlaylistTrackHistoryApi PlaylistTrackHistory => new PlaylistTrackHistoryApi(); 
+ public static TimeTableApi TimeTable => new TimeTableApi(); 
  public static TrackApi Track => new TrackApi(); 
 
     #endregion
@@ -87,6 +89,12 @@ public abstract partial class EntityApi<T>
     {
         using HttpClient client = CreateHttpClient();
         return await client.GetFromJsonAsync<T>(GetAddress("first"), Options);
+    }
+
+    public virtual async Task<T> GetLastAsync()
+    {
+        using HttpClient client = CreateHttpClient();
+        return await client.GetFromJsonAsync<T>(GetAddress("last"), Options);
     }
 
     public virtual async Task<int> GetCountAsync()
@@ -135,7 +143,7 @@ public partial class AlbumBaseApi : EntityApi<Album>
     }
     
 
-    public virtual async Task<int> DeleteAsync(int albumId )
+    public virtual async Task<int> DeleteByKeyAsync(int albumId )
     {
         using HttpClient client = CreateHttpClient();
         var response  = await client.DeleteAsync(GetAddress(albumId ));
@@ -166,7 +174,7 @@ public partial class ArtistBaseApi : EntityApi<Artist>
 
     
 
-    public virtual async Task<int> DeleteAsync(int artistId )
+    public virtual async Task<int> DeleteByKeyAsync(int artistId )
     {
         using HttpClient client = CreateHttpClient();
         var response  = await client.DeleteAsync(GetAddress(artistId ));
@@ -202,7 +210,7 @@ public partial class CodeBaseApi : EntityApi<Code>
     }
     
 
-    public virtual async Task<int> DeleteAsync(int codeId )
+    public virtual async Task<int> DeleteByKeyAsync(int codeId )
     {
         using HttpClient client = CreateHttpClient();
         var response  = await client.DeleteAsync(GetAddress(codeId ));
@@ -233,7 +241,7 @@ public partial class CodeCategoryBaseApi : EntityApi<CodeCategory>
 
     
 
-    public virtual async Task<int> DeleteAsync(int codeCategoryId )
+    public virtual async Task<int> DeleteByKeyAsync(int codeCategoryId )
     {
         using HttpClient client = CreateHttpClient();
         var response  = await client.DeleteAsync(GetAddress(codeCategoryId ));
@@ -269,7 +277,7 @@ public partial class CustomerBaseApi : EntityApi<Customer>
     }
     
 
-    public virtual async Task<int> DeleteAsync(int customerId )
+    public virtual async Task<int> DeleteByKeyAsync(int customerId )
     {
         using HttpClient client = CreateHttpClient();
         var response  = await client.DeleteAsync(GetAddress(customerId ));
@@ -278,6 +286,37 @@ public partial class CustomerBaseApi : EntityApi<Customer>
 }
 
 public partial class CustomerApi : CustomerBaseApi
+{
+}
+
+
+public partial class DateTableBaseApi : EntityApi<DateTable>
+{
+    protected override string EntityName => nameof(DateTable);
+
+    public virtual async Task<DateTable> GetByKeyAsync(DateOnly date )
+    {
+        using HttpClient client = CreateHttpClient();
+        return await client.GetFromJsonAsync<DateTable>(GetAddress(date ), Options);
+    }
+
+    public virtual async Task<bool> ExistsByKeyAsync(DateOnly date )
+    {
+        using HttpClient client = CreateHttpClient();
+        return await client.GetFromJsonAsync<bool>(GetAddress("exists", date ), Options);
+    }
+
+    
+
+    public virtual async Task<int> DeleteByKeyAsync(DateOnly date )
+    {
+        using HttpClient client = CreateHttpClient();
+        var response  = await client.DeleteAsync(GetAddress(date ));
+        return await response.Content.ReadFromJsonAsync<int>(Options);
+    }
+}
+
+public partial class DateTableApi : DateTableBaseApi
 {
 }
 
@@ -305,7 +344,7 @@ public partial class EmployeeBaseApi : EntityApi<Employee>
     }
     
 
-    public virtual async Task<int> DeleteAsync(int employeeId )
+    public virtual async Task<int> DeleteByKeyAsync(int employeeId )
     {
         using HttpClient client = CreateHttpClient();
         var response  = await client.DeleteAsync(GetAddress(employeeId ));
@@ -336,7 +375,7 @@ public partial class GenreBaseApi : EntityApi<Genre>
 
     
 
-    public virtual async Task<int> DeleteAsync(int genreId )
+    public virtual async Task<int> DeleteByKeyAsync(int genreId )
     {
         using HttpClient client = CreateHttpClient();
         var response  = await client.DeleteAsync(GetAddress(genreId ));
@@ -372,7 +411,7 @@ public partial class InvoiceBaseApi : EntityApi<Invoice>
     }
     
 
-    public virtual async Task<int> DeleteAsync(int invoiceId )
+    public virtual async Task<int> DeleteByKeyAsync(int invoiceId )
     {
         using HttpClient client = CreateHttpClient();
         var response  = await client.DeleteAsync(GetAddress(invoiceId ));
@@ -408,7 +447,7 @@ public partial class InvoiceLineBaseApi : EntityApi<InvoiceLine>
     }
     
 
-    public virtual async Task<int> DeleteAsync(int invoiceLineId )
+    public virtual async Task<int> DeleteByKeyAsync(int invoiceLineId )
     {
         using HttpClient client = CreateHttpClient();
         var response  = await client.DeleteAsync(GetAddress(invoiceLineId ));
@@ -439,7 +478,7 @@ public partial class MediaTypeBaseApi : EntityApi<MediaType>
 
     
 
-    public virtual async Task<int> DeleteAsync(int mediaTypeId )
+    public virtual async Task<int> DeleteByKeyAsync(int mediaTypeId )
     {
         using HttpClient client = CreateHttpClient();
         var response  = await client.DeleteAsync(GetAddress(mediaTypeId ));
@@ -470,7 +509,7 @@ public partial class PlaylistBaseApi : EntityApi<Playlist>
 
     
 
-    public virtual async Task<int> DeleteAsync(int playlistId )
+    public virtual async Task<int> DeleteByKeyAsync(int playlistId )
     {
         using HttpClient client = CreateHttpClient();
         var response  = await client.DeleteAsync(GetAddress(playlistId ));
@@ -504,9 +543,14 @@ public partial class PlaylistTrackBaseApi : EntityApi<PlaylistTrack>
         HttpClient client = CreateHttpClient();
         return await client.GetFromJsonAsync<List<PlaylistTrack>>(GetAddress("playlistId", playlistId), Options);
     }
+    public virtual async Task<List<PlaylistTrack>> GetByTrackIdAsync(int trackId)
+    {
+        HttpClient client = CreateHttpClient();
+        return await client.GetFromJsonAsync<List<PlaylistTrack>>(GetAddress("trackId", trackId), Options);
+    }
     
 
-    public virtual async Task<int> DeleteAsync(int playlistId , int trackId )
+    public virtual async Task<int> DeleteByKeyAsync(int playlistId , int trackId )
     {
         using HttpClient client = CreateHttpClient();
         var response  = await client.DeleteAsync(GetAddress(playlistId , trackId ));
@@ -547,7 +591,7 @@ public partial class PlaylistTrackHistoryBaseApi : EntityApi<PlaylistTrackHistor
     }
     
 
-    public virtual async Task<int> DeleteAsync(int playlistId , int trackId , DateTime writtenAt )
+    public virtual async Task<int> DeleteByKeyAsync(int playlistId , int trackId , DateTime writtenAt )
     {
         using HttpClient client = CreateHttpClient();
         var response  = await client.DeleteAsync(GetAddress(playlistId , trackId , writtenAt ));
@@ -556,6 +600,37 @@ public partial class PlaylistTrackHistoryBaseApi : EntityApi<PlaylistTrackHistor
 }
 
 public partial class PlaylistTrackHistoryApi : PlaylistTrackHistoryBaseApi
+{
+}
+
+
+public partial class TimeTableBaseApi : EntityApi<TimeTable>
+{
+    protected override string EntityName => nameof(TimeTable);
+
+    public virtual async Task<TimeTable> GetByKeyAsync(TimeOnly time )
+    {
+        using HttpClient client = CreateHttpClient();
+        return await client.GetFromJsonAsync<TimeTable>(GetAddress(time ), Options);
+    }
+
+    public virtual async Task<bool> ExistsByKeyAsync(TimeOnly time )
+    {
+        using HttpClient client = CreateHttpClient();
+        return await client.GetFromJsonAsync<bool>(GetAddress("exists", time ), Options);
+    }
+
+    
+
+    public virtual async Task<int> DeleteByKeyAsync(TimeOnly time )
+    {
+        using HttpClient client = CreateHttpClient();
+        var response  = await client.DeleteAsync(GetAddress(time ));
+        return await response.Content.ReadFromJsonAsync<int>(Options);
+    }
+}
+
+public partial class TimeTableApi : TimeTableBaseApi
 {
 }
 
@@ -593,7 +668,7 @@ public partial class TrackBaseApi : EntityApi<Track>
     }
     
 
-    public virtual async Task<int> DeleteAsync(int trackId )
+    public virtual async Task<int> DeleteByKeyAsync(int trackId )
     {
         using HttpClient client = CreateHttpClient();
         var response  = await client.DeleteAsync(GetAddress(trackId ));

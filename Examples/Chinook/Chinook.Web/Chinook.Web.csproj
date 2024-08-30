@@ -5,6 +5,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Controllers\BaseControllers\**" />
+    <Content Remove="Controllers\BaseControllers\**" />
+    <EmbeddedResource Remove="Controllers\BaseControllers\**" />
+    <None Remove="Controllers\BaseControllers\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Remove="GridPages\AlbumGridPage.razor.cs" />
     <Compile Remove="GridPages\ArtistGridPage.razor.cs" />
     <Compile Remove="GridPages\CompanyGridPage.razor.cs" />
@@ -92,6 +98,11 @@
     <_ContentIncludedByDefault Remove="GridPages\AlbumGridPage.razor" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Radzen.Blazor" Version="5.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="3.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.7.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.7.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.7.3" />
   </ItemGroup>
 </Project>

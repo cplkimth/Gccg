@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
  
 #endregion
-
 namespace Chinook.Data;
 
 
@@ -20,3 +19,4 @@ public class ArtistMetaData
 
 	public int TypeCode {get; set;}
 } 
+

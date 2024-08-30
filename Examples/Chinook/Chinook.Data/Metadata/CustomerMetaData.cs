@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
  
 #endregion
-
 namespace Chinook.Data;
 
 
@@ -40,3 +39,4 @@ public class CustomerMetaData
 
 	public int? SupportRepId {get; set;}
 } 
+

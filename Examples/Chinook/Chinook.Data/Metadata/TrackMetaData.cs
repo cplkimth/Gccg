@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
  
 #endregion
-
 namespace Chinook.Data;
 
 
@@ -96,6 +95,8 @@ public class TrackMetaData
 
 	public TimeOnly TimeOnlyColNull {get; set;}
 
+	public byte[] TimestampCol {get; set;}
+
 	public byte TinyIntCol {get; set;}
 
 	public byte? TinyIntColNull {get; set;}
@@ -108,3 +109,4 @@ public class TrackMetaData
 
 	public string VarCharColNull {get; set;}
 } 
+

@@ -67,6 +67,9 @@ namespace Chinook.Data.Configurations
             entity.Property(e => e.SmallMoneyCol).HasColumnType("smallmoney");
             entity.Property(e => e.SmallMoneyColNull).HasColumnType("smallmoney");
             entity.Property(e => e.TimeCol).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.TimestampCol)
+                .IsRowVersion()
+                .IsConcurrencyToken();
             entity.Property(e => e.VarBinaryCol)
                 .IsRequired()
                 .HasMaxLength(50)
