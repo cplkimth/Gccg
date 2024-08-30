@@ -1,0 +1,18 @@
+{
+	"Version":2,
+	"Scope":1,
+	"TargetPath":"`Name`ApiTest.partial.cs",
+	"Overwritable": false
+}
+*** body starts here ***
+#region
+
+#endregion
+
+namespace Chinook.DataUnitTest.ApiTests;
+
+`T
+public partial class AlbumApiTest
+{
+
+} T`

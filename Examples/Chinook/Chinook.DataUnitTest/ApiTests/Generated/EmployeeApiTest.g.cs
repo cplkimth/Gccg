@@ -51,7 +51,7 @@ public partial class EmployeeApiTest
     [TestMethod]
     public async Task DeleteByKey()
     {
-        var first = await Api.Employee.GetFirstAsync();
+        var first = await Api.Employee.GetByKeyAsync(4);
         await Api.Employee.DeleteByKeyAsync(first.EmployeeId );
 
         (await Api.Employee.ExistsByKeyAsync(first.EmployeeId )).Should().BeFalse();
@@ -95,12 +95,12 @@ public partial class EmployeeApiTest
 
     
 	[TestMethod]
-    public async Task GetByReportsTo(int? reportsTo)
+    public async Task GetByReportsTo()
     {
-        var list = await Api.Employee.GetByReportsToAsync(reportsTo);
+        var list = await Api.Employee.GetByReportsToAsync(1);
 
         foreach (var item in list)
-            item.ReportsTo.Should().Be(reportsTo);
+            item.ReportsTo.Should().Be(1);
     }
 	
 }

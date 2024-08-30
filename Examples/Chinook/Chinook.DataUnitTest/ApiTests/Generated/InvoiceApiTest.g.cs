@@ -95,12 +95,12 @@ public partial class InvoiceApiTest
 
     
 	[TestMethod]
-    public async Task GetByCustomerId(int customerId)
+    public async Task GetByCustomerId()
     {
-        var list = await Api.Invoice.GetByCustomerIdAsync(customerId);
+        var list = await Api.Invoice.GetByCustomerIdAsync(1);
 
         foreach (var item in list)
-            item.CustomerId.Should().Be(customerId);
+            item.CustomerId.Should().Be(1);
     }
 	
 }

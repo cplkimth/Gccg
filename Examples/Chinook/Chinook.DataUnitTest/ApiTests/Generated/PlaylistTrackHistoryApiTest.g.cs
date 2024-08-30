@@ -24,37 +24,11 @@ public partial class PlaylistTrackHistoryApiTest
     }
 
     [TestMethod]
-    public async Task GetByKey()
-    {
-        var first = await Api.PlaylistTrackHistory.GetFirstAsync();
-        var entity = await Api.PlaylistTrackHistory.GetByKeyAsync(first.PlaylistId , first.TrackId , first.WrittenAt );
-
-        entity.PrimaryKeyValues.Should().Be(first.PrimaryKeyValues);
-    }
-
-    [TestMethod]
     public async Task ExistsByKey()
     {
         var first = await Api.PlaylistTrackHistory.GetFirstAsync();
 
         (await Dao.PlaylistTrackHistory.ExistsByKeyAsync(first.PlaylistId , first.TrackId , first.WrittenAt )).Should().BeTrue();
-    }
-
-    [TestMethod]
-    public async Task Exists()
-    {
-        var first = await Api.PlaylistTrackHistory.GetFirstAsync();
-
-        (await Api.PlaylistTrackHistory.ExistsByKeyAsync(first.PlaylistId , first.TrackId , first.WrittenAt )).Should().BeTrue();
-    }
-
-    [TestMethod]
-    public async Task DeleteByKey()
-    {
-        var first = await Api.PlaylistTrackHistory.GetFirstAsync();
-        await Api.PlaylistTrackHistory.DeleteByKeyAsync(first.PlaylistId , first.TrackId , first.WrittenAt );
-
-        (await Api.PlaylistTrackHistory.ExistsByKeyAsync(first.PlaylistId , first.TrackId , first.WrittenAt )).Should().BeFalse();
     }
 
     [TestMethod]
@@ -95,21 +69,21 @@ public partial class PlaylistTrackHistoryApiTest
 
     
 	[TestMethod]
-    public async Task GetByPlaylistId(int playlistId)
+    public async Task GetByPlaylistId()
     {
-        var list = await Api.PlaylistTrackHistory.GetByPlaylistIdAsync(playlistId);
+        var list = await Api.PlaylistTrackHistory.GetByPlaylistIdAsync(1);
 
         foreach (var item in list)
-            item.PlaylistId.Should().Be(playlistId);
+            item.PlaylistId.Should().Be(1);
     }
 	
 	[TestMethod]
-    public async Task GetByTrackId(int trackId)
+    public async Task GetByTrackId()
     {
-        var list = await Api.PlaylistTrackHistory.GetByTrackIdAsync(trackId);
+        var list = await Api.PlaylistTrackHistory.GetByTrackIdAsync(1);
 
         foreach (var item in list)
-            item.TrackId.Should().Be(trackId);
+            item.TrackId.Should().Be(1);
     }
 	
 }

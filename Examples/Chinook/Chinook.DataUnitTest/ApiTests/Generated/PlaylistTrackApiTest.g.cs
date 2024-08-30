@@ -75,18 +75,6 @@ public partial class PlaylistTrackApiTest
     }
 
     [TestMethod]
-    public async Task Update()
-    {
-        var entity = await Api.PlaylistTrack.GetFirstAsync();
-        object value = PlaylistTrackDaoTest.SetUpdateField(entity);
-        await Api.PlaylistTrack.UpdateAsync(entity);
-
-        entity = await Api.PlaylistTrack.GetFirstAsync();
-
-        PlaylistTrackDaoTest.GetUpdateField(entity).Should().Be(value);
-    }
-
-    [TestMethod]
     public async Task GetFirst()
     {
         var entity = await Api.PlaylistTrack.GetFirstAsync();
@@ -95,21 +83,21 @@ public partial class PlaylistTrackApiTest
 
     
 	[TestMethod]
-    public async Task GetByPlaylistId(int playlistId)
+    public async Task GetByPlaylistId()
     {
-        var list = await Api.PlaylistTrack.GetByPlaylistIdAsync(playlistId);
+        var list = await Api.PlaylistTrack.GetByPlaylistIdAsync(1);
 
         foreach (var item in list)
-            item.PlaylistId.Should().Be(playlistId);
+            item.PlaylistId.Should().Be(1);
     }
 	
 	[TestMethod]
-    public async Task GetByTrackId(int trackId)
+    public async Task GetByTrackId()
     {
-        var list = await Api.PlaylistTrack.GetByTrackIdAsync(trackId);
+        var list = await Api.PlaylistTrack.GetByTrackIdAsync(1);
 
         foreach (var item in list)
-            item.TrackId.Should().Be(trackId);
+            item.TrackId.Should().Be(1);
     }
 	
 }

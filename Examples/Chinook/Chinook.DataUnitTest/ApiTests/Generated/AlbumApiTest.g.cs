@@ -97,10 +97,10 @@ public partial class AlbumApiTest
 	[TestMethod]
     public async Task GetByArtistId()
     {
-        var list = await Api.Album.GetByArtistIdAsync(2);
+        var list = await Api.Album.GetByArtistIdAsync(1);
 
         foreach (var item in list)
-            item.ArtistId.Should().Be(2);
+            item.ArtistId.Should().Be(1);
     }
 	
 }

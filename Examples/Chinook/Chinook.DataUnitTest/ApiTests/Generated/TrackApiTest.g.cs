@@ -95,30 +95,30 @@ public partial class TrackApiTest
 
     
 	[TestMethod]
-    public async Task GetByAlbumId(int? albumId)
+    public async Task GetByAlbumId()
     {
-        var list = await Api.Track.GetByAlbumIdAsync(albumId);
+        var list = await Api.Track.GetByAlbumIdAsync(2);
 
         foreach (var item in list)
-            item.AlbumId.Should().Be(albumId);
+            item.AlbumId.Should().Be(2);
     }
 	
 	[TestMethod]
-    public async Task GetByGenreId(int genreId)
+    public async Task GetByGenreId()
     {
-        var list = await Api.Track.GetByGenreIdAsync(genreId);
+        var list = await Api.Track.GetByGenreIdAsync(1);
 
         foreach (var item in list)
-            item.GenreId.Should().Be(genreId);
+            item.GenreId.Should().Be(1);
     }
 	
 	[TestMethod]
-    public async Task GetByMediaTypeId(int mediaTypeId)
+    public async Task GetByMediaTypeId()
     {
-        var list = await Api.Track.GetByMediaTypeIdAsync(mediaTypeId);
+        var list = await Api.Track.GetByMediaTypeIdAsync(1);
 
         foreach (var item in list)
-            item.MediaTypeId.Should().Be(mediaTypeId);
+            item.MediaTypeId.Should().Be(1);
     }
 	
 }

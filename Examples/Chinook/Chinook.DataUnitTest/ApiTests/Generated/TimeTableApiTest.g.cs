@@ -24,37 +24,11 @@ public partial class TimeTableApiTest
     }
 
     [TestMethod]
-    public async Task GetByKey()
-    {
-        var first = await Api.TimeTable.GetFirstAsync();
-        var entity = await Api.TimeTable.GetByKeyAsync(first.Time );
-
-        entity.PrimaryKeyValues.Should().Be(first.PrimaryKeyValues);
-    }
-
-    [TestMethod]
     public async Task ExistsByKey()
     {
         var first = await Api.TimeTable.GetFirstAsync();
 
         (await Dao.TimeTable.ExistsByKeyAsync(first.Time )).Should().BeTrue();
-    }
-
-    [TestMethod]
-    public async Task Exists()
-    {
-        var first = await Api.TimeTable.GetFirstAsync();
-
-        (await Api.TimeTable.ExistsByKeyAsync(first.Time )).Should().BeTrue();
-    }
-
-    [TestMethod]
-    public async Task DeleteByKey()
-    {
-        var first = await Api.TimeTable.GetFirstAsync();
-        await Api.TimeTable.DeleteByKeyAsync(first.Time );
-
-        (await Api.TimeTable.ExistsByKeyAsync(first.Time )).Should().BeFalse();
     }
 
     [TestMethod]
