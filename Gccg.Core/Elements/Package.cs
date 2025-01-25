@@ -30,8 +30,8 @@ public class Package
                     return "*/";
             }
 
-            if (Variables.ContainsKey(variableName))
-                return Variables[variableName];
+            if (Variables.TryGetValue(variableName, out var variable))
+                return variable;
 
             throw new VariableNotExistException(variableName);
         }

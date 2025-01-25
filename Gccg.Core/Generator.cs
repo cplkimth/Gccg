@@ -34,15 +34,13 @@ public static class Generator
 
     private static string GenerateCore(SchemaExtractor schemaExtractor, DbContext dbContext)
     {
-        ConfigManager.Instance.Inialize(dbContext);
-
-        string[] templatePathes = ReadTemplates();
+        string[] templatePaths = ReadTemplates();
         Console.WriteLine();
 
         var tables = schemaExtractor.Extract();
 
         Console.WriteLine("Inflating templates ...");
-        InflatePackage(templatePathes, tables);
+        InflatePackage(templatePaths, tables);
         Console.WriteLine();
 
         Console.WriteLine("Finished without error(s)");
@@ -53,7 +51,7 @@ public static class Generator
     private static string[] ReadTemplates()
     {
         var files = Directory
-            .GetFiles(ConfigManager.Instance.RootPath, $"*{TemplatePostfix}", SearchOption.AllDirectories)
+            .GetFiles(GccgConfig.Instance[C.SolutionDirectory], $"*{TemplatePostfix}", SearchOption.AllDirectories)
             .Where(x => Path.GetFileName(x).StartsWith("__") == false)
             .ToArray();
 
@@ -64,9 +62,9 @@ public static class Generator
         return files;
     }
 
-    private static void InflatePackage(string[] templatePathes, Table[] tables)
+    private static void InflatePackage(string[] templatePaths, Table[] tables)
     {
-        foreach (var templatePath in templatePathes)
+        foreach (var templatePath in templatePaths)
         {
             Console.WriteLine($"{Path.GetFileName(templatePath)}");
 
@@ -94,15 +92,15 @@ public static class Generator
     private static string GetPathToWrite(string pathToWrite, string tableName, string templatePath)
     {
         if (tableName != null)
-            pathToWrite = ConfigManager.Instance.Fill(pathToWrite);
+            pathToWrite = GccgConfig.Instance.Fill(pathToWrite);
 
         var matches = Regex.Matches(pathToWrite, "`(.*?)`");
         foreach (Match match in matches)
             if (match.Value == "`Name`")
                 pathToWrite = pathToWrite.Replace(match.Value, tableName);
 
-        var templateDirecotry = new FileInfo(templatePath).Directory.FullName;
-        pathToWrite = Path.Combine(templateDirecotry, pathToWrite);
+        var templateDirectory = new FileInfo(templatePath).Directory.FullName;
+        pathToWrite = Path.Combine(templateDirectory, pathToWrite);
         return pathToWrite;
     }
 

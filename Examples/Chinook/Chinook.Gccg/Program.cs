@@ -1,31 +1,24 @@
 ﻿#region
-
+using System.Text.Json;
 using Chinook.Data;
 using Gccg.Core;
 
 #endregion
 
-namespace Chinook.Gccg;
+string Root = @"I:\git\Gccg\Examples\Chinook";
 
-internal static class Program
-{
-    private const string SolutionName = "Chinook";
-    private const string Root = @$"D:\git\{SolutionName}";
+string solutionName = new DirectoryInfo(Root).Name;
+string dataEf = $@"{Root}\{solutionName}.Data\EF";
+string gccgEf = $@"{Root}\{solutionName}.Gccg\EF";
 
-    private const string DataEF = $@"{Root}\{SolutionName}.Data\EF";
-    private const string GccgEF = $@"{Root}\{SolutionName}.Gccg\EF";
+GccgConfig.CreateSingleton
+(
+    new ChinookContext(),
+    solutionName,
+    Root,
+    dataEf,
+    gccgEf,
+    variables: [("Var1", "Text1"),("ServiceProjectNamespace", "Chinook.Service")]
+);
 
-    private static void Main(string[] args)
-    {
-        var config = new GccgConfig
-        {
-            DbContext = new ChinookContext(),
-            SolutionName = SolutionName,
-            Root = Root,
-            DataEF = DataEF,
-            GccgEF = GccgEF
-        };
-
-        GeneratorHelper.Generate(config);
-    }
-}
+GeneratorHelper.Generate();

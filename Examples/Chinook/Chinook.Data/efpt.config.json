@@ -1,5 +1,5 @@
 ﻿{
-   "CodeGenerationMode": 4,
+   "CodeGenerationMode": 5,
    "ContextClassName": "ChinookContext",
    "ContextNamespace": "Data",
    "FilterSchemas": false,
@@ -96,6 +96,7 @@
    "UseAsyncStoredProcedureCalls": true,
    "UseBoolPropertiesWithoutDefaultSql": true,
    "UseDatabaseNames": false,
+   "UseDatabaseNamesForRoutines": true,
    "UseDateOnlyTimeOnly": true,
    "UseDbContextSplitting": true,
    "UseDecimalDataAnnotationForSprocResult": true,
@@ -103,6 +104,7 @@
    "UseHandleBars": false,
    "UseHierarchyId": true,
    "UseInflector": true,
+   "UseInternalAccessModifiersForSprocsAndFunctions": false,
    "UseLegacyPluralizer": false,
    "UseManyToManyEntity": false,
    "UseNoDefaultConstructor": false,
@@ -114,5 +116,6 @@
    "UseSchemaFolders": false,
    "UseSchemaNamespaces": false,
    "UseSpatial": false,
-   "UseT4": false
+   "UseT4": false,
+   "UseT4Split": false
 }

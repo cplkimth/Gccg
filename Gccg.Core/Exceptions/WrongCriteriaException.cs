@@ -4,7 +4,7 @@
     {
         public string Criteria { get; private set; }
 
-        public WrongCriteriaException(string criteria) : base(string.Format("criteria {0} is wrong.", criteria))
+        public WrongCriteriaException(string criteria) : base($"criteria {criteria} is wrong.")
         {
             Criteria = criteria;
         }

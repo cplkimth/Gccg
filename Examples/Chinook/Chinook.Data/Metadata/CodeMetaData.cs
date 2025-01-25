@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
  
 #endregion
 namespace Chinook.Data;
+// namespace Chinook.Service;
 
 
 public class CodeMetaData
