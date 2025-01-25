@@ -43,7 +43,7 @@ namespace Chinook.Data
             _context = context;
         }
 
-        public virtual async Task<int> usp_GetMaxIdAsync(string Entity, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<int> usp_GetMaxIdAsync(string entity, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -58,7 +58,7 @@ namespace Chinook.Data
                 {
                     ParameterName = "Entity",
                     Size = 200,
-                    Value = Entity ?? Convert.DBNull,
+                    Value = entity ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.NVarChar,
                 },
                 parameterreturnValue,

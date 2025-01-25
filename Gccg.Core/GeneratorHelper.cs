@@ -2,13 +2,9 @@
 
 public class GeneratorHelper
 {
-    public static GccgConfig GccgConfig { get; private set; }
-
-    public static void Generate(GccgConfig gccgConfig)
+    public static void Generate()
     {
-        GccgConfig = gccgConfig;
-
-        Console.WriteLine($"[{GccgConfig.DataEF}] 프로젝트에서 EF Core Power Tools를 실행하였습니까?");
+        Console.WriteLine($"Ensure executing EF Core Power Tools in [{GccgConfig.Instance.DataEF}] project.");
 
         var commands = (Command[])Enum.GetValues(typeof(Command));
         foreach (var command in commands)
@@ -19,35 +15,35 @@ public class GeneratorHelper
         switch (commandInput)
         {
             case Command.Preparation:
-                Prepare();
+                OnPreparation();
                 break;
             case Command.Generation:
-                Generate();
+                OnGeneration();
                 break;
         }
         
         Console.WriteLine("done!");
     }
 
-    private static void Prepare()
+    private static void OnPreparation()
     {
-        Console.WriteLine($"deleting [{GccgConfig.GccgEF}]");
+        Console.WriteLine($"deleting [{GccgConfig.Instance.GccgEF}]");
         try
         {
-            Directory.Delete(GccgConfig.GccgEF, true);
+            Directory.Delete(GccgConfig.Instance.GccgEF, true);
         }
         catch
         {
             // ignored
         }
 
-        Thread.Sleep(GccgConfig.Sleep);
+        Thread.Sleep(GccgConfig.Instance.Sleep);
 
-        Console.WriteLine($"copying [{GccgConfig.DataEF}] to [{GccgConfig.GccgEF}]");
-        CopyDirectory(GccgConfig.DataEF, GccgConfig.GccgEF, true);
-        Thread.Sleep(GccgConfig.Sleep);
+        Console.WriteLine($"copying [{GccgConfig.Instance.DataEF}] to [{GccgConfig.Instance.GccgEF}]");
+        CopyDirectory(GccgConfig.Instance.DataEF, GccgConfig.Instance.GccgEF, true);
+        Thread.Sleep(GccgConfig.Instance.Sleep);
 
-        var contextFile = Directory.GetFiles(GccgConfig.DataEF, GccgConfig.ContextPostfix).FirstOrDefault();
+        var contextFile = Directory.GetFiles(GccgConfig.Instance.DataEF, GccgConfig.Instance.ContextPostfix).FirstOrDefault();
         Console.WriteLine($"removing OnConfiguring in [{contextFile}]");
         var lines = File.ReadAllLines(contextFile);
         var indexToMove = FindIndexToDelete(lines, "protected override void OnConfiguring");
@@ -59,16 +55,16 @@ public class GeneratorHelper
             result.AddRange(lines.Skip(indexToMove + 3));
 
             File.WriteAllLines(contextFile, result);
-            Thread.Sleep(GccgConfig.Sleep);
+            Thread.Sleep(GccgConfig.Instance.Sleep);
         }
 
-        Thread.Sleep(GccgConfig.Sleep);
+        Thread.Sleep(GccgConfig.Instance.Sleep);
     }
 
-    private static void Generate()
+    private static void OnGeneration()
     {
-        var json = Generator.Generate(GccgConfig.DbContext);
-        File.WriteAllText($"{GccgConfig.SolutionName}.json", json);
+        var json = Generator.Generate(GccgConfig.Instance.DbContext);
+        File.WriteAllText($"{GccgConfig.Instance[C.SolutionName]}.json", json);
     }
 
     private static int FindIndexToDelete(string[] lines, string text)

@@ -13,7 +13,7 @@ namespace Chinook.Data
 {
     public partial interface IChinookContextProcedures
     {
-        Task<int> usp_GetMaxIdAsync(string Entity, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<int> usp_GetMaxIdAsync(string entity, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<usp_GetSystemTimeResult>> usp_GetSystemTimeAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<int> usp_InitializeAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
     }
