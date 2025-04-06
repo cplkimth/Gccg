@@ -82,7 +82,7 @@ public partial class EmployeeDaoTest : EntityDaoTest<Employee>
         var entity = first.Clone();
         entity.ClearKeyValues();
         FillForInsert(entity);
-        Dao.Employee.Insert(entity);
+        entity = Dao.Employee.Insert(entity);
 
         var newCount = Dao.Employee.GetCount();
 

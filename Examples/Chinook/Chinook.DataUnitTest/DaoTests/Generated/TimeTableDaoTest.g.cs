@@ -82,7 +82,7 @@ public partial class TimeTableDaoTest : EntityDaoTest<TimeTable>
         var entity = first.Clone();
         entity.ClearKeyValues();
         FillForInsert(entity);
-        Dao.TimeTable.Insert(entity);
+        entity = Dao.TimeTable.Insert(entity);
 
         var newCount = Dao.TimeTable.GetCount();
 

@@ -82,7 +82,7 @@ public partial class InvoiceLineDaoTest : EntityDaoTest<InvoiceLine>
         var entity = first.Clone();
         entity.ClearKeyValues();
         FillForInsert(entity);
-        Dao.InvoiceLine.Insert(entity);
+        entity = Dao.InvoiceLine.Insert(entity);
 
         var newCount = Dao.InvoiceLine.GetCount();
 

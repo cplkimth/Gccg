@@ -82,7 +82,7 @@ public partial class GenreDaoTest : EntityDaoTest<Genre>
         var entity = first.Clone();
         entity.ClearKeyValues();
         FillForInsert(entity);
-        Dao.Genre.Insert(entity);
+        entity = Dao.Genre.Insert(entity);
 
         var newCount = Dao.Genre.GetCount();
 

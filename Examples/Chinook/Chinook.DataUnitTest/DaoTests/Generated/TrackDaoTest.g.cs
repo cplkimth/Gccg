@@ -82,7 +82,7 @@ public partial class TrackDaoTest : EntityDaoTest<Track>
         var entity = first.Clone();
         entity.ClearKeyValues();
         FillForInsert(entity);
-        Dao.Track.Insert(entity);
+        entity = Dao.Track.Insert(entity);
 
         var newCount = Dao.Track.GetCount();
 

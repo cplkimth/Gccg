@@ -82,7 +82,7 @@ public partial class MediaTypeDaoTest : EntityDaoTest<MediaType>
         var entity = first.Clone();
         entity.ClearKeyValues();
         FillForInsert(entity);
-        Dao.MediaType.Insert(entity);
+        entity = Dao.MediaType.Insert(entity);
 
         var newCount = Dao.MediaType.GetCount();
 

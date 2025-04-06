@@ -82,7 +82,7 @@ public partial class CodeDaoTest : EntityDaoTest<Code>
         var entity = first.Clone();
         entity.ClearKeyValues();
         FillForInsert(entity);
-        Dao.Code.Insert(entity);
+        entity = Dao.Code.Insert(entity);
 
         var newCount = Dao.Code.GetCount();
 

@@ -1,4 +1,4 @@
-{
+﻿{
 	"Version":2,
 	"Scope":0,
 	"TargetPath":"Data.g.cs",
@@ -841,7 +841,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
         };
     }
     
-    internal int SaveChanges(LogType logType, params List<T> entities)
+    internal (int Count, T Entity) SaveChanges(LogType logType, params IEnumerable<T> entities)
 	{
         using var context = DbContextFactory.Create();
 
@@ -853,10 +853,10 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
             foreach (var entity in entities)
     			OnSaved(entity, logType);
 
-		return count;
+		return (count, count > 0 ? entities.First() : null);
 	}
 
-    internal async Task<int> SaveChangesAsync(LogType logType, params List<T> entities)
+    internal async Task<(int Count, T Entity)> SaveChangesAsync(LogType logType, params IEnumerable<T> entities)
 	{
         await using var context = DbContextFactory.Create();
 
@@ -868,26 +868,44 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
             foreach (var entity in entities)
     			OnSaved(entity, logType);
 
-		return count;
+        return (count, count > 0 ? entities.First() : null);
 	}
 
-	public virtual int Insert(params List<T> entities)
-        => SaveChanges(LogType.Insert, entities);
+	public virtual T Insert(T entity)
+        => SaveChanges(LogType.Insert, entity).Entity;
 	
-    public virtual async Task<int> InsertAsync(params List<T> entities)
-        => await SaveChangesAsync(LogType.Insert, entities);
+    public virtual async Task<T> InsertAsync(T entity)
+        => (await SaveChangesAsync(LogType.Insert, entity)).Entity;
 
-	public virtual int Update(params List<T> entities)
-        => SaveChanges(LogType.Update, entities);
+	public virtual int InsertMany(IEnumerable<T> entities)
+        => SaveChanges(LogType.Insert, entities).Count;
+	
+    public virtual async Task<int> InsertManyAsync(IEnumerable<T> entities)
+        => (await SaveChangesAsync(LogType.Insert, entities)).Count;
 
-    public virtual async Task<int> UpdateAsync(params List<T> entities) 
-        => await SaveChangesAsync(LogType.Update, entities);
+	public virtual int Update(T entity)
+        => SaveChanges(LogType.Update, entity).Count;
 
-	public virtual int Delete(params List<T> entities)
-        => SaveChanges(LogType.Delete, entities);
+    public virtual async Task<int> UpdateAsync(T entity) 
+        => (await SaveChangesAsync(LogType.Update, entity)).Count;
 
-    public virtual async Task<int> DeleteAsync(params List<T> entities) 
-        => await SaveChangesAsync(LogType.Delete, entities);
+	public virtual int UpdateMany(IEnumerable<T> entities)
+        => SaveChanges(LogType.Update, entities).Count;
+
+    public virtual async Task<int> UpdateAsync(IEnumerable<T> entities) 
+        => (await SaveChangesAsync(LogType.Update, entities)).Count;
+
+	public virtual int Delete(T entity)
+        => SaveChanges(LogType.Delete, entity).Count;
+
+    public virtual async Task<int> DeleteAsync(T entity) 
+        => (await SaveChangesAsync(LogType.Delete, entity)).Count;
+
+	public virtual int DeleteMany(IEnumerable<T> entities)
+        => SaveChanges(LogType.Delete, entities).Count;
+
+    public virtual async Task<int> DeleteManyAsync(IEnumerable<T> entities) 
+        => (await SaveChangesAsync(LogType.Delete, entities)).Count;
 
 	public virtual int DeleteAll(Expression<Func<T, bool>> where)
 	{
@@ -895,7 +913,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 
 		var entities = Get(where);
 
-        return Delete(entities);
+        return DeleteMany(entities);
 	}
 
 	public virtual async Task<int> DeleteAllAsync(Expression<Func<T, bool>> where)
@@ -904,7 +922,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 
 		var entities = await GetAsync(where);
 
-        return await DeleteAsync(entities);
+        return await DeleteManyAsync(entities);
 	}
 
     /// <summary>
@@ -912,13 +930,13 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// </summary>
     /// <param name="entity">삽입할 엔터티</param>
     /// <returns>삽입된 엔터티</returns>
-    public virtual int InsertIfNotExist(T entity)
+    public virtual T InsertIfNotExist(T entity)
     {
         using var context = DbContextFactory.Create();
 
         int count = context.Set<T>().Count(HasSameKey(entity));
         if (count > 0)
-            return 0;
+            return null;
 
         return Insert(entity);
     }
@@ -928,15 +946,15 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// </summary>
     /// <param name="entity">삽입할 엔터티</param>
     /// <returns>삽입된 엔터티</returns>
-    public virtual async Task<int> InsertIfNotExistAsync(T entity)
+    public virtual async Task<T> InsertIfNotExistAsync(T entity)
     {
         await using var context = DbContextFactory.Create();
 
         int count = await context.Set<T>().CountAsync(HasSameKey(entity));
         if (count > 0)
-            return 0;
+            return null;
 
-        return Insert(entity);
+        return await InsertAsync(entity);
     }
 
     /// <summary>
@@ -983,7 +1001,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
             await InsertAsync(entity);
             return true;
         }
-    }
+    }	
 	#endregion Insert / Update / Delete
 
     protected abstract Expression<Func<T, bool>> HasSameKey(T other);

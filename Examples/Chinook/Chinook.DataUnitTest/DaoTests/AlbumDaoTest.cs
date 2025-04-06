@@ -22,7 +22,7 @@ public partial class AlbumDaoTest
         };
 
         var oldCount = Dao.Album.GetCount();
-        var insertedCount = Dao.Album.Insert(list);
+        var insertedCount = Dao.Album.InsertMany(list);
         var newCount = Dao.Album.GetCount();
 
         insertedCount.Should().Be(2);
@@ -36,7 +36,7 @@ public partial class AlbumDaoTest
         foreach (var entity in list)
             entity.Title = entity.AlbumId.ToString();
 
-        Dao.Album.Update(list);
+        Dao.Album.UpdateMany(list);
 
         foreach (var entity in list)
             entity.Title.Should().Be(entity.AlbumId.ToString());
@@ -319,7 +319,7 @@ public partial class AlbumDaoTest
         };
 
         var oldCount = Dao.Album.GetCount();
-        var insertedCount = Dao.Album.InsertAsync(albums).Result;
+        var insertedCount = Dao.Album.InsertManyAsync(albums).Result;
         var newCount = Dao.Album.GetCount();
 
         Assert.AreEqual(2, insertedCount);

@@ -82,7 +82,7 @@ public partial class PlaylistTrackHistoryDaoTest : EntityDaoTest<PlaylistTrackHi
         var entity = first.Clone();
         entity.ClearKeyValues();
         FillForInsert(entity);
-        Dao.PlaylistTrackHistory.Insert(entity);
+        entity = Dao.PlaylistTrackHistory.Insert(entity);
 
         var newCount = Dao.PlaylistTrackHistory.GetCount();
 

@@ -82,7 +82,7 @@ public partial class DateTableDaoTest : EntityDaoTest<DateTable>
         var entity = first.Clone();
         entity.ClearKeyValues();
         FillForInsert(entity);
-        Dao.DateTable.Insert(entity);
+        entity = Dao.DateTable.Insert(entity);
 
         var newCount = Dao.DateTable.GetCount();
 

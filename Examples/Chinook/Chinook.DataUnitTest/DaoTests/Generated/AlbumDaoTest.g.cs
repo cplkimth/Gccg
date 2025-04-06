@@ -82,7 +82,7 @@ public partial class AlbumDaoTest : EntityDaoTest<Album>
         var entity = first.Clone();
         entity.ClearKeyValues();
         FillForInsert(entity);
-        Dao.Album.Insert(entity);
+        entity = Dao.Album.Insert(entity);
 
         var newCount = Dao.Album.GetCount();
 
