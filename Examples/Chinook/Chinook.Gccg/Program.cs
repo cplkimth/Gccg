@@ -5,7 +5,7 @@ using Gccg.Core;
 
 #endregion
 
-string Root = @"I:\git\Gccg\Examples\Chinook";
+string Root = @"d:\git\Gccg\Examples\Chinook";
 
 string solutionName = new DirectoryInfo(Root).Name;
 string dataEf = $@"{Root}\{solutionName}.Data\EF";

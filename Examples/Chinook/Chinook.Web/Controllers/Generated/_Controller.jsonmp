@@ -1,4 +1,4 @@
-{
+﻿{
 	"Version":2,
 	"Scope":0,
 	"TargetPath":"Controller.g.cs",
@@ -36,7 +36,7 @@ public abstract partial class EntityController<T> : ControllerBase where T : Ent
     }
 
     [HttpPost]
-    public virtual async Task<T> InsertAsync(T entity)
+    public virtual async Task<int> InsertAsync(T entity)
     {
         return await Dao.Get<T>().InsertAsync(entity);
     }

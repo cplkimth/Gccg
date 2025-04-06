@@ -1,4 +1,4 @@
-
+﻿
 #region using
 using Chinook.Data;
 using System.IdentityModel.Tokens.Jwt;
@@ -30,7 +30,7 @@ public abstract partial class EntityController<T> : ControllerBase where T : Ent
     }
 
     [HttpPost]
-    public virtual async Task<T> InsertAsync(T entity)
+    public virtual async Task<int> InsertAsync(T entity)
     {
         return await Dao.Get<T>().InsertAsync(entity);
     }

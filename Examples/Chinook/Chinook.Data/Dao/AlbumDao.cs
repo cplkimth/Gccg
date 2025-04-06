@@ -1,14 +1,17 @@
-#region using
+﻿#region using
 
 #endregion
+
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Chinook.Data;
 
 public partial class AlbumDao
 {
-    public List<Album> Search(string artistName, string trackName)
+    public async Task<List<Album>> SearchAsync(string artistName, string trackName)
     {
-        using var context = DbContextFactory.Create();
+        await using var context = DbContextFactory.Create();
 
         var query = from x in context.Albums
             select x;
@@ -19,9 +22,9 @@ public partial class AlbumDao
         if (trackName != null)
             query = query.Where(x => x.Tracks.Any(t => t.Name.Contains(trackName)));
 
-        var list = query
+        var list = await query
             .Select(x => new { Album = x, ArtistName = x.Artist.Name, TrackCount = x.Tracks.Count })
-            .ToList();
+            .ToListAsync();
 
         foreach (var x in list)
         {

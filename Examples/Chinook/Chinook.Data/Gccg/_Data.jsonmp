@@ -27,7 +27,7 @@ namespace `DataProjectNamespace`;
 public partial interface IEntity
 {
 }
-#endregion
+#endregion IEntity
 
 #region Untyped Entity
 /// <summary>
@@ -262,7 +262,6 @@ internal class PropertyChangingEventArgs<T, K> : EventArgs where T : Entity<T>, 
 }
 #endregion
 
-#region Data
 #region EntityDao<T>
 [Data]
 public abstract partial class EntityDao<T> where T : Entity<T>, new()
@@ -302,20 +301,18 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 
 		return entity;
 	}
-	#endregion
+	#endregion Create
 
-	#region Get
-	/// <summary>
-	/// 모든 엔터티를 반환한다.
-	/// </summary>
-	/// <returns>엔터티의 리스트</returns>
+    #region Get
+    /// <summary>
+    /// 모든 엔터티를 반환한다.
+    /// </summary>
+    /// <returns>엔터티의 리스트</returns>
     public virtual List<T> Get()
-	{
-		return Get<T>(null, null, false, 0, int.MaxValue);
-	}
+        => Get<T>(null, null, true, 0, int.MaxValue);
 
-    public virtual Task<List<T>> GetAsync() 
-        => Task.Run(() => Get());
+    public virtual async Task<List<T>> GetAsync()
+        => await GetAsync<T>(null, null, true, 0, int.MaxValue);
 
     /// <summary>
     /// 조건식에 맞는 엔터티들을 반환한다.
@@ -323,172 +320,159 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="where">조건식</param>
     /// <returns>엔터티의 리스트</returns>
     public virtual List<T> Get(Expression<Func<T, bool>> where)
-	{
-		return Get<T>(where, null, false, 0, int.MaxValue);
-	}
+        => Get<T>(where, null, true, 0, int.MaxValue);
 
-    public virtual Task<List<T>> GetAsync(Expression<Func<T, bool>> where)
-        => Task.Run(() => Get(where));
+    public virtual async Task<List<T>> GetAsync(Expression<Func<T, bool>> where)
+        => await GetAsync<T>(where, null, true, 0, int.MaxValue);
 
-	/// <summary>
-	/// 모든 엔터티들을 정렬식에 따라 정렬한 후 반환한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
-	/// </summary>
-	/// <typeparam name="U">정렬 기준이 되는 속성의 형식</typeparam>
-	/// <param name="orderBy">정렬식</param>
-	/// <param name="ascending">true이면 오름차순, false이면 내림차순</param>
-	/// <returns>엔터티의 리스트</returns>
-    public virtual List<T> Get<U>(Expression<Func<T, U>> orderBy, bool ascending)
-	{
-		return Get(null, orderBy, ascending, 0, int.MaxValue);
-	}
+    /// <summary>
+    /// 모든 엔터티들을 정렬식에 따라 정렬한 후 반환한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
+    /// </summary>
+    /// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
+    /// <param name="orderBy">정렬식</param>
+    /// <param name="ascending">true이면 오름차순, false이면 내림차순</param>
+    /// <returns>엔터티의 리스트</returns>
+    public virtual List<T> Get<O>(Expression<Func<T, O>> orderBy, bool ascending)
+        => Get<O>(null, orderBy, ascending, 0, int.MaxValue);
 
-    public virtual Task<List<T>> GetAsync<U>(Expression<Func<T, U>> orderBy, bool ascending)
-        => Task.Run(() => Get(orderBy, ascending));
+    public virtual async Task<List<T>> GetAsync<O>(Expression<Func<T, O>> orderBy, bool ascending)
+        => await GetAsync<O>(null, orderBy, ascending, 0, int.MaxValue);
 
-	/// <summary>
-	/// 조건식에 맞는 엔터티들을 정렬식에 따라 정렬한 후 반환한다. 페이징을 지원한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
-	/// </summary>
-	/// <typeparam name="U">정렬 기준이 되는 속성의 형식</typeparam>
-	/// <param name="orderBy">정렬식</param>
-	/// <param name="ascending">true이면 오름차순, false이면 내림차순</param>
-	/// <param name="startRowIndex">반환할 엔터티의 시작 인덱스</param>
-	/// <param name="maximumRows">반환할 엔터티의 갯수</param>
-	/// <returns>엔터티의 리스트</returns>
-    public virtual List<T> Get<U>(Expression<Func<T, U>> orderBy, bool ascending, int startRowIndex, int maximumRows)
-	{
-		return Get(null, orderBy, ascending, startRowIndex, maximumRows);
-	}
+    /// <summary>
+    /// 조건식에 맞는 엔터티들을 정렬식에 따라 정렬한 후 반환한다. 페이징을 지원한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
+    /// </summary>
+    /// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
+    /// <param name="orderBy">정렬식</param>
+    /// <param name="ascending">true이면 오름차순, false이면 내림차순</param>
+    /// <param name="startRowIndex">반환할 엔터티의 시작 인덱스</param>
+    /// <param name="maximumRows">반환할 엔터티의 갯수</param>
+    /// <returns>엔터티의 리스트</returns>
+    public virtual List<T> Get<O>(Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows)
+        => Get(null, orderBy, ascending, startRowIndex, maximumRows);
 
-    public virtual Task<List<T>> GetAsync<U>(Expression<Func<T, U>> orderBy, bool ascending, int startRowIndex, int maximumRows)
-        => Task.Run(() => Get(orderBy, ascending, startRowIndex, maximumRows));
+    public virtual Task<List<T>> GetAsync<O>(Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex,
+        int maximumRows)
+        => GetAsync(null, orderBy, ascending, startRowIndex, maximumRows);
 
-	/// <summary>
-	/// 조건식에 맞는 엔터티들을 정렬식에 따라 정렬한 후 반환한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
-	/// </summary>
-	/// <typeparam name="U">정렬 기준이 되는 속성의 형식</typeparam>
-	/// <param name="where">조건식</param>
-	/// <param name="orderBy">정렬식</param>
-	/// <param name="ascending">true이면 오름차순, false이면 내림차순</param>
-	/// <returns>엔터티의 리스트</returns>
-    public virtual List<T> Get<U>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy, bool ascending)
-	{
-		return Get(where, orderBy, ascending, 0, int.MaxValue);
-	}
+    /// <summary>
+    /// 조건식에 맞는 엔터티들을 정렬식에 따라 정렬한 후 반환한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
+    /// </summary>
+    /// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
+    /// <param name="where">조건식</param>
+    /// <param name="orderBy">정렬식</param>
+    /// <param name="ascending">true이면 오름차순, false이면 내림차순</param>
+    /// <returns>엔터티의 리스트</returns>
+    public virtual List<T> Get<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending)
+        => Get(where, orderBy, ascending, 0, int.MaxValue);
 
-    public virtual Task<List<T>> GetAsync<U>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy, bool ascending)
-        => Task.Run(() => Get(where, orderBy, ascending));
+    public virtual Task<List<T>> GetAsync<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy,
+        bool ascending)
+        => GetAsync(where, orderBy, ascending, 0, int.MaxValue);
 
-	/// <summary>
-	/// 조건식에 맞는 엔터티들을 정렬식에 따라 정렬한 후 반환한다. 페이징을 지원한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
-	/// </summary>
-	/// <typeparam name="U">정렬 기준이 되는 속성의 형식</typeparam>
-	/// <param name="where">조건식</param>
-	/// <param name="orderBy">정렬식</param>
-	/// <param name="ascending">true이면 오름차순, false이면 내림차순</param>
-	/// <param name="startRowIndex">반환할 엔터티의 시작 인덱스</param>
-	/// <param name="maximumRows">반환할 엔터티의 갯수</param>
-	/// <returns>엔터티의 리스트</returns>
-    public virtual List<T> Get<U>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy, bool ascending, int startRowIndex, int maximumRows)
-	{
+    /// <summary>
+    /// 조건식에 맞는 엔터티들을 정렬식에 따라 정렬한 후 반환한다. 페이징을 지원한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
+    /// </summary>
+    /// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
+    /// <param name="where">조건식</param>
+    /// <param name="orderBy">정렬식</param>
+    /// <param name="ascending">true이면 오름차순, false이면 내림차순</param>
+    /// <param name="startRowIndex">반환할 엔터티의 시작 인덱스</param>
+    /// <param name="maximumRows">반환할 엔터티의 갯수</param>
+    /// <returns>엔터티의 리스트</returns>
+    public virtual List<T> Get<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows)
+    {
         using var context = DbContextFactory.Create();
 
-        return GetCore(where, orderBy, ascending, startRowIndex, maximumRows, context).ToList();
-	}
+        return MakeListQuery(where, orderBy, ascending, startRowIndex, maximumRows, context).ToList();
+    }
 
-    public virtual Task<List<T>> GetAsync<U>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy, bool ascending, int startRowIndex, int maximumRows)
-        => Task.Run(() => Get(where, orderBy, ascending, startRowIndex, maximumRows));
-	#endregion
+    public virtual async Task<List<T>> GetAsync<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows)
+    {
+        await using var context = DbContextFactory.Create();
+
+        return await MakeListQuery(where, orderBy, ascending, startRowIndex, maximumRows, context).ToListAsync();
+    }
+#endregion
 
 	#region select
 	/// <summary>
 	///   모든 선택식의 결과를 반환한다.
 	/// </summary>
-	/// <typeparam name="R"> 선택 형식 </typeparam>
+	/// <typeparam name="S"> 선택 형식 </typeparam>
 	/// <param name="select"> 선택식 </param>
 	/// <returns> 엔터티의 리스트 </returns>
-    public virtual List<R> Select<R>(Expression<Func<T, R>> select)
-	{
-		return Select<T, R>(null, null, false, 0, int.MaxValue, select);
-	}
+    public virtual List<S> Select<S>(Expression<Func<T, S>> select)
+        => Select<T, S>(null, null, true, 0, int.MaxValue, select);
 
-    public virtual Task<List<R>> SelectAsync<R>(Expression<Func<T, R>> select)
-        => Task.Run(() => Select(select));
+    public virtual Task<List<S>> SelectAsync<S>(Expression<Func<T, S>> select)
+        => SelectAsync<T, S>(null, null, true, 0, int.MaxValue, select);
 
 	/// <summary>
 	///   조건식에 맞는 선택식의 결과를 반환한다.
 	/// </summary>
-	/// <typeparam name="R"> 선택 형식 </typeparam>
+	/// <typeparam name="S"> 선택 형식 </typeparam>
 	/// <param name="where"> 조건식 </param>
 	/// <param name="select"> 선택식 </param>
 	/// <returns> 엔터티의 리스트 </returns>
-    public virtual List<R> Select<R>(Expression<Func<T, bool>> where, Expression<Func<T, R>> select)
-	{
-		return Select<T, R>(where, null, false, 0, int.MaxValue, select);
-	}
+    public virtual List<S> Select<S>(Expression<Func<T, bool>> where, Expression<Func<T, S>> select)
+        => Select<T, S>(where, null, true, 0, int.MaxValue, select);
 
-    public virtual Task<List<R>> SelectAsync<R>(Expression<Func<T, bool>> where, Expression<Func<T, R>> select)
-        => Task.Run(() => Select(where, select));
+    public virtual Task<List<S>> SelectAsync<S>(Expression<Func<T, bool>> where, Expression<Func<T, S>> select)
+        => SelectAsync<T, S>(where, null, true, 0, int.MaxValue, select);
 
 	/// <summary>
 	///   모든 엔터티들을 정렬식에 따라 정렬한 후 선택식의 결과를 반환한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
 	/// </summary>
-	/// <typeparam name="U"> 정렬 기준이 되는 속성의 형식 </typeparam>
-	/// <typeparam name="R"> 선택 형식 </typeparam>
+	/// <typeparam name="O"> 정렬 기준이 되는 속성의 형식 </typeparam>
+	/// <typeparam name="S"> 선택 형식 </typeparam>
 	/// <param name="orderBy"> 정렬식 </param>
 	/// <param name="ascending"> true이면 오름차순, false이면 내림차순 </param>
 	/// <param name="select"> 선택식 </param>
 	/// <returns> 엔터티의 리스트 </returns>
-    public virtual List<R> Select<U, R>(Expression<Func<T, U>> orderBy, bool ascending, Expression<Func<T, R>> select)
-	{
-		return Select(null, orderBy, ascending, 0, int.MaxValue, select);
-	}
+    public virtual List<S> Select<O, S>(Expression<Func<T, O>> orderBy, bool ascending, Expression<Func<T, S>> select)
+        => Select(null, orderBy, ascending, 0, int.MaxValue, select);
 
-    public virtual Task<List<R>> SelectAsync<U, R>(Expression<Func<T, U>> orderBy, bool ascending, Expression<Func<T, R>> select)
-        => Task.Run(() => Select(orderBy, ascending, select));
+    public virtual Task<List<S>> SelectAsync<O, S>(Expression<Func<T, O>> orderBy, bool ascending, Expression<Func<T, S>> select)
+        => SelectAsync(null, orderBy, ascending, 0, int.MaxValue, select);
 
 	/// <summary>
 	///   조건식에 맞는 엔터티들을 정렬식에 따라 정렬한 후 선택식의 결과를 반환한다. 페이징을 지원한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
 	/// </summary>
-	/// <typeparam name="U"> 정렬 기준이 되는 속성의 형식 </typeparam>
-	/// <typeparam name="R"> 선택 형식 </typeparam>
+	/// <typeparam name="O"> 정렬 기준이 되는 속성의 형식 </typeparam>
+	/// <typeparam name="S"> 선택 형식 </typeparam>
 	/// <param name="orderBy"> 정렬식 </param>
 	/// <param name="ascending"> true이면 오름차순, false이면 내림차순 </param>
 	/// <param name="startRowIndex"> 반환할 엔터티의 시작 인덱스 </param>
 	/// <param name="maximumRows"> 반환할 엔터티의 갯수 </param>
 	/// <param name="select"> 선택식 </param>
 	/// <returns> 엔터티의 리스트 </returns>
-    public virtual List<R> Select<U, R>(Expression<Func<T, U>> orderBy, bool ascending, int startRowIndex, int maximumRows, Expression<Func<T, R>> select)
-	{
-		return Select(null, orderBy, ascending, startRowIndex, maximumRows, select);
-	}
+    public virtual List<S> Select<O, S>(Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows, Expression<Func<T, S>> select)
+        => Select(null, orderBy, ascending, startRowIndex, maximumRows, select);
 
-    public virtual Task<List<R>> SelectAsync<U, R>(Expression<Func<T, U>> orderBy, bool ascending, int startRowIndex, int maximumRows, Expression<Func<T, R>> select)
-        => Task.Run(() => Select(orderBy, ascending, startRowIndex, maximumRows, select));
+    public virtual Task<List<S>> SelectAsync<O, S>(Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows, Expression<Func<T, S>> select)
+        => SelectAsync(null, orderBy, ascending, startRowIndex, maximumRows, select);
 		
-
 	/// <summary>
 	///   조건식에 맞는 엔터티들을 정렬식에 따라 정렬한 후 선택식의 결과를 반환한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
 	/// </summary>
-	/// <typeparam name="U"> 정렬 기준이 되는 속성의 형식 </typeparam>
-	/// <typeparam name="R"> 선택 형식 </typeparam>
+	/// <typeparam name="O"> 정렬 기준이 되는 속성의 형식 </typeparam>
+	/// <typeparam name="S"> 선택 형식 </typeparam>
 	/// <param name="where"> 조건식 </param>
 	/// <param name="orderBy"> 정렬식 </param>
 	/// <param name="ascending"> true이면 오름차순, false이면 내림차순 </param>
 	/// <param name="select"> 선택식 </param>
 	/// <returns> 엔터티의 리스트 </returns>
-    public virtual List<R> Select<U, R>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy, bool ascending, Expression<Func<T, R>> select)
-	{
-		return Select(where, orderBy, ascending, 0, int.MaxValue, select);
-	}
+    public virtual List<S> Select<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, Expression<Func<T, S>> select) 
+        => Select(where, orderBy, ascending, 0, int.MaxValue, select);
 
-    public virtual Task<List<R>> SelectAsync<U, R>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy, bool ascending, Expression<Func<T, R>> select)
-        => Task.Run(() => Select(where, orderBy, ascending, select));
+    public virtual Task<List<S>> SelectAsync<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, Expression<Func<T, S>> select)
+        => SelectAsync(where, orderBy, ascending, 0, int.MaxValue, select);
 
 	/// <summary>
 	///   조건식에 맞는 엔터티들을 정렬식에 따라 정렬한 후 선택식의 결과를 반환한다. 페이징과 프로젝션을을 지원한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
 	/// </summary>
-	/// <typeparam name="U"> 정렬 기준이 되는 속성의 형식 </typeparam>
-	/// <typeparam name="R"> 선택 형식 </typeparam>
+	/// <typeparam name="O"> 정렬 기준이 되는 속성의 형식 </typeparam>
+	/// <typeparam name="S"> 선택 형식 </typeparam>
 	/// <param name="where"> 조건식 </param>
 	/// <param name="orderBy"> 정렬식 </param>
 	/// <param name="ascending"> true이면 오름차순, false이면 내림차순 </param>
@@ -496,18 +480,23 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// <param name="maximumRows"> 반환할 엔터티의 갯수 </param>
 	/// <param name="select"> 선택식 </param>
 	/// <returns> 엔터티의 리스트 </returns>
-    public virtual List<R> Select<U, R>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy, bool ascending, int startRowIndex, int maximumRows, Expression<Func<T, R>> select)
-	{
+    public virtual List<S> Select<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows, Expression<Func<T, S>> select) 
+    {
         using var context = DbContextFactory.Create();
 
-			var query = GetCore(where, orderBy, ascending, startRowIndex, maximumRows, context);
-			return query.Select(select).ToList();
-	}
+        var query = MakeListQuery(where, orderBy, ascending, startRowIndex, maximumRows, context);
+        return query.Select(select).ToList();
+    }
 
-    public virtual Task<List<R>> SelectAsync<U, R>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy, bool ascending, int startRowIndex, int maximumRows, Expression<Func<T, R>> select)
-        => Task.Run(() => Select(where, orderBy, ascending, startRowIndex, maximumRows, select));
+    public virtual async Task<List<S>> SelectAsync<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows, Expression<Func<T, S>> select)
+    {
+        await using var context = DbContextFactory.Create();
 
-	private static IQueryable<T> GetCore<U>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy, bool ascending, int startRowIndex, int maximumRows, `DbContextName` context)
+        var query = MakeListQuery(where, orderBy, ascending, startRowIndex, maximumRows, context);
+        return await query.Select(select).ToListAsync();
+    }
+
+	private static IQueryable<T> MakeListQuery<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows, `DbContextName` context)
 	{
 		var query = from x in context.Set<T>()
 					select x;
@@ -533,98 +522,92 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	#endregion
 
 	#region GetFirst / GetLast
-	/// <summary>
-	/// 모든 엔터티 중 첫번째 엔터티를 반환한다. 엔터티의 순서는 DB에 의해 결정된다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
-	/// </summary>
-	/// <returns>엔터티</returns>
+    /// <summary>
+    /// 모든 엔터티 중 첫번째 엔터티를 반환한다. 엔터티의 순서는 DB에 의해 결정된다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
+    /// </summary>
+    /// <returns>엔터티</returns>
     public virtual T GetFirst()
-	{
-		return GetFirst<T>(null, null);
-	}
+        => GetScalr<T>(null, null, true);
 
     public virtual Task<T> GetFirstAsync()
-        => Task.Run(() => GetFirst());
+        => GetScalrAsync<T>(null, null, true);
 
 	/// <summary>
 	/// 조건식에 맞는 엔터티 중 첫번째 엔터티를 반환한다. 엔터티의 순서는 DB에 의해 결정된다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
 	/// </summary>
 	/// <param name="where">조건식</param>
 	/// <returns>엔터티</returns>
-    public virtual T GetFirst(Expression<Func<T, bool>> where)
-	{
-		return GetFirst<T>(where, null);
-	}
+    public virtual T GetFirst(Expression<Func<T, bool>> where) 
+        => GetScalr<T>(where, null, true);
 
     public virtual Task<T> GetFirstAsync(Expression<Func<T, bool>> where) 
-        => Task.Run(() => GetFirst(where));
+        => GetScalrAsync<T>(where, null, true);
 
     /// <summary>
 	/// 모든 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
 	/// </summary>
-	/// <typeparam name="U">정렬 기준이 되는 속성의 형식</typeparam>
+	/// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
 	/// <param name="orderBy">정렬식</param>
 	/// <returns>엔터티</returns>
-    public virtual T GetFirst<U>(Expression<Func<T, U>> orderBy)
-	{
-		return GetFirst(null, orderBy);
-	}
+    public virtual T GetFirst<O>(Expression<Func<T, O>> orderBy) 
+        => GetScalr<O>(null, orderBy, true);
 
-    public virtual Task<T> GetFirstAsync<U>(Expression<Func<T, U>> orderBy)
-        => Task.Run(() => GetFirst(orderBy));
+    public virtual Task<T> GetFirstAsync<O>(Expression<Func<T, O>> orderBy)
+        => GetScalrAsync<O>(null, orderBy, true);
 
-	/// <summary>
-	/// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
-	/// </summary>
-	/// <typeparam name="U">정렬 기준이 되는 속성의 형식</typeparam>
-	/// <param name="where">조건식</param>
-	/// <param name="orderBy">정렬식</param>
-	/// <returns>엔터티</returns>
-    public virtual T GetFirst<U>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy)
-	{
-		return GetFirstCore(where, orderBy, true);
-	}
+    /// <summary>
+    /// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
+    /// </summary>
+    /// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
+    /// <param name="where">조건식</param>
+    /// <param name="orderBy">정렬식</param>
+    /// <returns>엔터티</returns>
+    public virtual T GetFirst<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy) 
+        => GetScalr(where, orderBy, true);
 
-    public virtual Task<T> GetFirstAsync<U>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy)
-		=> Task.Run(() => GetFirst(where, orderBy));
+    public virtual Task<T> GetFirstAsync<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy)
+        => GetScalrAsync(where, orderBy, true);
 
-	private T GetFirstCore<U>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy, bool ascending)
+	private T GetScalr<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending)
 	{
         using var context = DbContextFactory.Create();
 
-	    return QueryFirst(where, orderBy, ascending, context).FirstOrDefault();
+	    return MakeScalarQuery(where, orderBy, ascending, context).FirstOrDefault();
+	}
+
+	private async Task<T> GetScalrAsync<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending)
+	{
+        await using var context = DbContextFactory.Create();
+
+	    return await MakeScalarQuery(where, orderBy, ascending, context).FirstOrDefaultAsync();
 	}
 
     /// <summary>
     /// 모든 엔터티를 정렬식에 따라 정렬했을 때 마지막 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
     /// </summary>
-    /// <typeparam name="U">정렬 기준이 되는 속성의 형식</typeparam>
+    /// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
     /// <param name="orderBy">정렬식</param>
     /// <returns>엔터티</returns>
-    public virtual T GetLast<U>(Expression<Func<T, U>> orderBy)
-	{
-		return GetLast(null, orderBy);
-	}
+    public virtual T GetLast<O>(Expression<Func<T, O>> orderBy) 
+        => GetScalr(null, orderBy, false);
 
-    public virtual Task<T> GetLastAsync<U>(Expression<Func<T, U>> orderBy)
-	=> Task.Run(() => GetLast(orderBy));
+    public virtual Task<T> GetLastAsync<O>(Expression<Func<T, O>> orderBy)
+        => GetScalrAsync(null, orderBy, false);
 
 	/// <summary>
 	/// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 마지막 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
 	/// </summary>
-	/// <typeparam name="U">정렬 기준이 되는 속성의 형식</typeparam>
+	/// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
 	/// <param name="where">조건식</param>
 	/// <param name="orderBy">정렬식</param>
 	/// <returns>엔터티</returns>
-	[ForAsync]
-    public virtual T GetLast<U>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy)
-	{
-		return GetFirstCore(where, orderBy, false);
-    }
+    public virtual T GetLast<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy) 
+        => GetScalr(where, orderBy, false);
 
-    public virtual Task<T> GetLastAsync<U>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy)
-	=> Task.Run(() => GetLast(where, orderBy));
+    public virtual Task<T> GetLastAsync<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy)
+        => GetScalrAsync(where, orderBy, false);
 
-    private static IQueryable<T> QueryFirst<U>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy, bool ascending, `DbContextName` context)
+    private static IQueryable<T> MakeScalarQuery<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, `DbContextName` context)
 	{
 		var query = from x in context.Set<T>()
 					select x;
@@ -646,112 +629,119 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// </summary>
 	/// <param name="select">선택식</param>
 	/// <returns>엔터티</returns>
-    public virtual R SelectFirst<R>(Expression<Func<T, R>> select)
-	{
-		return SelectFirst<T, R>(null, null, select);
-	}
+    public virtual S SelectFirst<S>(Expression<Func<T, S>> select) 
+        => SelectScalar<T, S>(null, null, select, false);
 
-    public virtual Task<R> SelectFirstAsync<R>(Expression<Func<T, R>> select)
-	=> Task.Run(() => SelectFirst(select));
+    public virtual Task<S> SelectFirstAsync<S>(Expression<Func<T, S>> select)
+        => SelectScalarAsync<T, S>(null, null, select, false);
 
 	/// <summary>
 	/// 조건식에 맞는 엔터티 중 첫번째 엔터티를 반환한다. 엔터티의 순서는 DB에 의해 결정된다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
 	/// </summary>
-	/// <typeparam name="R">선택 형식</typeparam>
+	/// <typeparam name="S">선택 형식</typeparam>
 	/// <param name="where">조건식</param>
 	/// <param name="select">선택식</param>
 	/// <returns>엔터티</returns>
-    public virtual R SelectFirst<R>(Expression<Func<T, bool>> where, Expression<Func<T, R>> select)
-	{
-		return SelectFirst<T, R>(where, null, select);
-	}
+    public virtual S SelectFirst<S>(Expression<Func<T, bool>> where, Expression<Func<T, S>> select) 
+        => SelectScalar<T, S>(where, null, select, false);
 
-    public virtual Task<R> SelectFirstAsync<R>(Expression<Func<T, bool>> where, Expression<Func<T, R>> select)
-	=> Task.Run(() => SelectFirst(where, select));
+    public virtual Task<S> SelectFirstAsync<S>(Expression<Func<T, bool>> where, Expression<Func<T, S>> select)
+        => SelectScalarAsync<T, S>(where, null, select, false);
 
 	/// <summary>
 	/// 모든 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
 	/// </summary>
-	/// <typeparam name="U">정렬 기준이 되는 속성의 형식</typeparam>
-	/// <typeparam name="R">선택 형식</typeparam>
+	/// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
+	/// <typeparam name="S">선택 형식</typeparam>
 	/// <param name="orderBy">정렬식</param>
 	/// <param name="select">선택식</param>
 	/// <returns>엔터티</returns>
-    public virtual R SelectFirst<U, R>(Expression<Func<T, U>> orderBy, Expression<Func<T, R>> select)
-	{
-		return SelectFirst(null, orderBy, select);
-	}
+    public virtual S SelectFirst<O, S>(Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select) 
+        => SelectScalar(null, orderBy, select, true);
 
-    public virtual Task<R> SelectFirstAsync<U, R>(Expression<Func<T, U>> orderBy, Expression<Func<T, R>> select)
-	=> Task.Run(() => SelectFirst(orderBy, select));
-
-	/// <summary>
-	/// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
-	/// </summary>
-	/// <typeparam name="U">정렬 기준이 되는 속성의 형식</typeparam>
-	/// <typeparam name="R">선택 형식</typeparam>
-	/// <param name="where">조건식</param>
-	/// <param name="orderBy">정렬식</param>
-	/// <param name="select">선택식</param>
-	/// <returns>엔터티</returns>
-    public virtual R SelectFirst<U, R>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy, Expression<Func<T, R>> select)
-	{
-		return SelectFirstCore(where, orderBy, select, true);
-	}
-
-    public virtual Task<R> SelectFirstAsync<U, R>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy, Expression<Func<T, R>> select)
-	=> Task.Run(() => SelectFirst(where, orderBy, select));
+    public virtual Task<S> SelectFirstAsync<O, S>(Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select)
+        => SelectScalarAsync(null, orderBy, select, true);
 
     /// <summary>
     /// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
     /// </summary>
-    /// <typeparam name="U">정렬 기준이 되는 속성의 형식</typeparam>
-    /// <typeparam name="R">선택 형식</typeparam>
+    /// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
+    /// <typeparam name="S">선택 형식</typeparam>
+    /// <param name="where">조건식</param>
+    /// <param name="orderBy">정렬식</param>
+    /// <param name="select">선택식</param>
+    /// <returns>엔터티</returns>
+    public virtual S SelectFirst<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy,
+        Expression<Func<T, S>> select) 
+        => SelectScalar(where, orderBy, select, true);
+
+    public virtual Task<S> SelectFirstAsync<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select)
+        => SelectScalarAsync(where, orderBy, select, true);
+
+    /// <summary>
+    /// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
+    /// </summary>
+    /// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
+    /// <typeparam name="S">선택 형식</typeparam>
     /// <param name="where">조건식</param>
     /// <param name="orderBy">정렬식</param>
     /// <param name="select">선택식</param>
     /// <param name="ascending">true이면 오름차순, false이면 내림차순</param>
     /// <returns>엔터티</returns>
-    private R SelectFirstCore<U, R>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy, Expression<Func<T, R>> select, bool ascending)
+    private S SelectScalar<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select, bool ascending)
 	{
         using var context = DbContextFactory.Create();
 
-		var query = QueryFirst(where, orderBy, ascending, context);
+		var query = MakeScalarQuery(where, orderBy, ascending, context);
 		return query.Select(select).FirstOrDefault();
+	}
+
+    /// <summary>
+    /// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
+    /// </summary>
+    /// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
+    /// <typeparam name="S">선택 형식</typeparam>
+    /// <param name="where">조건식</param>
+    /// <param name="orderBy">정렬식</param>
+    /// <param name="select">선택식</param>
+    /// <param name="ascending">true이면 오름차순, false이면 내림차순</param>
+    /// <returns>엔터티</returns>
+    private async Task<S> SelectScalarAsync<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select, bool ascending)
+	{
+        await using var context = DbContextFactory.Create();
+
+		var query = MakeScalarQuery(where, orderBy, ascending, context);
+		return await query.Select(select).FirstOrDefaultAsync();
 	}
 
     /// <summary>
     /// 모든 엔터티를 정렬식에 따라 정렬했을 때 마지막 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
     /// </summary>
-    /// <typeparam name="U">정렬 기준이 되는 속성의 형식</typeparam>
-    /// <typeparam name="R">선택 형식</typeparam>
+    /// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
+    /// <typeparam name="S">선택 형식</typeparam>
     /// <param name="orderBy">정렬식</param>
     /// <param name="select">선택식</param>
     /// <returns>엔터티</returns>
-    public virtual R SelectLast<U, R>(Expression<Func<T, U>> orderBy, Expression<Func<T, R>> select)
-	{
-	    return SelectLast(null, orderBy, select);
-	}
+    public virtual S SelectLast<O, S>(Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select) 
+        => SelectScalar(null, orderBy, select, false);
 
-    public virtual Task<R> SelectLastAsync<U, R>(Expression<Func<T, U>> orderBy, Expression<Func<T, R>> select)
-	=> Task.Run(() => SelectLast(orderBy, select));
+    public virtual Task<S> SelectLastAsync<O, S>(Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select)
+        => SelectScalarAsync(null, orderBy, select, false);
 
     /// <summary>
     /// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 마지막 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
     /// </summary>
-    /// <typeparam name="U">정렬 기준이 되는 속성의 형식</typeparam>
-    /// <typeparam name="R">선택 형식</typeparam>
+    /// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
+    /// <typeparam name="S">선택 형식</typeparam>
     /// <param name="where">조건식</param>
     /// <param name="orderBy">정렬식</param>
     /// <param name="select">선택식</param>
     /// <returns>엔터티</returns>
-    public virtual R SelectLast<U, R>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy, Expression<Func<T, R>> select)
-	{
-	    return SelectFirstCore(where, orderBy, select, false);
-	}
+    public virtual S SelectLast<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select) 
+        => SelectScalar(where, orderBy, select, false);
 
-    public virtual Task<R> SelectLastAsync<U, R>(Expression<Func<T, bool>> where, Expression<Func<T, U>> orderBy, Expression<Func<T, R>> select)
-	=> Task.Run(() => SelectLast(where, orderBy, select));
+    public virtual Task<S> SelectLastAsync<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select)
+        => SelectScalarAsync(where, orderBy, select, false);
     #endregion
 
 	#region GetCount
@@ -759,34 +749,48 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// 모든 엔터티의 갯수를 구한다.
 	/// </summary>
 	/// <returns>엔터티의 갯수</returns>
-    public virtual int GetCount()
-	{
-		return GetCount(null);
-	}
+    public virtual int GetCount() 
+        => GetCount(null);
 
     public virtual Task<int> GetCountAsync()
-	=> Task.Run(() => GetCount());
+        => GetCountAsync(null);
 
-	/// <summary>
-	/// 조건식에 맞는 엔터티의 갯수를 구한다.
-	/// </summary>
-	/// <param name="where">조건식</param>
-	/// <returns>엔터티의 갯수</returns>
+    /// <summary>
+    /// 조건식에 맞는 엔터티의 갯수를 구한다.
+    /// </summary>
+    /// <param name="where">조건식</param>
+    /// <returns>엔터티의 갯수</returns>
     public virtual int GetCount(Expression<Func<T, bool>> where)
-	{
+    {
         using var context = DbContextFactory.Create();
 
-		var query = from item in context.Set<T>()
-					select item;
+        var query = MakeCountQuery(where, context);
+        return query.Count();
+    }
 
-		if (where != null)
-			query = query.Where(where);
+    /// <summary>
+    /// 조건식에 맞는 엔터티의 갯수를 구한다.
+    /// </summary>
+    /// <param name="where">조건식</param>
+    /// <returns>엔터티의 갯수</returns>
+    public virtual async Task<int> GetCountAsync(Expression<Func<T, bool>> where)
+    {
+        await using var context = DbContextFactory.Create();
 
-		return query.Count();
-	}
+        var query = MakeCountQuery(where, context);
+        return await query.CountAsync();
+    }
 
-    public virtual Task<int> GetCountAsync(Expression<Func<T, bool>> where)
-	=> Task.Run(() => GetCount(where));
+    private IQueryable<T> MakeCountQuery(Expression<Func<T, bool>> where, `DbContextName` context)
+    {
+        var query = from item in context.Set<T>()
+            select item;
+
+        if (where != null)
+            query = query.Where(where);
+
+        return query;
+    }
 	#endregion
 
 	#region Exist
@@ -795,21 +799,21 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// </summary>
 	/// <param name="where">조건식</param>
 	/// <returns>존재 여부</returns>
-    public virtual bool Exists(Expression<Func<T, bool>> where)
-	{
+    public virtual bool Exists(Expression<Func<T, bool>> where) 
+    {
         using var context = DbContextFactory.Create();
 
-		var query = from item in context.Set<T>()
-					select item;
+        var query = MakeCountQuery(where, context);
+        return query.Any();
+    }
 
-		if (where != null)
-			query = query.Where(where);
+    public virtual async Task<bool> ExistsAsync(Expression<Func<T, bool>> where)
+    {
+        await using var context = DbContextFactory.Create();
 
-		return query.Any();
-	}
-
-    public virtual Task<bool> ExistsAsync(Expression<Func<T, bool>> where)
-	=> Task.Run(() => Exists(where));
+        var query = MakeCountQuery(where, context);
+        return await query.AnyAsync();
+    }
 	#endregion
 
 	#region Write log partial methods
@@ -821,13 +825,6 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// <param name="entity">엔티티</param>
 	/// <param name="logType">로그 타입</param>
 	protected virtual partial void OnSaved(T entity, LogType logType);
-
-	/// <summary>
-	/// 엔티티 컬렉션의 로그를 기록한다.
-	/// </summary>
-	/// <param name="entities">엔티티 컬렉션</param>
-	/// <param name="logType">로그 타입</param>
-	protected virtual partial void OnSaved(IEnumerable<T> entities, LogType logType);
 	#endregion
 
 	#region Insert / Update / Delete
@@ -844,152 +841,154 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
         };
     }
     
-    internal virtual void MarkToSave(`DbContextName` context, LogType logType, IEnumerable<T> entities)
-    {
+    internal int SaveChanges(LogType logType, params List<T> entities)
+	{
+        using var context = DbContextFactory.Create();
+
         foreach (var entity in entities)
-            MarkToSave(context, logType, entity);
-    }
+    		MarkToSave(context, logType, entity);
+			
+		int count = context.SaveChanges();
+		if (count > 0)
+            foreach (var entity in entities)
+    			OnSaved(entity, logType);
+
+		return count;
+	}
+
+    internal async Task<int> SaveChangesAsync(LogType logType, params List<T> entities)
+	{
+        await using var context = DbContextFactory.Create();
+
+        foreach (var entity in entities)
+    		MarkToSave(context, logType, entity);
+			
+		int count = await context.SaveChangesAsync();
+		if (count > 0)
+            foreach (var entity in entities)
+    			OnSaved(entity, logType);
+
+		return count;
+	}
+
+	public virtual int Insert(params List<T> entities)
+        => SaveChanges(LogType.Insert, entities);
 	
-    public virtual T Insert(T entity)
-	{
-        using var context = DbContextFactory.Create();
+    public virtual async Task<int> InsertAsync(params List<T> entities)
+        => await SaveChangesAsync(LogType.Insert, entities);
 
-		MarkToSave(context, LogType.Insert, entity);
-			
-		int count = context.SaveChanges();
-		if (count > 0)
-			OnSaved(entity, LogType.Insert);
+	public virtual int Update(params List<T> entities)
+        => SaveChanges(LogType.Update, entities);
 
-		return entity;
-	}
+    public virtual async Task<int> UpdateAsync(params List<T> entities) 
+        => await SaveChangesAsync(LogType.Update, entities);
 
-    public virtual Task<T> InsertAsync(T entity)
-	=> Task.Run(() => Insert(entity));
+	public virtual int Delete(params List<T> entities)
+        => SaveChanges(LogType.Delete, entities);
 
-	public virtual int InsertMany(IEnumerable<T> entities)
-	{
-        using var context = DbContextFactory.Create();
-
-        MarkToSave(context, LogType.Insert, entities);
-
-		int count = context.SaveChanges();
-		if (count > 0)
-			OnSaved(entities, LogType.Insert);
-
-		return count;
-	}
-
-    public virtual Task<int> InsertManyAsync(IEnumerable<T> entities)
-	=> Task.Run(() => InsertMany(entities));
-
-    public virtual int Update(T entity)
-	{
-        using var context = DbContextFactory.Create();
-
-		MarkToSave(context, LogType.Update, entity);
-			
-		int count = context.SaveChanges();
-		if (count > 0)
-			OnSaved(entity, LogType.Update);
-
-		return count;
-	}
-
-    public virtual Task<int> UpdateAsync(T entity) => Task.Run(() => Update(entity));
-
-	public virtual int UpdateMany(IEnumerable<T> entities)
-	{
-        using var context = DbContextFactory.Create();
-
-        MarkToSave(context, LogType.Update, entities);
-
-		int count = context.SaveChanges();
-		if (count > 0)
-			OnSaved(entities, LogType.Update);
-
-		return count;
-	}
-
-    public virtual Task<int> UpdateManyAsync(IEnumerable<T> entities) => Task.Run(() => UpdateMany(entities));
-
-    public virtual int Delete(T entity)
-	{
-        using var context = DbContextFactory.Create();
-
-        MarkToSave(context, LogType.Delete, entity);
-		
-		int count = context.SaveChanges();
-		if (count > 0)
-			OnSaved(entity, LogType.Delete);
-			
-		return count;
-	}
-
-    public virtual Task<int> DeleteAsync(T entity) => Task.Run(() => Delete(entity));
-
-	public virtual int DeleteMany(IEnumerable<T> entities)
-	{
-        using var context = DbContextFactory.Create();
-			
-		MarkToSave(context, LogType.Delete, entities);
-		
-		int count = context.SaveChanges();
-		if (count > 0)
-			OnSaved(entities, LogType.Delete);
-
-		return count;
-	}
-
-    public virtual Task<int> DeleteManyAsync(IEnumerable<T> entities) => Task.Run(() => DeleteMany(entities));
+    public virtual async Task<int> DeleteAsync(params List<T> entities) 
+        => await SaveChangesAsync(LogType.Delete, entities);
 
 	public virtual int DeleteAll(Expression<Func<T, bool>> where)
 	{
         using var context = DbContextFactory.Create();
 
-		var query = from item in context.Set<T>()
-					select item;
+		var entities = Get(where);
 
-		if (where != null)
-			query = query.Where(where);
-
-		var entities = query.ToList();
-
-		MarkToSave(context, LogType.Delete, entities);
-
-		int count = context.SaveChanges();
-		if (count > 0)
-		    OnSaved(entities, LogType.Delete);
-
-		return count;
+        return Delete(entities);
 	}
 
-    public virtual Task<int> DeleteAllAsync(Expression<Func<T, bool>> where) => Task.Run(() => DeleteAll(where));
-	/// <summary>
-	/// 기본키가 일치하는 엔터티가 없으면 삽입한다.
-	/// </summary>
-	/// <param name="entity">삽입할 엔터티</param>
-	/// <returns>삽입된 엔터티</returns>
-	public abstract T InsertIfNotExist(T entity);
+	public virtual async Task<int> DeleteAllAsync(Expression<Func<T, bool>> where)
+	{
+        await using var context = DbContextFactory.Create();
 
-	public virtual Task<T> InsertIfNotExistAsync(T entity)
-		=> Task.Run(() => InsertIfNotExist(entity));
+		var entities = await GetAsync(where);
 
-	/// <summary>
-	/// 기본키가 일치하는 엔터티가 있으면 갱신하고 없으면 삽입한다.
-	/// </summary>
-	/// <param name="entity">삽입 혹은 갱신할 엔터티</param>
-	/// <param name="withAudit">감사정보(수정자, 수정일)를 기록한다.</param>
-	/// <returns>삽입했으면 true, 갱신했으면 false</returns>
-	public abstract bool InsertOrUpdate(T entity, bool withAudit = false);
+        return await DeleteAsync(entities);
+	}
 
-	public virtual Task<bool> InsertOrUpdateAsync(T entity, bool withAudit = false)
-		=> Task.Run(() => InsertOrUpdate(entity, withAudit));
+    /// <summary>
+    /// 기본키가 일치하는 엔터티가 없으면 삽입한다.
+    /// </summary>
+    /// <param name="entity">삽입할 엔터티</param>
+    /// <returns>삽입된 엔터티</returns>
+    public virtual int InsertIfNotExist(T entity)
+    {
+        using var context = DbContextFactory.Create();
+
+        int count = context.Set<T>().Count(HasSameKey(entity));
+        if (count > 0)
+            return 0;
+
+        return Insert(entity);
+    }
+
+    /// <summary>
+    /// 기본키가 일치하는 엔터티가 없으면 삽입한다.
+    /// </summary>
+    /// <param name="entity">삽입할 엔터티</param>
+    /// <returns>삽입된 엔터티</returns>
+    public virtual async Task<int> InsertIfNotExistAsync(T entity)
+    {
+        await using var context = DbContextFactory.Create();
+
+        int count = await context.Set<T>().CountAsync(HasSameKey(entity));
+        if (count > 0)
+            return 0;
+
+        return Insert(entity);
+    }
+
+    /// <summary>
+    /// 기본키가 일치하는 엔터티가 있으면 갱신하고 없으면 삽입한다.
+    /// </summary>
+    /// <param name="entity">삽입 혹은 갱신할 엔터티</param>
+    /// <param name="withAudit">감사정보(수정자, 수정일)를 기록한다.</param>
+    /// <returns>삽입했으면 true, 갱신했으면 false</returns>
+    public virtual bool InsertOrUpdate(T entity, bool withAudit = false)
+    {
+        using var context = DbContextFactory.Create();
+
+        int count = context.Set<T>().Count(HasSameKey(entity));
+        if (count > 0)
+        {
+            Update(entity);
+            return false;
+        }
+        else
+        {
+            Insert(entity);
+            return true;
+        }
+    }
+
+    /// <summary>
+    /// 기본키가 일치하는 엔터티가 있으면 갱신하고 없으면 삽입한다.
+    /// </summary>
+    /// <param name="entity">삽입 혹은 갱신할 엔터티</param>
+    /// <param name="withAudit">감사정보(수정자, 수정일)를 기록한다.</param>
+    /// <returns>삽입했으면 true, 갱신했으면 false</returns>
+    public virtual async Task<bool> InsertOrUpdateAsync(T entity, bool withAudit = false)
+    {
+        await using var context = DbContextFactory.Create();
+
+        int count = await context.Set<T>().CountAsync(HasSameKey(entity));
+        if (count > 0)
+        {
+            await UpdateAsync(entity);
+            return false;
+        }
+        else
+        {
+            await InsertAsync(entity);
+            return true;
+        }
+    }
 	#endregion Insert / Update / Delete
+
+    protected abstract Expression<Func<T, bool>> HasSameKey(T other);
 }
-#endregion
-
-
-#endregion
+#endregion EntityDao
 
 #region Types
 /// <summary>
@@ -1001,31 +1000,14 @@ public enum LogType
 	/// 엔티티 삽입
 	/// </summary>
 	Insert,
-
-	/// <summary>
-	/// 엔티티 컬렉션 삽입
-	/// </summary>
-	InsertMany,
-
 	/// <summary>
 	/// 엔티티 갱신
 	/// </summary>
 	Update,
-
-	/// <summary>
-	/// 엔티티 컬렉션 갱신
-	/// </summary>
-	UpdateMany,
-
 	/// <summary>
 	/// 엔티티 삭제
 	/// </summary>
-	Delete,
-
-	/// <summary>
-	/// 엔티티 컬렉션 삭제
-	/// </summary>
-	DeleteMany
+	Delete
 }
 
 /// <summary>
@@ -1336,9 +1318,6 @@ public partial class `Name` : Entity<`Name`>, IEntity
 		return EntityTypeName;
 	}
 
-	[JsonIgnore]
-	public static `Name` Empty { get; } = new ();
-	
 	public override void ClearKeyValues()
 	{
 		`P:[N]:`Name` = default;``
@@ -1382,6 +1361,11 @@ public partial class `Name`Dao : EntityDao<`Name`>
 {
 	internal `Name`Dao() {}
 
+	protected override Expression<Func<`Name`, bool>> HasSameKey(`Name` other)
+	{
+        return x => `P: &&:x.`Name` == other.`Name` ``;
+	}
+
 	/// <summary>
 	/// 기본키가 일치하는 엔터티를 구한다.
 	/// </summary>
@@ -1391,11 +1375,20 @@ public partial class `Name`Dao : EntityDao<`Name`>
 	{
         using var context = DbContextFactory.Create();
 
-        return context.Set<`Name`>().FirstOrDefault(x => `P: && : x.`Name` == `name` ``) ?? `Name`.Empty;
+        return context.Set<`Name`>().FirstOrDefault(x => `P: && : x.`Name` == `name` ``);
 	}
 
-    public virtual Task<`Name`> GetByKeyAsync(`P:, :`Type` `name` ``)
-		=> Task.Run(() => GetByKey(`P:, :`name` ``));
+	/// <summary>
+	/// 기본키가 일치하는 엔터티를 구한다.
+	/// </summary>
+	`P:[N]:/// <param name="`name`">기본키</param>``
+	/// <returns>기본키가 일치하는 엔터티</returns>
+    public virtual async Task<`Name`> GetByKeyAsync(`P:, :`Type` `name` ``)
+	{
+        await using var context = DbContextFactory.Create();
+
+        return await context.Set<`Name`>().FirstOrDefaultAsync(x => `P: && : x.`Name` == `name` ``);
+	}
 
 	/// <summary>
 	/// 기본키가 일치하는 엔터티가 존재하는지 확인한다.
@@ -1409,8 +1402,17 @@ public partial class `Name`Dao : EntityDao<`Name`>
 		return context.Set<`Name`>().Count(x => `P: && : x.`Name` == `name` ``) > 0;
 	}
 
-    public virtual Task<bool> ExistsByKeyAsync(`P:, :`Type` `name` ``)
-	=> Task.Run(() => ExistsByKey(`P:, :`name` ``));
+	/// <summary>
+	/// 기본키가 일치하는 엔터티가 존재하는지 확인한다.
+	/// </summary>
+	`P:[N]:/// <param name="`name`">기본키</param>``
+	/// <returns>존재 여부</returns>
+    public virtual async Task<bool> ExistsByKeyAsync(`P:, :`Type` `name` ``)
+	{
+        await using var context = DbContextFactory.Create();
+
+		return await context.Set<`Name`>().CountAsync(x => `P: && : x.`Name` == `name` ``) > 0;
+	}
 
 	/// <summary>
 	/// 기본키가 일치하는 엔터티를 삭제한다.
@@ -1419,49 +1421,27 @@ public partial class `Name`Dao : EntityDao<`Name`>
 	/// <returns>삭제된 엔터티의 갯수</returns>
     public virtual int DeleteByKey(`P:, :`Type` `name` ``)
 	{
-        using var context = DbContextFactory.Create();
-
-		var query = from x in context.Set<`Name`>()
-		where `P: && :x.`Name` == `name` ``
-		select x;
-
-		var entity = query.FirstOrDefault();
+        var entity = GetByKey(`P:, :`name` ``);
 
         if (entity == null)
             return 0;
 
-		MarkToSave(context, LogType.Delete, entity);
-
-		return context.SaveChanges();
+        return Delete(entity);
 	}
 
-    public virtual Task<int> DeleteByKeyAsync(`P:, :`Type` `name` ``)
-	=> Task.Run(() => DeleteByKey(`P:, :`name` ``));
-
-    public override `Name` InsertIfNotExist(`Name` entity)
+	/// <summary>
+	/// 기본키가 일치하는 엔터티를 삭제한다.
+	/// </summary>
+	`P::/// <param name="`name`">기본키</param> ``
+	/// <returns>삭제된 엔터티의 갯수</returns>
+    public virtual async Task<int> DeleteByKeyAsync(`P:, :`Type` `name` ``)
 	{
-        using var context = DbContextFactory.Create();
+        var entity = await GetByKeyAsync(`P:, :`name` ``);
 
-	    if (context.Set<`Name`>().Count(x => `P: && : x.`Name` == entity.`Name` ``) > 0)
-	        return `Name`.Empty;
+        if (entity == null)
+            return 0;
 
-	    return Insert(entity);
-	}
-
-    public override bool InsertOrUpdate(`Name` entity, bool withAudit = false)
-	{
-        using var context = DbContextFactory.Create();
-            
-	    if (context.Set<`Name`>().Count(x => `P: && : x.`Name` == entity.`Name` ``) > 0)
-	    {
-	        Update(entity);
-            return false;
-        }
-        else
-	    {
-	        Insert(entity);
-            return true;
-        }
+        return await DeleteAsync(entity);
 	}
 	
 	`F::
@@ -1477,8 +1457,17 @@ public partial class `Name`Dao : EntityDao<`Name`>
 		return context.Set<`Table`>().Where(x => x.`Name` == `name`).ToList();
 	}
 
-    public virtual Task<List<`Table`>> GetBy`Name`Async(`Type` `name`)
-	=> Task.Run(() => GetBy`Name`(`name`));
+	/// <summary>
+	/// 외래키 `Name` 이(가) 일치하는 엔터티 컬렉션을 구한다.
+	/// </summary>
+	/// <param name="`name`">외래키</param>
+	/// <returns>`Name` 이(가) 일치하는 엔터티 컬렉션</returns>
+    public virtual async Task<List<`Table`>> GetBy`Name`Async(`Type` `name`)
+	{
+        await using var context = DbContextFactory.Create();
+
+		return await context.Set<`Table`>().Where(x => x.`Name` == `name`).ToListAsync();
+	}
 	``
 }
 #endregion `Name`Dao

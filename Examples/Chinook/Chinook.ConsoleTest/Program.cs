@@ -12,6 +12,8 @@ internal class Program
     {
         var procedures = new ChinookContextProcedures(DbContextFactory.Create());
         await procedures.usp_InitializeAsync();
+
+        Console.WriteLine(await Dao.Album.GetCountAsync());
         return;
 
 

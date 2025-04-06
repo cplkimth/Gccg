@@ -1,4 +1,4 @@
-#region
+﻿#region
 
 using Chinook.Data;
 
@@ -22,7 +22,7 @@ public partial class AlbumDaoTest
         };
 
         var oldCount = Dao.Album.GetCount();
-        var insertedCount = Dao.Album.InsertMany(list);
+        var insertedCount = Dao.Album.Insert(list);
         var newCount = Dao.Album.GetCount();
 
         insertedCount.Should().Be(2);
@@ -36,7 +36,7 @@ public partial class AlbumDaoTest
         foreach (var entity in list)
             entity.Title = entity.AlbumId.ToString();
 
-        Dao.Album.UpdateMany(list);
+        Dao.Album.Update(list);
 
         foreach (var entity in list)
             entity.Title.Should().Be(entity.AlbumId.ToString());
@@ -150,25 +150,25 @@ public partial class AlbumDaoTest
     #region search
 
     [TestMethod]
-    public void SearchWithArtistName()
+    public async Task SearchWithArtistName()
     {
-        var albums = Dao.Album.Search("Beatles", null);
+        var albums = await Dao.Album.SearchAsync("Beatles", null);
 
         Assert.AreEqual(6, albums.Count);
     }
 
     [TestMethod]
-    public void SearchWithTrackName()
+    public async Task SearchWithTrackName()
     {
-        var albums = Dao.Album.Search(null, "You");
+        var albums = await Dao.Album.SearchAsync(null, "You");
 
         Assert.AreEqual(1, albums.Count);
     }
 
     [TestMethod]
-    public void SearchWithArtistNameAndTrackName()
+    public async Task SearchWithArtistNameAndTrackName()
     {
-        var albums = Dao.Album.Search("Beatles", "You");
+        var albums = await Dao.Album.SearchAsync("Beatles", "You");
 
         Assert.AreEqual(0, albums.Count);
     }
@@ -299,7 +299,7 @@ public partial class AlbumDaoTest
             Title = DateTime.Now.ToString(),
             ArtistId = 1
         };
-        album = await Dao.Album.InsertAsync(album);
+        await Dao.Album.InsertAsync(album);
 
         var newCount = await Dao.Album.GetCountAsync();
 
@@ -319,7 +319,7 @@ public partial class AlbumDaoTest
         };
 
         var oldCount = Dao.Album.GetCount();
-        var insertedCount = Dao.Album.InsertManyAsync(albums).Result;
+        var insertedCount = Dao.Album.InsertAsync(albums).Result;
         var newCount = Dao.Album.GetCount();
 
         Assert.AreEqual(2, insertedCount);
@@ -347,7 +347,7 @@ public partial class AlbumDaoTest
         foreach (var album in albums)
             album.Title = album.AlbumId.ToString();
 
-        Dao.Album.UpdateManyAsync(albums).Wait();
+        Dao.Album.UpdateAsync(albums).Wait();
 
         foreach (var album in albums)
             Assert.AreEqual(album.AlbumId, int.Parse(album.Title));

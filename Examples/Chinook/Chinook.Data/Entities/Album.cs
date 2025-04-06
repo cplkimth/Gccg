@@ -1,10 +1,10 @@
-#region using
+﻿#region using
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
- 
+using System.Linq.Expressions;
 #endregion
 
 namespace Chinook.Data;
@@ -21,5 +21,5 @@ public partial class Album
     partial void ToStringCore(ref string value)
     {
         value = $"{AlbumId} / {Title} / {ArtistName} / {TrackCount}";
-    }     
+    }
 }
