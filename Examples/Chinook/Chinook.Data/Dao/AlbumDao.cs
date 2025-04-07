@@ -4,6 +4,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Chinook.Data;
 
@@ -33,10 +34,5 @@ public partial class AlbumDao
         }
 
         return list.ConvertAll(x => x.Album);
-    }
-
-    protected override void OnSaved(Album entity, LogType logType)
-    {
-        base.OnSaved(entity, logType);
     }
 }

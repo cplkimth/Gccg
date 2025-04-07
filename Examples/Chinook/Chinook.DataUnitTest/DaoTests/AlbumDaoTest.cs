@@ -1,5 +1,5 @@
 ﻿#region
-
+using System.Linq.Expressions;
 using Chinook.Data;
 
 #endregion
@@ -8,6 +8,58 @@ namespace Chinook.DataUnitTest.DaoTests;
 
 public partial class AlbumDaoTest
 {
+    [TestMethod]
+    public void ExecuteUpdate()
+    {
+        Expression<Func<Album, bool>> predicate = x => x.ArtistId == 1 && x.TypeCode != 20002;
+
+        var count = Dao.Album.ExecuteUpdate(predicate, x => x.SetProperty(p => p.TypeCode, p => p.TypeCode + 1));
+        count.Should().Be(5);
+
+        var list = Dao.Album.Get(predicate);
+        foreach (var entity in list)
+            entity.TypeCode.Should().Be(20001);
+    }
+
+    [TestMethod]
+    public async Task ExecuteUpdateAsync()
+    {
+        Expression<Func<Album, bool>> predicate = x => x.ArtistId == 1 && x.TypeCode != 20002;
+
+        var count = await Dao.Album.ExecuteUpdateAsync(predicate, x => x.SetProperty(p => p.TypeCode, p => p.TypeCode + 1));
+        count.Should().Be(5);
+
+        var list = await Dao.Album.GetAsync(predicate);
+        foreach (var entity in list)
+            entity.TypeCode.Should().Be(20001);
+    }
+
+    [TestMethod]
+    public void ExecuteDelete()
+    {
+        Expression<Func<Album, bool>> predicate = x => x.ArtistId == 1 && x.TypeCode != 20002;
+
+        int oldCount = Dao.Album.GetCount(predicate);
+        oldCount.Should().Be(5);
+        var count = Dao.Album.ExecuteDelete(predicate);
+        count.Should().Be(5);
+        int newCount = Dao.Album.GetCount(predicate);
+        newCount.Should().Be(0);
+    }
+
+    [TestMethod]
+    public async Task ExecuteDeleteAsync()
+    {
+        Expression<Func<Album, bool>> predicate = x => x.ArtistId == 1 && x.TypeCode != 20002;
+
+        int oldCount = await Dao.Album.GetCountAsync(predicate);
+        oldCount.Should().Be(5);
+        var count = await Dao.Album.ExecuteDeleteAsync(predicate);
+        count.Should().Be(5);
+        int newCount = await Dao.Album.GetCountAsync(predicate);
+        newCount.Should().Be(0);
+    }
+    
     [TestMethod]
     public void InsertMany()
     {
