@@ -9,7 +9,33 @@ namespace Chinook.DataUnitTest.DaoTests;
 public partial class AlbumDaoTest
 {
     [TestMethod]
-    public void ExecuteUpdate()
+    public void ExecuteUpdateScalar()
+    {
+        int albumId = 9;
+
+        Dao.Album.ExecuteUpdate(albumId, x => x
+            .SetProperty(p => p.TypeCode, p => p.TypeCode + 1)
+            .SetProperty(p => p.ArtistId, 2)
+        );
+
+        var entity = Dao.Album.GetByKey(albumId);
+        entity.TypeCode.Should().Be(20001);
+        entity.ArtistId.Should().Be(2);
+    }
+
+    [TestMethod]
+    public async Task ExecuteUpdateScalarAsync()
+    {
+        int albumId = 9;
+
+        await Dao.Album.ExecuteUpdateAsync(albumId, x => x.SetProperty(p => p.TypeCode, p => p.TypeCode + 1));
+
+        var entity = await Dao.Album.GetByKeyAsync(albumId);
+        entity.TypeCode.Should().Be(20001);
+    }
+
+    [TestMethod]
+    public void ExecuteUpdateMany()
     {
         Expression<Func<Album, bool>> predicate = x => x.ArtistId == 1 && x.TypeCode != 20002;
 
@@ -22,7 +48,7 @@ public partial class AlbumDaoTest
     }
 
     [TestMethod]
-    public async Task ExecuteUpdateAsync()
+    public async Task ExecuteUpdateManyAsync()
     {
         Expression<Func<Album, bool>> predicate = x => x.ArtistId == 1 && x.TypeCode != 20002;
 
@@ -35,7 +61,7 @@ public partial class AlbumDaoTest
     }
 
     [TestMethod]
-    public void ExecuteDelete()
+    public void ExecuteDeleteMany()
     {
         Expression<Func<Album, bool>> predicate = x => x.ArtistId == 1 && x.TypeCode != 20002;
 
@@ -48,7 +74,7 @@ public partial class AlbumDaoTest
     }
 
     [TestMethod]
-    public async Task ExecuteDeleteAsync()
+    public async Task ExecuteDeleteManyAsync()
     {
         Expression<Func<Album, bool>> predicate = x => x.ArtistId == 1 && x.TypeCode != 20002;
 
@@ -59,7 +85,7 @@ public partial class AlbumDaoTest
         int newCount = await Dao.Album.GetCountAsync(predicate);
         newCount.Should().Be(0);
     }
-    
+
     [TestMethod]
     public void InsertMany()
     {

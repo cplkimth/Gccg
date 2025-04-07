@@ -1539,7 +1539,35 @@ public partial class `Name`Dao : EntityDao<`Name`>
 
 		return await context.Set<`Table`>().Where(x => x.`Name` == `name`).ToListAsync();
 	}
-	``
+    ``
+
+    #region ExecuteUpdate
+    /// <summary>
+    /// 기본키를 만족하는 업데이트한다. OnSaving과 OnSaved 부분 메서드를 호출하지 않음.
+    /// </summary>
+    `P::/// <param name="`name`">기본키</param> ``
+    /// <param name="setPropertyCalls">변경할 속성. 엔티티의 다른 속성도 참조 가능. 예)p => p.TypeCode, p => p.TypeCode + 1</param>
+    /// <returns></returns>
+    public int ExecuteUpdate(`P:, :`Type` `name` ``, Expression<Func<SetPropertyCalls<`Name`>, SetPropertyCalls<`Name`>>> setPropertyCalls)
+    {
+        using var context = DbContextFactory.Create();
+
+        return context.Set<`Name`>().Where(x => `P:&& :x.`Name` == `name` ``).ExecuteUpdate(setPropertyCalls);
+    }
+
+    /// <summary>
+    /// 기본키를 만족하는 업데이트한다. OnSaving과 OnSaved 부분 메서드를 호출하지 않음.
+    /// </summary>
+    `P::/// <param name="`name`">기본키</param> ``
+    /// <param name="setPropertyCalls">변경할 속성. 엔티티의 다른 속성도 참조 가능. 예)p => p.TypeCode, p => p.TypeCode + 1</param>
+    /// <returns></returns>
+    public async Task<int> ExecuteUpdateAsync(`P:, :`Type` `name` ``, Expression<Func<SetPropertyCalls<`Name`>, SetPropertyCalls<`Name`>>> setPropertyCalls)
+    {
+        await using var context = DbContextFactory.Create();
+
+        return await context.Set<`Name`>().Where(x => `P:&& :x.`Name` == `name` ``).ExecuteUpdateAsync(setPropertyCalls);
+    }
+    #endregion ExecuteUpdate
 }
 #endregion `Name`Dao
 T`
