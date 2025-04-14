@@ -1,4 +1,4 @@
-{
+﻿{
 	"Version":2,
 	"Scope":1,
 	"TargetPath":"`Name`ApiTest.g.cs",
@@ -26,7 +26,7 @@ public partial class `Name`ApiTest
     {
         var count = await Api.`Name`.GetCountAsync();
 
-        count.Should().BeGreaterThan(0);
+        count.ShouldBeGreaterThan(0);
     }
 
     [TestMethod]
@@ -35,7 +35,7 @@ public partial class `Name`ApiTest
         var first = await Api.`Name`.GetFirstAsync();
         var entity = await Api.`Name`.GetByKeyAsync(`P:, :first.`Name` ``);
 
-        entity.PrimaryKeyValues.Should().Be(first.PrimaryKeyValues);
+        entity.PrimaryKeyValues.ShouldBe(first.PrimaryKeyValues);
     }
 
     [TestMethod]
@@ -43,7 +43,7 @@ public partial class `Name`ApiTest
     {
         var first = await Api.`Name`.GetFirstAsync();
 
-        (await Dao.`Name`.ExistsByKeyAsync(`P:, :first.`Name` ``)).Should().BeTrue();
+        (await Dao.`Name`.ExistsByKeyAsync(`P:, :first.`Name` ``)).ShouldBeTrue();
     }
 
     [TestMethod]
@@ -51,7 +51,7 @@ public partial class `Name`ApiTest
     {
         var first = await Api.`Name`.GetFirstAsync();
 
-        (await Api.`Name`.ExistsByKeyAsync(`P:, :first.`Name` ``)).Should().BeTrue();
+        (await Api.`Name`.ExistsByKeyAsync(`P:, :first.`Name` ``)).ShouldBeTrue();
     }
 
     [TestMethod]
@@ -60,7 +60,7 @@ public partial class `Name`ApiTest
         var first = await Api.`Name`.GetFirstAsync();
         await Api.`Name`.DeleteByKeyAsync(`P:, :first.`Name` ``);
 
-        (await Api.`Name`.ExistsByKeyAsync(`P:, :first.`Name` ``)).Should().BeFalse();
+        (await Api.`Name`.ExistsByKeyAsync(`P:, :first.`Name` ``)).ShouldBeFalse();
     }
 
     [TestMethod]
@@ -77,7 +77,7 @@ public partial class `Name`ApiTest
 
         var newCount = await Api.`Name`.GetCountAsync();
 
-        newCount.Should().Be(oldCount + 1);
+        newCount.ShouldBe(oldCount + 1);
     }
 
     [TestMethod]
@@ -89,14 +89,14 @@ public partial class `Name`ApiTest
 
         entity = await Api.`Name`.GetFirstAsync();
 
-        `Name`DaoTest.GetUpdateField(entity).Should().Be(value);
+        `Name`DaoTest.GetUpdateField(entity).ShouldBe(value);
     }
 
     [TestMethod]
     public async Task GetFirst()
     {
         var entity = await Api.`Name`.GetFirstAsync();
-        entity.Should().NotBeNull();
+        entity.ShouldNotBeNull();
     }
 
     `F::
@@ -106,7 +106,7 @@ public partial class `Name`ApiTest
         var list = await Api.`Table`.GetBy`Name`Async();
 
         foreach (var item in list)
-            item.`Name`.Should().Be();
+            item.`Name`.ShouldBe();
     }
 	``
 }

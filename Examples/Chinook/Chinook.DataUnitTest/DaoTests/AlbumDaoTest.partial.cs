@@ -1,4 +1,4 @@
-#region
+﻿#region
 
 using Chinook.Data;
 
@@ -26,6 +26,6 @@ public partial class AlbumDaoTest
     public void GetLast()
     {
         var entity = Dao.Album.GetLast(x => x.AlbumId );
-        entity.Should().NotBeNull();
+        entity.ShouldNotBeNull();
     }
 }

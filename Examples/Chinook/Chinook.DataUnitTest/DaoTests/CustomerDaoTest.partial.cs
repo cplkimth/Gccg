@@ -1,4 +1,4 @@
-#region
+﻿#region
 
 using Chinook.Data;
 
@@ -26,6 +26,6 @@ public partial class CustomerDaoTest
     public void GetLast()
     {
         var entity = Dao.Customer.GetLast(x => x.CustomerId );
-        entity.Should().NotBeNull();
+        entity.ShouldNotBeNull();
     }
 }

@@ -1,4 +1,4 @@
-#region
+﻿#region
 
 using Chinook.Data;
 
@@ -26,6 +26,6 @@ public partial class DateTableDaoTest
     public void GetLast()
     {
         var entity = Dao.DateTable.GetLast(x => x.Date );
-        entity.Should().NotBeNull();
+        entity.ShouldNotBeNull();
     }
 }

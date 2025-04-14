@@ -1,4 +1,4 @@
-#region
+﻿#region
 
 using Chinook.Data;
 
@@ -26,6 +26,6 @@ public partial class PlaylistDaoTest
     public void GetLast()
     {
         var entity = Dao.Playlist.GetLast(x => x.PlaylistId );
-        entity.Should().NotBeNull();
+        entity.ShouldNotBeNull();
     }
 }

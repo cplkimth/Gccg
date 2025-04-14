@@ -1,4 +1,4 @@
-{
+﻿{
 	"Version":2,
 	"Scope":1,
 	"TargetPath":"`Name`DaoTest.g.cs",
@@ -31,7 +31,7 @@ public partial class `Name`DaoTest : EntityDaoTest<`Name`>
     {
         var count = Dao.`Name`.GetCount();
         
-        count.Should().BeGreaterThan(0);
+        count.ShouldBeGreaterThan(0);
     }
 
     [TestMethod]
@@ -40,7 +40,7 @@ public partial class `Name`DaoTest : EntityDaoTest<`Name`>
         var first = Dao.`Name`.GetFirst();
         var entity = Dao.`Name`.GetByKey(`P:, :first.`Name` ``);
         
-        entity.PrimaryKeyValues.Should().Be(first.PrimaryKeyValues);
+        entity.PrimaryKeyValues.ShouldBe(first.PrimaryKeyValues);
     }
 
     [TestMethod]
@@ -48,7 +48,7 @@ public partial class `Name`DaoTest : EntityDaoTest<`Name`>
     {
         var first = Dao.`Name`.GetFirst();
         
-        Dao.`Name`.ExistsByKey(`P:, :first.`Name` ``).Should().BeTrue();
+        Dao.`Name`.ExistsByKey(`P:, :first.`Name` ``).ShouldBeTrue();
     }
 
     [TestMethod]
@@ -56,7 +56,7 @@ public partial class `Name`DaoTest : EntityDaoTest<`Name`>
     {
         var first = Dao.`Name`.GetFirst();
         
-        Dao.`Name`.Exists(x => `P: && :x.`Name` == first.`Name` ``).Should().BeTrue();
+        Dao.`Name`.Exists(x => `P: && :x.`Name` == first.`Name` ``).ShouldBeTrue();
     }
 
     [TestMethod]
@@ -65,7 +65,7 @@ public partial class `Name`DaoTest : EntityDaoTest<`Name`>
         var first = GetForDelete();
         Dao.`Name`.DeleteByKey(`P:, :first.`Name` ``);
         
-        Dao.`Name`.ExistsByKey(`P:, :first.`Name` ``).Should().BeFalse();
+        Dao.`Name`.ExistsByKey(`P:, :first.`Name` ``).ShouldBeFalse();
     }
 
     [TestMethod]
@@ -73,9 +73,9 @@ public partial class `Name`DaoTest : EntityDaoTest<`Name`>
     {
         var first = GetForDelete();
         var count = Dao.`Name`.DeleteAll(x => `P: && :x.`Name` == first.`Name` ``);
-        count.Should().BeGreaterThan(0);
+        count.ShouldBeGreaterThan(0);
 
-        Dao.`Name`.ExistsByKey(`P:, :first.`Name` ``).Should().BeFalse();
+        Dao.`Name`.ExistsByKey(`P:, :first.`Name` ``).ShouldBeFalse();
     }
 
     [TestMethod]
@@ -92,7 +92,7 @@ public partial class `Name`DaoTest : EntityDaoTest<`Name`>
 
         var newCount = Dao.`Name`.GetCount();
 
-        newCount.Should().Be(oldCount + 1);
+        newCount.ShouldBe(oldCount + 1);
     }
 
     [TestMethod]
@@ -108,14 +108,14 @@ public partial class `Name`DaoTest : EntityDaoTest<`Name`>
 
         entity = Dao.`Name`.GetFirst();
 
-        GetUpdateField(entity).Should().Be(value);
+        GetUpdateField(entity).ShouldBe(value);
     }
 
     [TestMethod]
     public void GetFirst()
     {
         var entity = Dao.`Name`.GetFirst();
-        entity.Should().NotBeNull();
+        entity.ShouldNotBeNull();
     }
 }
 T`

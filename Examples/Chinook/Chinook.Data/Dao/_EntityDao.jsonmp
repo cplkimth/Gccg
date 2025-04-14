@@ -21,8 +21,4 @@ public partial class EntityDao<T>
     protected virtual partial void OnSaved(T entity, LogType logType)
     {
     }
-
-    protected virtual partial void OnSaved(IEnumerable<T> entities, LogType logType)
-    {
-    }
 }

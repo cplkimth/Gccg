@@ -1,4 +1,4 @@
-{
+﻿{
 	"Version":2,
 	"Scope":1,
 	"TargetPath":"`Name`DaoTest.partial.cs",
@@ -32,7 +32,7 @@ public partial class `Name`DaoTest
     public void GetLast()
     {
         var entity = Dao.`Name`.GetLast(x => `P:,:x.`Name` ``);
-        entity.Should().NotBeNull();
+        entity.ShouldNotBeNull();
     }
 }
 T`

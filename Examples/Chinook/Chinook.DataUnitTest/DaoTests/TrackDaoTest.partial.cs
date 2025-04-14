@@ -1,4 +1,4 @@
-#region
+﻿#region
 
 using Chinook.Data;
 
@@ -26,6 +26,6 @@ public partial class TrackDaoTest
     public void GetLast()
     {
         var entity = Dao.Track.GetLast(x => x.TrackId );
-        entity.Should().NotBeNull();
+        entity.ShouldNotBeNull();
     }
 }

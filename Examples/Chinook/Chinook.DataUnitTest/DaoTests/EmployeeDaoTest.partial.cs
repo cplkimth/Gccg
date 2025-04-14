@@ -1,4 +1,4 @@
-#region
+﻿#region
 
 using Chinook.Data;
 
@@ -26,7 +26,7 @@ public partial class EmployeeDaoTest
     public void GetLast()
     {
         var entity = Dao.Employee.GetLast(x => x.EmployeeId );
-        entity.Should().NotBeNull();
+        entity.ShouldNotBeNull();
     }
 
     internal override Employee GetForDelete()

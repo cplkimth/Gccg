@@ -1,4 +1,4 @@
-#region
+﻿#region
 
 using Chinook.Data;
 
@@ -26,6 +26,6 @@ public partial class InvoiceLineDaoTest
     public void GetLast()
     {
         var entity = Dao.InvoiceLine.GetLast(x => x.InvoiceLineId );
-        entity.Should().NotBeNull();
+        entity.ShouldNotBeNull();
     }
 }

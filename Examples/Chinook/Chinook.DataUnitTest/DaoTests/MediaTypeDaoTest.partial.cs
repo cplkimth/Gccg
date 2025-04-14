@@ -1,4 +1,4 @@
-#region
+﻿#region
 
 using Chinook.Data;
 
@@ -26,6 +26,6 @@ public partial class MediaTypeDaoTest
     public void GetLast()
     {
         var entity = Dao.MediaType.GetLast(x => x.MediaTypeId );
-        entity.Should().NotBeNull();
+        entity.ShouldNotBeNull();
     }
 }

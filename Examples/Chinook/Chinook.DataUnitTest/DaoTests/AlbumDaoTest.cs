@@ -19,8 +19,8 @@ public partial class AlbumDaoTest
         );
 
         var entity = Dao.Album.GetByKey(albumId);
-        entity.TypeCode.Should().Be(20001);
-        entity.ArtistId.Should().Be(2);
+        entity.TypeCode.ShouldBe(20001);
+        entity.ArtistId.ShouldBe(2);
     }
 
     [TestMethod]
@@ -31,7 +31,7 @@ public partial class AlbumDaoTest
         await Dao.Album.ExecuteUpdateAsync(albumId, x => x.SetProperty(p => p.TypeCode, p => p.TypeCode + 1));
 
         var entity = await Dao.Album.GetByKeyAsync(albumId);
-        entity.TypeCode.Should().Be(20001);
+        entity.TypeCode.ShouldBe(20001);
     }
 
     [TestMethod]
@@ -40,11 +40,11 @@ public partial class AlbumDaoTest
         Expression<Func<Album, bool>> predicate = x => x.ArtistId == 1 && x.TypeCode != 20002;
 
         var count = Dao.Album.ExecuteUpdate(predicate, x => x.SetProperty(p => p.TypeCode, p => p.TypeCode + 1));
-        count.Should().Be(5);
+        count.ShouldBe(5);
 
         var list = Dao.Album.Get(predicate);
         foreach (var entity in list)
-            entity.TypeCode.Should().Be(20001);
+            entity.TypeCode.ShouldBe(20001);
     }
 
     [TestMethod]
@@ -53,11 +53,11 @@ public partial class AlbumDaoTest
         Expression<Func<Album, bool>> predicate = x => x.ArtistId == 1 && x.TypeCode != 20002;
 
         var count = await Dao.Album.ExecuteUpdateAsync(predicate, x => x.SetProperty(p => p.TypeCode, p => p.TypeCode + 1));
-        count.Should().Be(5);
+        count.ShouldBe(5);
 
         var list = await Dao.Album.GetAsync(predicate);
         foreach (var entity in list)
-            entity.TypeCode.Should().Be(20001);
+            entity.TypeCode.ShouldBe(20001);
     }
 
     [TestMethod]
@@ -66,11 +66,11 @@ public partial class AlbumDaoTest
         Expression<Func<Album, bool>> predicate = x => x.ArtistId == 1 && x.TypeCode != 20002;
 
         int oldCount = Dao.Album.GetCount(predicate);
-        oldCount.Should().Be(5);
+        oldCount.ShouldBe(5);
         var count = Dao.Album.ExecuteDelete(predicate);
-        count.Should().Be(5);
+        count.ShouldBe(5);
         int newCount = Dao.Album.GetCount(predicate);
-        newCount.Should().Be(0);
+        newCount.ShouldBe(0);
     }
 
     [TestMethod]
@@ -79,11 +79,11 @@ public partial class AlbumDaoTest
         Expression<Func<Album, bool>> predicate = x => x.ArtistId == 1 && x.TypeCode != 20002;
 
         int oldCount = await Dao.Album.GetCountAsync(predicate);
-        oldCount.Should().Be(5);
+        oldCount.ShouldBe(5);
         var count = await Dao.Album.ExecuteDeleteAsync(predicate);
-        count.Should().Be(5);
+        count.ShouldBe(5);
         int newCount = await Dao.Album.GetCountAsync(predicate);
-        newCount.Should().Be(0);
+        newCount.ShouldBe(0);
     }
 
     [TestMethod]
@@ -103,8 +103,8 @@ public partial class AlbumDaoTest
         var insertedCount = Dao.Album.InsertMany(list);
         var newCount = Dao.Album.GetCount();
 
-        insertedCount.Should().Be(2);
-        newCount.Should().Be(oldCount + 2);
+        insertedCount.ShouldBe(2);
+        newCount.ShouldBe(oldCount + 2);
     }
 
     [TestMethod]
@@ -117,112 +117,112 @@ public partial class AlbumDaoTest
         Dao.Album.UpdateMany(list);
 
         foreach (var entity in list)
-            entity.Title.Should().Be(entity.AlbumId.ToString());
+            entity.Title.ShouldBe(entity.AlbumId.ToString());
     }
 
     [TestMethod]
     public void GetFirst2()
     {
         var entity = Dao.Album.GetFirst(x => x.Title.Contains("Yellow"));
-        entity.AlbumId.Should().Be(9);
+        entity.AlbumId.ShouldBe(9);
     }
 
     [TestMethod]
     public void GetFirst3()
     {
         var entity = Dao.Album.GetFirst(x => x.Title);
-        entity.AlbumId.Should().Be(8);
+        entity.AlbumId.ShouldBe(8);
     }
 
     [TestMethod]
     public void GetFirst4()
     {
         var entity = Dao.Album.GetFirst(x => x.Title.Contains("ne"), x => x.Title);
-        entity.AlbumId.Should().Be(2);
+        entity.AlbumId.ShouldBe(2);
     }
 
     [TestMethod]
     public void GetLast4()
     {
         var entity = Dao.Album.GetLast(x => x.AlbumId);
-        entity.AlbumId.Should().Be(9);
+        entity.AlbumId.ShouldBe(9);
     }
 
     [TestMethod]
     public void GetLast2()
     {
         var entity = Dao.Album.GetLast(x => x.Title.Contains("ne"));
-        entity.AlbumId.Should().Be(2);
+        entity.AlbumId.ShouldBe(2);
     }
 
     [TestMethod]
     public void GetLast3()
     {
         var entity = Dao.Album.GetLast(x => x.Title.Contains("ne"), x => x.AlbumId);
-        entity.AlbumId.Should().Be(9);
+        entity.AlbumId.ShouldBe(9);
     }
 
     [TestMethod]
     public void SelectFirst()
     {
         var value = Dao.Album.SelectFirst(x => x.Title);
-        value.Should().Be("Money");
+        value.ShouldBe("Money");
     }
 
     [TestMethod]
     public void SelectFirst2()
     {
         var value = Dao.Album.SelectFirst(x => x.Title.Contains("ne"), x => x.Title);
-        value.Should().Be("Money");
+        value.ShouldBe("Money");
     }
 
     [TestMethod]
     public void SelectFirst3()
     {
         var value = Dao.Album.SelectFirst(x => x.AlbumId, x => x.Title);
-        value.Should().Be("Money");
+        value.ShouldBe("Money");
     }
 
     [TestMethod]
     public void SelectFirst4()
     {
         var value = Dao.Album.SelectFirst(x => x.Title.Contains("ne"), x => x.AlbumId, x => x.Title);
-        value.Should().Be("Money");
+        value.ShouldBe("Money");
     }
 
     [TestMethod]
     public void SelectLast()
     {
         var value = Dao.Album.SelectLast(x => x.AlbumId, x => x.Title);
-        value.Should().Be("Yellow Submarine");
+        value.ShouldBe("Yellow Submarine");
     }
 
     [TestMethod]
     public void SelectLast2()
     {
         var value = Dao.Album.SelectLast(x => x.Title.Contains("Money"), x => x.Title);
-        value.Should().Be("Money");
+        value.ShouldBe("Money");
     }
 
     [TestMethod]
     public void SelectLast3()
     {
         var value = Dao.Album.SelectLast(x => x.Title.Contains("Money"), x => x.AlbumId, x => x.Title);
-        value.Should().NotBeNull();
+        value.ShouldNotBeNull();
     }
 
     [TestMethod]
     public void GetT()
     {
         var count = Dao.Get<Album>().GetCount();
-        count.Should().BeGreaterThan(0);
+        count.ShouldBeGreaterThan(0);
     }
 
     [TestMethod]
     public void GetByArtistId()
     {
         var list = Dao.Album.GetByArtistId(2);
-        list.Count.Should().Be(2);
+        list.Count.ShouldBe(2);
     }
 
     #region search
@@ -277,7 +277,7 @@ public partial class AlbumDaoTest
         Dao.Album.InsertOrUpdate(album);
 
         album = Dao.Album.GetByKey(2);
-        value.Should().Be(album.Title);
+        value.ShouldBe(album.Title);
     }
 
     [TestMethod]
@@ -290,7 +290,7 @@ public partial class AlbumDaoTest
         album.Title = value;
         Dao.Album.InsertOrUpdate(album);
 
-        Dao.Album.GetCount().Should().Be(9);
+        Dao.Album.GetCount().ShouldBe(9);
     }
 
     [TestMethod]
