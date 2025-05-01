@@ -25,7 +25,7 @@ public class GeneratorHelper
         Console.WriteLine("done!");
     }
 
-    private static void OnPreparation()
+    public static void OnPreparation()
     {
         Console.WriteLine($"deleting [{GccgConfig.Instance.GccgEF}]");
         try
@@ -61,7 +61,7 @@ public class GeneratorHelper
         Thread.Sleep(GccgConfig.Instance.Sleep);
     }
 
-    private static void OnGeneration()
+    public static void OnGeneration()
     {
         var json = Generator.Generate(GccgConfig.Instance.DbContext);
         File.WriteAllText($"{GccgConfig.Instance[C.SolutionName]}.json", json);
