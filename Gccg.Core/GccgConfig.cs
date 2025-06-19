@@ -18,8 +18,15 @@ public partial class GccgConfig
     {
     }
 
-    public static GccgConfig CreateSingleton(DbContext dbContext, string solutionName, string solutionDirectory, string dataEf, string gccgEf,
-        string contextPostfix = "*Context.cs", int sleep = 1500, params (string Key, string Value)[] variables)
+    public static GccgConfig CreateSingleton(
+        DbContext dbContext, 
+        string solutionName, 
+        string solutionDirectory, 
+        string dataEf, 
+        string gccgEf, 
+        string contextPostfix = "*Context.cs", 
+        int sleep = 1500, 
+        params (string Key, string Value)[] variables)
     {
         Instance = new GccgConfig
         {
@@ -93,6 +100,8 @@ public partial class GccgConfig
     public void Fill(StringBuilder builder)
     {
         foreach (var key in _variables.Keys)
+        {
             builder.Replace($"`{key}`", _variables[key]);
+        }
     }
 }

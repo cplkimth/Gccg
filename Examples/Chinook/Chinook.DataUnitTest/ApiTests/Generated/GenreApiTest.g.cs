@@ -18,7 +18,7 @@ public partial class GenreApiTest
     [TestMethod]
     public async Task GetCount()
     {
-        var count = await Api.Genre.GetCountAsync();
+        var count = await Api.Genre.GetCount();
 
         count.ShouldBeGreaterThan(0);
     }
@@ -26,8 +26,8 @@ public partial class GenreApiTest
     [TestMethod]
     public async Task GetByKey()
     {
-        var first = await Api.Genre.GetFirstAsync();
-        var entity = await Api.Genre.GetByKeyAsync(first.GenreId );
+        var first = await Api.Genre.GetFirst();
+        var entity = await Api.Genre.GetByKey(first.GenreId );
 
         entity.PrimaryKeyValues.ShouldBe(first.PrimaryKeyValues);
     }
@@ -35,41 +35,41 @@ public partial class GenreApiTest
     [TestMethod]
     public async Task ExistsByKey()
     {
-        var first = await Api.Genre.GetFirstAsync();
+        var first = await Api.Genre.GetFirst();
 
-        (await Dao.Genre.ExistsByKeyAsync(first.GenreId )).ShouldBeTrue();
+        (await Dao.Genre.ExistsByKey(first.GenreId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task Exists()
     {
-        var first = await Api.Genre.GetFirstAsync();
+        var first = await Api.Genre.GetFirst();
 
-        (await Api.Genre.ExistsByKeyAsync(first.GenreId )).ShouldBeTrue();
+        (await Api.Genre.ExistsByKey(first.GenreId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task DeleteByKey()
     {
-        var first = await Api.Genre.GetFirstAsync();
-        await Api.Genre.DeleteByKeyAsync(first.GenreId );
+        var first = await Api.Genre.GetFirst();
+        await Api.Genre.DeleteByKey(first.GenreId );
 
-        (await Api.Genre.ExistsByKeyAsync(first.GenreId )).ShouldBeFalse();
+        (await Api.Genre.ExistsByKey(first.GenreId )).ShouldBeFalse();
     }
 
     [TestMethod]
     public async Task Insert()
     {
-        var first = await Api.Genre.GetFirstAsync();
+        var first = await Api.Genre.GetFirst();
 
-        var oldCount = await Api.Genre.GetCountAsync();
+        var oldCount = await Api.Genre.GetCount();
 
         var entity = first.Clone();
         entity.ClearKeyValues();
         GenreDaoTest.FillForInsert(entity);
-        entity = await Api.Genre.InsertAsync(entity);
+        entity = await Api.Genre.Insert(entity);
 
-        var newCount = await Api.Genre.GetCountAsync();
+        var newCount = await Api.Genre.GetCount();
 
         newCount.ShouldBe(oldCount + 1);
     }
@@ -77,11 +77,11 @@ public partial class GenreApiTest
     [TestMethod]
     public async Task Update()
     {
-        var entity = await Api.Genre.GetFirstAsync();
+        var entity = await Api.Genre.GetFirst();
         object value = GenreDaoTest.SetUpdateField(entity);
-        await Api.Genre.UpdateAsync(entity);
+        await Api.Genre.Update(entity);
 
-        entity = await Api.Genre.GetFirstAsync();
+        entity = await Api.Genre.GetFirst();
 
         GenreDaoTest.GetUpdateField(entity).ShouldBe(value);
     }
@@ -89,7 +89,7 @@ public partial class GenreApiTest
     [TestMethod]
     public async Task GetFirst()
     {
-        var entity = await Api.Genre.GetFirstAsync();
+        var entity = await Api.Genre.GetFirst();
         entity.ShouldNotBeNull();
     }
 

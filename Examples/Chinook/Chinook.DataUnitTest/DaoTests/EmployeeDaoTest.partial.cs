@@ -23,14 +23,14 @@ public partial class EmployeeDaoTest
     }
 
     [TestMethod]
-    public void GetLast()
+    public async Task GetLast()
     {
-        var entity = Dao.Employee.GetLast(x => x.EmployeeId );
+        var entity = await Dao.Employee.GetLast(x => x.EmployeeId );
         entity.ShouldNotBeNull();
     }
 
-    internal override Employee GetForDelete()
+    internal override async Task<Employee> GetForDelete()
     {
-        return Dao.Employee.GetByKey(6);
+        return await Dao.Employee.GetByKey(6);
     }
 }

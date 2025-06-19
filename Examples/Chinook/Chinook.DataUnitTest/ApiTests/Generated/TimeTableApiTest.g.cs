@@ -18,7 +18,7 @@ public partial class TimeTableApiTest
     [TestMethod]
     public async Task GetCount()
     {
-        var count = await Api.TimeTable.GetCountAsync();
+        var count = await Api.TimeTable.GetCount();
 
         count.ShouldBeGreaterThan(0);
     }
@@ -26,24 +26,24 @@ public partial class TimeTableApiTest
     [TestMethod]
     public async Task ExistsByKey()
     {
-        var first = await Api.TimeTable.GetFirstAsync();
+        var first = await Api.TimeTable.GetFirst();
 
-        (await Dao.TimeTable.ExistsByKeyAsync(first.Time )).ShouldBeTrue();
+        (await Dao.TimeTable.ExistsByKey(first.Time )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task Insert()
     {
-        var first = await Api.TimeTable.GetFirstAsync();
+        var first = await Api.TimeTable.GetFirst();
 
-        var oldCount = await Api.TimeTable.GetCountAsync();
+        var oldCount = await Api.TimeTable.GetCount();
 
         var entity = first.Clone();
         entity.ClearKeyValues();
         TimeTableDaoTest.FillForInsert(entity);
-        entity = await Api.TimeTable.InsertAsync(entity);
+        entity = await Api.TimeTable.Insert(entity);
 
-        var newCount = await Api.TimeTable.GetCountAsync();
+        var newCount = await Api.TimeTable.GetCount();
 
         newCount.ShouldBe(oldCount + 1);
     }
@@ -51,11 +51,11 @@ public partial class TimeTableApiTest
     [TestMethod]
     public async Task Update()
     {
-        var entity = await Api.TimeTable.GetFirstAsync();
+        var entity = await Api.TimeTable.GetFirst();
         object value = TimeTableDaoTest.SetUpdateField(entity);
-        await Api.TimeTable.UpdateAsync(entity);
+        await Api.TimeTable.Update(entity);
 
-        entity = await Api.TimeTable.GetFirstAsync();
+        entity = await Api.TimeTable.GetFirst();
 
         TimeTableDaoTest.GetUpdateField(entity).ShouldBe(value);
     }
@@ -63,7 +63,7 @@ public partial class TimeTableApiTest
     [TestMethod]
     public async Task GetFirst()
     {
-        var entity = await Api.TimeTable.GetFirstAsync();
+        var entity = await Api.TimeTable.GetFirst();
         entity.ShouldNotBeNull();
     }
 

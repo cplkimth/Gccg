@@ -23,9 +23,9 @@ public partial class GenreDaoTest
     }
 
     [TestMethod]
-    public void GetLast()
+    public async Task GetLast()
     {
-        var entity = Dao.Genre.GetLast(x => x.GenreId );
+        var entity = await Dao.Genre.GetLast(x => x.GenreId );
         entity.ShouldNotBeNull();
     }
 }

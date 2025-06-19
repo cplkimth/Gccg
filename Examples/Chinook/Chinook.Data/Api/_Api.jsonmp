@@ -1,4 +1,4 @@
-{
+﻿{
 	"Version":2,
 	"Scope":0,
 	"TargetPath":"Api.g.cs",
@@ -70,37 +70,37 @@ public abstract partial class EntityApi<T>
 
     protected abstract string EntityName { get; }
 
-    public virtual async Task<List<T>> GetAsync()
+    public virtual async Task<List<T>> Get()
     {
         return await CreateHttpClient().GetFromJsonAsync<List<T>>(GetAddress(), Options);
     }
 
-    public virtual async Task<T> GetFirstAsync()
+    public virtual async Task<T> GetFirst()
     {
         using HttpClient client = CreateHttpClient();
         return await client.GetFromJsonAsync<T>(GetAddress("first"), Options);
     }
 
-    public virtual async Task<T> GetLastAsync()
+    public virtual async Task<T> GetLast()
     {
         using HttpClient client = CreateHttpClient();
         return await client.GetFromJsonAsync<T>(GetAddress("last"), Options);
     }
 
-    public virtual async Task<int> GetCountAsync()
+    public virtual async Task<int> GetCount()
     {
         using HttpClient client = CreateHttpClient();
         return await client.GetFromJsonAsync<int>(GetAddress("count"), Options);
     }
 
-    public virtual async Task<T> InsertAsync(T entity)
+    public virtual async Task<T> Insert(T entity)
     {
         using HttpClient client = CreateHttpClient();
         var response = await client.PostAsJsonAsync(GetAddress(), entity, Options);
         return await response.Content.ReadFromJsonAsync<T>();
     }
 
-    public virtual async Task<int> UpdateAsync(T entity)
+    public virtual async Task<int> Update(T entity)
     {
         using HttpClient client = CreateHttpClient();
         var response = await client.PutAsJsonAsync(GetAddress(), entity, Options);
@@ -108,32 +108,33 @@ public abstract partial class EntityApi<T>
     }
 }
 
+
 #region clients
 `T
 public partial class `Name`BaseApi : EntityApi<`Name`>
 {
     protected override string EntityName => nameof(`Name`);
 
-    public virtual async Task<`Name`> GetByKeyAsync(`P:, :`Type` `name` ``)
+    public virtual async Task<`Name`> GetByKey(`P:, :`Type` `name` ``)
     {
         using HttpClient client = CreateHttpClient();
         return await client.GetFromJsonAsync<`Name`>(GetAddress(`P:, :`name` ``), Options);
     }
 
-    public virtual async Task<bool> ExistsByKeyAsync(`P:, :`Type` `name` ``)
+    public virtual async Task<bool> ExistsByKey(`P:, :`Type` `name` ``)
     {
         using HttpClient client = CreateHttpClient();
         return await client.GetFromJsonAsync<bool>(GetAddress("exists", `P:, :`name` ``), Options);
     }
 
-    `F::public virtual async Task<List<`Table`>> GetBy`Name`Async(`Type` `name`)
+    `F::public virtual async Task<List<`Table`>> GetBy`Name`(`Type` `name`)
     {
         HttpClient client = CreateHttpClient();
         return await client.GetFromJsonAsync<List<`Table`>>(GetAddress("`name`", `name`), Options);
     }
     ``
 
-    public virtual async Task<int> DeleteByKeyAsync(`P:, :`Type` `name` ``)
+    public virtual async Task<int> DeleteByKey(`P:, :`Type` `name` ``)
     {
         using HttpClient client = CreateHttpClient();
         var response  = await client.DeleteAsync(GetAddress(`P:, :`name` ``));

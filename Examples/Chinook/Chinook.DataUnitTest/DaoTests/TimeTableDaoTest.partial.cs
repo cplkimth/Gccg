@@ -23,9 +23,9 @@ public partial class TimeTableDaoTest
     }
 
     [TestMethod]
-    public void GetLast()
+    public async Task GetLast()
     {
-        var entity = Dao.TimeTable.GetLast(x => x.Time );
+        var entity = await Dao.TimeTable.GetLast(x => x.Time );
         entity.ShouldNotBeNull();
     }
 }

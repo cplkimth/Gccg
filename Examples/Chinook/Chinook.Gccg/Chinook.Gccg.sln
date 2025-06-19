@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chinook.Gccg", "Chinook.Gccg.csproj", "{23E0E157-AB48-B41D-6072-3EBB8551A4AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{23E0E157-AB48-B41D-6072-3EBB8551A4AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23E0E157-AB48-B41D-6072-3EBB8551A4AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23E0E157-AB48-B41D-6072-3EBB8551A4AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23E0E157-AB48-B41D-6072-3EBB8551A4AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7FB09734-9E25-4F7F-99D8-30B0E645E7DC}
+	EndGlobalSection
+EndGlobal

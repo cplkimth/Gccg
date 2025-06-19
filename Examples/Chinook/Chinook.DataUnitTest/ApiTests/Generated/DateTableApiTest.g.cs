@@ -18,7 +18,7 @@ public partial class DateTableApiTest
     [TestMethod]
     public async Task GetCount()
     {
-        var count = await Api.DateTable.GetCountAsync();
+        var count = await Api.DateTable.GetCount();
 
         count.ShouldBeGreaterThan(0);
     }
@@ -26,8 +26,8 @@ public partial class DateTableApiTest
     [TestMethod]
     public async Task GetByKey()
     {
-        var first = await Api.DateTable.GetFirstAsync();
-        var entity = await Api.DateTable.GetByKeyAsync(first.Date );
+        var first = await Api.DateTable.GetFirst();
+        var entity = await Api.DateTable.GetByKey(first.Date );
 
         entity.PrimaryKeyValues.ShouldBe(first.PrimaryKeyValues);
     }
@@ -35,41 +35,41 @@ public partial class DateTableApiTest
     [TestMethod]
     public async Task ExistsByKey()
     {
-        var first = await Api.DateTable.GetFirstAsync();
+        var first = await Api.DateTable.GetFirst();
 
-        (await Dao.DateTable.ExistsByKeyAsync(first.Date )).ShouldBeTrue();
+        (await Dao.DateTable.ExistsByKey(first.Date )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task Exists()
     {
-        var first = await Api.DateTable.GetFirstAsync();
+        var first = await Api.DateTable.GetFirst();
 
-        (await Api.DateTable.ExistsByKeyAsync(first.Date )).ShouldBeTrue();
+        (await Api.DateTable.ExistsByKey(first.Date )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task DeleteByKey()
     {
-        var first = await Api.DateTable.GetFirstAsync();
-        await Api.DateTable.DeleteByKeyAsync(first.Date );
+        var first = await Api.DateTable.GetFirst();
+        await Api.DateTable.DeleteByKey(first.Date );
 
-        (await Api.DateTable.ExistsByKeyAsync(first.Date )).ShouldBeFalse();
+        (await Api.DateTable.ExistsByKey(first.Date )).ShouldBeFalse();
     }
 
     [TestMethod]
     public async Task Insert()
     {
-        var first = await Api.DateTable.GetFirstAsync();
+        var first = await Api.DateTable.GetFirst();
 
-        var oldCount = await Api.DateTable.GetCountAsync();
+        var oldCount = await Api.DateTable.GetCount();
 
         var entity = first.Clone();
         entity.ClearKeyValues();
         DateTableDaoTest.FillForInsert(entity);
-        entity = await Api.DateTable.InsertAsync(entity);
+        entity = await Api.DateTable.Insert(entity);
 
-        var newCount = await Api.DateTable.GetCountAsync();
+        var newCount = await Api.DateTable.GetCount();
 
         newCount.ShouldBe(oldCount + 1);
     }
@@ -77,11 +77,11 @@ public partial class DateTableApiTest
     [TestMethod]
     public async Task Update()
     {
-        var entity = await Api.DateTable.GetFirstAsync();
+        var entity = await Api.DateTable.GetFirst();
         object value = DateTableDaoTest.SetUpdateField(entity);
-        await Api.DateTable.UpdateAsync(entity);
+        await Api.DateTable.Update(entity);
 
-        entity = await Api.DateTable.GetFirstAsync();
+        entity = await Api.DateTable.GetFirst();
 
         DateTableDaoTest.GetUpdateField(entity).ShouldBe(value);
     }
@@ -89,7 +89,7 @@ public partial class DateTableApiTest
     [TestMethod]
     public async Task GetFirst()
     {
-        var entity = await Api.DateTable.GetFirstAsync();
+        var entity = await Api.DateTable.GetFirst();
         entity.ShouldNotBeNull();
     }
 

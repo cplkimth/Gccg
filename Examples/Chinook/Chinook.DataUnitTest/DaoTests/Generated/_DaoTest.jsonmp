@@ -13,108 +13,109 @@ using System.Text.Json.Serialization;
 using `DataProjectNamespace`;
 #endregion
 
-namespace Chinook.DataUnitTest.DaoTests;
+namespace `SolutionName`.DataUnitTest.DaoTests;
 
 `T
 [TestClass]
 public partial class `Name`DaoTest : EntityDaoTest<`Name`>
 {
+
     [TestInitialize]
-    public void Initialize()
+    public async Task Initialize()
     {
-        var procedures = new ChinookContextProcedures(DbContextFactory.Create());
-        procedures.usp_InitializeAsync().Wait();
+        var procedures = new `DbContextName`Procedures(DbContextFactory.Create());
+        await procedures.usp_InitializeAsync();
     }
 
     [TestMethod]
-    public void GetCount()
+    public async Task GetCount()
     {
-        var count = Dao.`Name`.GetCount();
+        var count = await Dao.`Name`.GetCount();
         
         count.ShouldBeGreaterThan(0);
     }
 
     [TestMethod]
-    public void GetByKey()
+    public async Task GetByKey()
     {
-        var first = Dao.`Name`.GetFirst();
-        var entity = Dao.`Name`.GetByKey(`P:, :first.`Name` ``);
+        var first = await Dao.`Name`.GetFirst();
+        var entity = await Dao.`Name`.GetByKey(`P:, :first.`Name` ``);
         
         entity.PrimaryKeyValues.ShouldBe(first.PrimaryKeyValues);
     }
 
     [TestMethod]
-    public void ExistsByKey()
+    public async Task ExistsByKey()
     {
-        var first = Dao.`Name`.GetFirst();
+        var first = await Dao.`Name`.GetFirst();
         
-        Dao.`Name`.ExistsByKey(`P:, :first.`Name` ``).ShouldBeTrue();
+        (await Dao.`Name`.ExistsByKey(`P:, :first.`Name` ``)).ShouldBeTrue();
     }
 
     [TestMethod]
-    public void Exists()
+    public async Task Exists()
     {
-        var first = Dao.`Name`.GetFirst();
+        var first = await Dao.`Name`.GetFirst();
         
-        Dao.`Name`.Exists(x => `P: && :x.`Name` == first.`Name` ``).ShouldBeTrue();
+        (await Dao.`Name`.Exists(x => `P: && :x.`Name` == first.`Name` ``)).ShouldBeTrue();
     }
 
     [TestMethod]
-    public void DeleteByKey()
+    public async Task DeleteByKey()
     {
-        var first = GetForDelete();
-        Dao.`Name`.DeleteByKey(`P:, :first.`Name` ``);
+        var first = await GetForDelete();
+        await Dao.`Name`.DeleteByKey(`P:, :first.`Name` ``);
         
-        Dao.`Name`.ExistsByKey(`P:, :first.`Name` ``).ShouldBeFalse();
+        (await Dao.`Name`.ExistsByKey(`P:, :first.`Name` ``)).ShouldBeFalse();
     }
 
     [TestMethod]
-    public void DeleteAll()
+    public async Task DeleteAll()
     {
-        var first = GetForDelete();
-        var count = Dao.`Name`.DeleteAll(x => `P: && :x.`Name` == first.`Name` ``);
+        var first = await GetForDelete();
+        var count = await Dao.`Name`.DeleteAll(x => `P: && :x.`Name` == first.`Name` ``);
         count.ShouldBeGreaterThan(0);
 
-        Dao.`Name`.ExistsByKey(`P:, :first.`Name` ``).ShouldBeFalse();
+        (await Dao.`Name`.ExistsByKey(`P:, :first.`Name` ``)).ShouldBeFalse();
     }
 
     [TestMethod]
-    public void Insert()
+    public async Task Insert()
     {
-        var first = Dao.`Name`.GetFirst();
+        var first = await Dao.`Name`.GetFirst();
 
-        var oldCount = Dao.`Name`.GetCount();
+        var oldCount = await Dao.`Name`.GetCount();
 
         var entity = first.Clone();
         entity.ClearKeyValues();
         FillForInsert(entity);
-        entity = Dao.`Name`.Insert(entity);
+        entity = await Dao.`Name`.Insert(entity);
 
-        var newCount = Dao.`Name`.GetCount();
+        var newCount = await Dao.`Name`.GetCount();
 
         newCount.ShouldBe(oldCount + 1);
     }
 
     [TestMethod]
-    public void Update()
+    public async Task Update()
     {
-        var entity = Dao.`Name`.GetFirst();
+        var entity = await Dao.`Name`.GetFirst();
         object value = SetUpdateField(entity);
 
         if (value == null)
             return;
 
-        Dao.`Name`.Update(entity);
+        await Dao.`Name`.Update(entity);
 
-        entity = Dao.`Name`.GetFirst();
+        entity = await Dao.`Name`.GetFirst();
 
         GetUpdateField(entity).ShouldBe(value);
     }
 
     [TestMethod]
-    public void GetFirst()
+    public async Task GetFirst()
     {
-        var entity = Dao.`Name`.GetFirst();
+        var entity = await Dao.`Name`.GetFirst();
         entity.ShouldNotBeNull();
     }
 }

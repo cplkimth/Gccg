@@ -18,7 +18,20 @@ GccgConfig.CreateSingleton
     Root,
     dataEf,
     gccgEf,
-    variables: [("Var1", "Text1"),("ServiceProjectNamespace", "Chinook.Service")]
+    variables: [
+        ("WebProjectNamespace", $"{solutionName}.Web"),
+        ("ServiceProjectNamespace", $"{solutionName}.Service")
+        ]
 );
 
-GeneratorHelper.Generate();
+if (args.Length > 0)
+{
+    if (args[0] == "P")
+        GeneratorHelper.OnPreparation();
+    if (args[0] == "G")
+        GeneratorHelper.OnGeneration();
+}
+else
+{
+    GeneratorHelper.Generate();
+}

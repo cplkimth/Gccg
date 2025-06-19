@@ -23,9 +23,9 @@ public partial class CodeDaoTest
     }
 
     [TestMethod]
-    public void GetLast()
+    public async Task GetLast()
     {
-        var entity = Dao.Code.GetLast(x => x.CodeId);
+        var entity = await Dao.Code.GetLast(x => x.CodeId);
         entity.ShouldNotBeNull();
     }
 

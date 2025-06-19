@@ -23,9 +23,9 @@ public partial class CustomerDaoTest
     }
 
     [TestMethod]
-    public void GetLast()
+    public async Task GetLast()
     {
-        var entity = Dao.Customer.GetLast(x => x.CustomerId );
+        var entity = await Dao.Customer.GetLast(x => x.CustomerId );
         entity.ShouldNotBeNull();
     }
 }

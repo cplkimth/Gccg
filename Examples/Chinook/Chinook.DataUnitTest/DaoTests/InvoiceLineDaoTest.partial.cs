@@ -23,9 +23,9 @@ public partial class InvoiceLineDaoTest
     }
 
     [TestMethod]
-    public void GetLast()
+    public async Task GetLast()
     {
-        var entity = Dao.InvoiceLine.GetLast(x => x.InvoiceLineId );
+        var entity = await Dao.InvoiceLine.GetLast(x => x.InvoiceLineId );
         entity.ShouldNotBeNull();
     }
 }

@@ -18,7 +18,7 @@ public partial class PlaylistTrackHistoryApiTest
     [TestMethod]
     public async Task GetCount()
     {
-        var count = await Api.PlaylistTrackHistory.GetCountAsync();
+        var count = await Api.PlaylistTrackHistory.GetCount();
 
         count.ShouldBeGreaterThan(0);
     }
@@ -26,24 +26,24 @@ public partial class PlaylistTrackHistoryApiTest
     [TestMethod]
     public async Task ExistsByKey()
     {
-        var first = await Api.PlaylistTrackHistory.GetFirstAsync();
+        var first = await Api.PlaylistTrackHistory.GetFirst();
 
-        (await Dao.PlaylistTrackHistory.ExistsByKeyAsync(first.PlaylistId , first.TrackId , first.WrittenAt )).ShouldBeTrue();
+        (await Dao.PlaylistTrackHistory.ExistsByKey(first.PlaylistId , first.TrackId , first.WrittenAt )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task Insert()
     {
-        var first = await Api.PlaylistTrackHistory.GetFirstAsync();
+        var first = await Api.PlaylistTrackHistory.GetFirst();
 
-        var oldCount = await Api.PlaylistTrackHistory.GetCountAsync();
+        var oldCount = await Api.PlaylistTrackHistory.GetCount();
 
         var entity = first.Clone();
         entity.ClearKeyValues();
         PlaylistTrackHistoryDaoTest.FillForInsert(entity);
-        entity = await Api.PlaylistTrackHistory.InsertAsync(entity);
+        entity = await Api.PlaylistTrackHistory.Insert(entity);
 
-        var newCount = await Api.PlaylistTrackHistory.GetCountAsync();
+        var newCount = await Api.PlaylistTrackHistory.GetCount();
 
         newCount.ShouldBe(oldCount + 1);
     }
@@ -51,11 +51,11 @@ public partial class PlaylistTrackHistoryApiTest
     [TestMethod]
     public async Task Update()
     {
-        var entity = await Api.PlaylistTrackHistory.GetFirstAsync();
+        var entity = await Api.PlaylistTrackHistory.GetFirst();
         object value = PlaylistTrackHistoryDaoTest.SetUpdateField(entity);
-        await Api.PlaylistTrackHistory.UpdateAsync(entity);
+        await Api.PlaylistTrackHistory.Update(entity);
 
-        entity = await Api.PlaylistTrackHistory.GetFirstAsync();
+        entity = await Api.PlaylistTrackHistory.GetFirst();
 
         PlaylistTrackHistoryDaoTest.GetUpdateField(entity).ShouldBe(value);
     }
@@ -63,7 +63,7 @@ public partial class PlaylistTrackHistoryApiTest
     [TestMethod]
     public async Task GetFirst()
     {
-        var entity = await Api.PlaylistTrackHistory.GetFirstAsync();
+        var entity = await Api.PlaylistTrackHistory.GetFirst();
         entity.ShouldNotBeNull();
     }
 
@@ -71,7 +71,7 @@ public partial class PlaylistTrackHistoryApiTest
 	[TestMethod]
     public async Task GetByPlaylistId()
     {
-        var list = await Api.PlaylistTrackHistory.GetByPlaylistIdAsync(1);
+        var list = await Api.PlaylistTrackHistory.GetByPlaylistId(1);
 
         foreach (var item in list)
             item.PlaylistId.ShouldBe(1);
@@ -80,7 +80,7 @@ public partial class PlaylistTrackHistoryApiTest
 	[TestMethod]
     public async Task GetByTrackId()
     {
-        var list = await Api.PlaylistTrackHistory.GetByTrackIdAsync(1);
+        var list = await Api.PlaylistTrackHistory.GetByTrackId(1);
 
         foreach (var item in list)
             item.TrackId.ShouldBe(1);

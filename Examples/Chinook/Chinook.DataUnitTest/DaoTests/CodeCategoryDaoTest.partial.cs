@@ -23,9 +23,9 @@ public partial class CodeCategoryDaoTest
     }
     
     [TestMethod]
-    public void GetLast()
+    public async Task GetLast()
     {
-        var entity = Dao.CodeCategory.GetLast(x => x.CodeCategoryId );
+        var entity = await Dao.CodeCategory.GetLast(x => x.CodeCategoryId );
         entity.ShouldNotBeNull();
     }
 }

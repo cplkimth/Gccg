@@ -10,7 +10,7 @@ using `DataProjectNamespace`;
 using Microsoft.AspNetCore.Mvc;
 #endregion
 
-namespace Chinook.Web.Controllers;
+namespace `SolutionName`.Web.Controllers;
 
 `T
 public partial class `Name`Controller

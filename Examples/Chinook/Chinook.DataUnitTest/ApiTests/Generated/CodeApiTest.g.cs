@@ -18,7 +18,7 @@ public partial class CodeApiTest
     [TestMethod]
     public async Task GetCount()
     {
-        var count = await Api.Code.GetCountAsync();
+        var count = await Api.Code.GetCount();
 
         count.ShouldBeGreaterThan(0);
     }
@@ -26,8 +26,8 @@ public partial class CodeApiTest
     [TestMethod]
     public async Task GetByKey()
     {
-        var first = await Api.Code.GetFirstAsync();
-        var entity = await Api.Code.GetByKeyAsync(first.CodeId );
+        var first = await Api.Code.GetFirst();
+        var entity = await Api.Code.GetByKey(first.CodeId );
 
         entity.PrimaryKeyValues.ShouldBe(first.PrimaryKeyValues);
     }
@@ -35,41 +35,41 @@ public partial class CodeApiTest
     [TestMethod]
     public async Task ExistsByKey()
     {
-        var first = await Api.Code.GetFirstAsync();
+        var first = await Api.Code.GetFirst();
 
-        (await Dao.Code.ExistsByKeyAsync(first.CodeId )).ShouldBeTrue();
+        (await Dao.Code.ExistsByKey(first.CodeId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task Exists()
     {
-        var first = await Api.Code.GetFirstAsync();
+        var first = await Api.Code.GetFirst();
 
-        (await Api.Code.ExistsByKeyAsync(first.CodeId )).ShouldBeTrue();
+        (await Api.Code.ExistsByKey(first.CodeId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task DeleteByKey()
     {
-        var first = await Api.Code.GetFirstAsync();
-        await Api.Code.DeleteByKeyAsync(first.CodeId );
+        var first = await Api.Code.GetFirst();
+        await Api.Code.DeleteByKey(first.CodeId );
 
-        (await Api.Code.ExistsByKeyAsync(first.CodeId )).ShouldBeFalse();
+        (await Api.Code.ExistsByKey(first.CodeId )).ShouldBeFalse();
     }
 
     [TestMethod]
     public async Task Insert()
     {
-        var first = await Api.Code.GetFirstAsync();
+        var first = await Api.Code.GetFirst();
 
-        var oldCount = await Api.Code.GetCountAsync();
+        var oldCount = await Api.Code.GetCount();
 
         var entity = first.Clone();
         entity.ClearKeyValues();
         CodeDaoTest.FillForInsert(entity);
-        entity = await Api.Code.InsertAsync(entity);
+        entity = await Api.Code.Insert(entity);
 
-        var newCount = await Api.Code.GetCountAsync();
+        var newCount = await Api.Code.GetCount();
 
         newCount.ShouldBe(oldCount + 1);
     }
@@ -77,11 +77,11 @@ public partial class CodeApiTest
     [TestMethod]
     public async Task Update()
     {
-        var entity = await Api.Code.GetFirstAsync();
+        var entity = await Api.Code.GetFirst();
         object value = CodeDaoTest.SetUpdateField(entity);
-        await Api.Code.UpdateAsync(entity);
+        await Api.Code.Update(entity);
 
-        entity = await Api.Code.GetFirstAsync();
+        entity = await Api.Code.GetFirst();
 
         CodeDaoTest.GetUpdateField(entity).ShouldBe(value);
     }
@@ -89,7 +89,7 @@ public partial class CodeApiTest
     [TestMethod]
     public async Task GetFirst()
     {
-        var entity = await Api.Code.GetFirstAsync();
+        var entity = await Api.Code.GetFirst();
         entity.ShouldNotBeNull();
     }
 
@@ -97,7 +97,7 @@ public partial class CodeApiTest
 	[TestMethod]
     public async Task GetByCodeCategoryId()
     {
-        var list = await Api.Code.GetByCodeCategoryIdAsync(1);
+        var list = await Api.Code.GetByCodeCategoryId(1);
 
         foreach (var item in list)
             item.CodeCategoryId.ShouldBe(1);

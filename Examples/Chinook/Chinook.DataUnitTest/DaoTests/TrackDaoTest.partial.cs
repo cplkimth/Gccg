@@ -23,9 +23,9 @@ public partial class TrackDaoTest
     }
 
     [TestMethod]
-    public void GetLast()
+    public async Task GetLast()
     {
-        var entity = Dao.Track.GetLast(x => x.TrackId );
+        var entity = await Dao.Track.GetLast(x => x.TrackId );
         entity.ShouldNotBeNull();
     }
 }

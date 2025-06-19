@@ -18,7 +18,7 @@ public partial class PlaylistApiTest
     [TestMethod]
     public async Task GetCount()
     {
-        var count = await Api.Playlist.GetCountAsync();
+        var count = await Api.Playlist.GetCount();
 
         count.ShouldBeGreaterThan(0);
     }
@@ -26,8 +26,8 @@ public partial class PlaylistApiTest
     [TestMethod]
     public async Task GetByKey()
     {
-        var first = await Api.Playlist.GetFirstAsync();
-        var entity = await Api.Playlist.GetByKeyAsync(first.PlaylistId );
+        var first = await Api.Playlist.GetFirst();
+        var entity = await Api.Playlist.GetByKey(first.PlaylistId );
 
         entity.PrimaryKeyValues.ShouldBe(first.PrimaryKeyValues);
     }
@@ -35,41 +35,41 @@ public partial class PlaylistApiTest
     [TestMethod]
     public async Task ExistsByKey()
     {
-        var first = await Api.Playlist.GetFirstAsync();
+        var first = await Api.Playlist.GetFirst();
 
-        (await Dao.Playlist.ExistsByKeyAsync(first.PlaylistId )).ShouldBeTrue();
+        (await Dao.Playlist.ExistsByKey(first.PlaylistId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task Exists()
     {
-        var first = await Api.Playlist.GetFirstAsync();
+        var first = await Api.Playlist.GetFirst();
 
-        (await Api.Playlist.ExistsByKeyAsync(first.PlaylistId )).ShouldBeTrue();
+        (await Api.Playlist.ExistsByKey(first.PlaylistId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task DeleteByKey()
     {
-        var first = await Api.Playlist.GetFirstAsync();
-        await Api.Playlist.DeleteByKeyAsync(first.PlaylistId );
+        var first = await Api.Playlist.GetFirst();
+        await Api.Playlist.DeleteByKey(first.PlaylistId );
 
-        (await Api.Playlist.ExistsByKeyAsync(first.PlaylistId )).ShouldBeFalse();
+        (await Api.Playlist.ExistsByKey(first.PlaylistId )).ShouldBeFalse();
     }
 
     [TestMethod]
     public async Task Insert()
     {
-        var first = await Api.Playlist.GetFirstAsync();
+        var first = await Api.Playlist.GetFirst();
 
-        var oldCount = await Api.Playlist.GetCountAsync();
+        var oldCount = await Api.Playlist.GetCount();
 
         var entity = first.Clone();
         entity.ClearKeyValues();
         PlaylistDaoTest.FillForInsert(entity);
-        entity = await Api.Playlist.InsertAsync(entity);
+        entity = await Api.Playlist.Insert(entity);
 
-        var newCount = await Api.Playlist.GetCountAsync();
+        var newCount = await Api.Playlist.GetCount();
 
         newCount.ShouldBe(oldCount + 1);
     }
@@ -77,11 +77,11 @@ public partial class PlaylistApiTest
     [TestMethod]
     public async Task Update()
     {
-        var entity = await Api.Playlist.GetFirstAsync();
+        var entity = await Api.Playlist.GetFirst();
         object value = PlaylistDaoTest.SetUpdateField(entity);
-        await Api.Playlist.UpdateAsync(entity);
+        await Api.Playlist.Update(entity);
 
-        entity = await Api.Playlist.GetFirstAsync();
+        entity = await Api.Playlist.GetFirst();
 
         PlaylistDaoTest.GetUpdateField(entity).ShouldBe(value);
     }
@@ -89,7 +89,7 @@ public partial class PlaylistApiTest
     [TestMethod]
     public async Task GetFirst()
     {
-        var entity = await Api.Playlist.GetFirstAsync();
+        var entity = await Api.Playlist.GetFirst();
         entity.ShouldNotBeNull();
     }
 

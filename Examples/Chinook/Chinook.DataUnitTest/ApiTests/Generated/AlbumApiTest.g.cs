@@ -18,7 +18,7 @@ public partial class AlbumApiTest
     [TestMethod]
     public async Task GetCount()
     {
-        var count = await Api.Album.GetCountAsync();
+        var count = await Api.Album.GetCount();
 
         count.ShouldBeGreaterThan(0);
     }
@@ -26,8 +26,8 @@ public partial class AlbumApiTest
     [TestMethod]
     public async Task GetByKey()
     {
-        var first = await Api.Album.GetFirstAsync();
-        var entity = await Api.Album.GetByKeyAsync(first.AlbumId );
+        var first = await Api.Album.GetFirst();
+        var entity = await Api.Album.GetByKey(first.AlbumId );
 
         entity.PrimaryKeyValues.ShouldBe(first.PrimaryKeyValues);
     }
@@ -35,41 +35,41 @@ public partial class AlbumApiTest
     [TestMethod]
     public async Task ExistsByKey()
     {
-        var first = await Api.Album.GetFirstAsync();
+        var first = await Api.Album.GetFirst();
 
-        (await Dao.Album.ExistsByKeyAsync(first.AlbumId )).ShouldBeTrue();
+        (await Dao.Album.ExistsByKey(first.AlbumId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task Exists()
     {
-        var first = await Api.Album.GetFirstAsync();
+        var first = await Api.Album.GetFirst();
 
-        (await Api.Album.ExistsByKeyAsync(first.AlbumId )).ShouldBeTrue();
+        (await Api.Album.ExistsByKey(first.AlbumId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task DeleteByKey()
     {
-        var first = await Api.Album.GetFirstAsync();
-        await Api.Album.DeleteByKeyAsync(first.AlbumId );
+        var first = await Api.Album.GetFirst();
+        await Api.Album.DeleteByKey(first.AlbumId );
 
-        (await Api.Album.ExistsByKeyAsync(first.AlbumId )).ShouldBeFalse();
+        (await Api.Album.ExistsByKey(first.AlbumId )).ShouldBeFalse();
     }
 
     [TestMethod]
     public async Task Insert()
     {
-        var first = await Api.Album.GetFirstAsync();
+        var first = await Api.Album.GetFirst();
 
-        var oldCount = await Api.Album.GetCountAsync();
+        var oldCount = await Api.Album.GetCount();
 
         var entity = first.Clone();
         entity.ClearKeyValues();
         AlbumDaoTest.FillForInsert(entity);
-        entity = await Api.Album.InsertAsync(entity);
+        entity = await Api.Album.Insert(entity);
 
-        var newCount = await Api.Album.GetCountAsync();
+        var newCount = await Api.Album.GetCount();
 
         newCount.ShouldBe(oldCount + 1);
     }
@@ -77,11 +77,11 @@ public partial class AlbumApiTest
     [TestMethod]
     public async Task Update()
     {
-        var entity = await Api.Album.GetFirstAsync();
+        var entity = await Api.Album.GetFirst();
         object value = AlbumDaoTest.SetUpdateField(entity);
-        await Api.Album.UpdateAsync(entity);
+        await Api.Album.Update(entity);
 
-        entity = await Api.Album.GetFirstAsync();
+        entity = await Api.Album.GetFirst();
 
         AlbumDaoTest.GetUpdateField(entity).ShouldBe(value);
     }
@@ -89,7 +89,7 @@ public partial class AlbumApiTest
     [TestMethod]
     public async Task GetFirst()
     {
-        var entity = await Api.Album.GetFirstAsync();
+        var entity = await Api.Album.GetFirst();
         entity.ShouldNotBeNull();
     }
 
@@ -97,7 +97,7 @@ public partial class AlbumApiTest
 	[TestMethod]
     public async Task GetByArtistId()
     {
-        var list = await Api.Album.GetByArtistIdAsync(1);
+        var list = await Api.Album.GetByArtistId(1);
 
         foreach (var item in list)
             item.ArtistId.ShouldBe(1);

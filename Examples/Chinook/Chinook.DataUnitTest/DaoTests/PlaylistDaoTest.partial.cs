@@ -23,9 +23,9 @@ public partial class PlaylistDaoTest
     }
 
     [TestMethod]
-    public void GetLast()
+    public async Task GetLast()
     {
-        var entity = Dao.Playlist.GetLast(x => x.PlaylistId );
+        var entity = await Dao.Playlist.GetLast(x => x.PlaylistId );
         entity.ShouldNotBeNull();
     }
 }

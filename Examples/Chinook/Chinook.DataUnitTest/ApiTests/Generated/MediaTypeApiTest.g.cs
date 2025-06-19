@@ -18,7 +18,7 @@ public partial class MediaTypeApiTest
     [TestMethod]
     public async Task GetCount()
     {
-        var count = await Api.MediaType.GetCountAsync();
+        var count = await Api.MediaType.GetCount();
 
         count.ShouldBeGreaterThan(0);
     }
@@ -26,8 +26,8 @@ public partial class MediaTypeApiTest
     [TestMethod]
     public async Task GetByKey()
     {
-        var first = await Api.MediaType.GetFirstAsync();
-        var entity = await Api.MediaType.GetByKeyAsync(first.MediaTypeId );
+        var first = await Api.MediaType.GetFirst();
+        var entity = await Api.MediaType.GetByKey(first.MediaTypeId );
 
         entity.PrimaryKeyValues.ShouldBe(first.PrimaryKeyValues);
     }
@@ -35,41 +35,41 @@ public partial class MediaTypeApiTest
     [TestMethod]
     public async Task ExistsByKey()
     {
-        var first = await Api.MediaType.GetFirstAsync();
+        var first = await Api.MediaType.GetFirst();
 
-        (await Dao.MediaType.ExistsByKeyAsync(first.MediaTypeId )).ShouldBeTrue();
+        (await Dao.MediaType.ExistsByKey(first.MediaTypeId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task Exists()
     {
-        var first = await Api.MediaType.GetFirstAsync();
+        var first = await Api.MediaType.GetFirst();
 
-        (await Api.MediaType.ExistsByKeyAsync(first.MediaTypeId )).ShouldBeTrue();
+        (await Api.MediaType.ExistsByKey(first.MediaTypeId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task DeleteByKey()
     {
-        var first = await Api.MediaType.GetFirstAsync();
-        await Api.MediaType.DeleteByKeyAsync(first.MediaTypeId );
+        var first = await Api.MediaType.GetFirst();
+        await Api.MediaType.DeleteByKey(first.MediaTypeId );
 
-        (await Api.MediaType.ExistsByKeyAsync(first.MediaTypeId )).ShouldBeFalse();
+        (await Api.MediaType.ExistsByKey(first.MediaTypeId )).ShouldBeFalse();
     }
 
     [TestMethod]
     public async Task Insert()
     {
-        var first = await Api.MediaType.GetFirstAsync();
+        var first = await Api.MediaType.GetFirst();
 
-        var oldCount = await Api.MediaType.GetCountAsync();
+        var oldCount = await Api.MediaType.GetCount();
 
         var entity = first.Clone();
         entity.ClearKeyValues();
         MediaTypeDaoTest.FillForInsert(entity);
-        entity = await Api.MediaType.InsertAsync(entity);
+        entity = await Api.MediaType.Insert(entity);
 
-        var newCount = await Api.MediaType.GetCountAsync();
+        var newCount = await Api.MediaType.GetCount();
 
         newCount.ShouldBe(oldCount + 1);
     }
@@ -77,11 +77,11 @@ public partial class MediaTypeApiTest
     [TestMethod]
     public async Task Update()
     {
-        var entity = await Api.MediaType.GetFirstAsync();
+        var entity = await Api.MediaType.GetFirst();
         object value = MediaTypeDaoTest.SetUpdateField(entity);
-        await Api.MediaType.UpdateAsync(entity);
+        await Api.MediaType.Update(entity);
 
-        entity = await Api.MediaType.GetFirstAsync();
+        entity = await Api.MediaType.GetFirst();
 
         MediaTypeDaoTest.GetUpdateField(entity).ShouldBe(value);
     }
@@ -89,7 +89,7 @@ public partial class MediaTypeApiTest
     [TestMethod]
     public async Task GetFirst()
     {
-        var entity = await Api.MediaType.GetFirstAsync();
+        var entity = await Api.MediaType.GetFirst();
         entity.ShouldNotBeNull();
     }
 

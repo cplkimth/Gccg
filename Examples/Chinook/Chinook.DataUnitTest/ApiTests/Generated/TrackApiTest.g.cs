@@ -18,7 +18,7 @@ public partial class TrackApiTest
     [TestMethod]
     public async Task GetCount()
     {
-        var count = await Api.Track.GetCountAsync();
+        var count = await Api.Track.GetCount();
 
         count.ShouldBeGreaterThan(0);
     }
@@ -26,8 +26,8 @@ public partial class TrackApiTest
     [TestMethod]
     public async Task GetByKey()
     {
-        var first = await Api.Track.GetFirstAsync();
-        var entity = await Api.Track.GetByKeyAsync(first.TrackId );
+        var first = await Api.Track.GetFirst();
+        var entity = await Api.Track.GetByKey(first.TrackId );
 
         entity.PrimaryKeyValues.ShouldBe(first.PrimaryKeyValues);
     }
@@ -35,41 +35,41 @@ public partial class TrackApiTest
     [TestMethod]
     public async Task ExistsByKey()
     {
-        var first = await Api.Track.GetFirstAsync();
+        var first = await Api.Track.GetFirst();
 
-        (await Dao.Track.ExistsByKeyAsync(first.TrackId )).ShouldBeTrue();
+        (await Dao.Track.ExistsByKey(first.TrackId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task Exists()
     {
-        var first = await Api.Track.GetFirstAsync();
+        var first = await Api.Track.GetFirst();
 
-        (await Api.Track.ExistsByKeyAsync(first.TrackId )).ShouldBeTrue();
+        (await Api.Track.ExistsByKey(first.TrackId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task DeleteByKey()
     {
-        var first = await Api.Track.GetFirstAsync();
-        await Api.Track.DeleteByKeyAsync(first.TrackId );
+        var first = await Api.Track.GetFirst();
+        await Api.Track.DeleteByKey(first.TrackId );
 
-        (await Api.Track.ExistsByKeyAsync(first.TrackId )).ShouldBeFalse();
+        (await Api.Track.ExistsByKey(first.TrackId )).ShouldBeFalse();
     }
 
     [TestMethod]
     public async Task Insert()
     {
-        var first = await Api.Track.GetFirstAsync();
+        var first = await Api.Track.GetFirst();
 
-        var oldCount = await Api.Track.GetCountAsync();
+        var oldCount = await Api.Track.GetCount();
 
         var entity = first.Clone();
         entity.ClearKeyValues();
         TrackDaoTest.FillForInsert(entity);
-        entity = await Api.Track.InsertAsync(entity);
+        entity = await Api.Track.Insert(entity);
 
-        var newCount = await Api.Track.GetCountAsync();
+        var newCount = await Api.Track.GetCount();
 
         newCount.ShouldBe(oldCount + 1);
     }
@@ -77,11 +77,11 @@ public partial class TrackApiTest
     [TestMethod]
     public async Task Update()
     {
-        var entity = await Api.Track.GetFirstAsync();
+        var entity = await Api.Track.GetFirst();
         object value = TrackDaoTest.SetUpdateField(entity);
-        await Api.Track.UpdateAsync(entity);
+        await Api.Track.Update(entity);
 
-        entity = await Api.Track.GetFirstAsync();
+        entity = await Api.Track.GetFirst();
 
         TrackDaoTest.GetUpdateField(entity).ShouldBe(value);
     }
@@ -89,7 +89,7 @@ public partial class TrackApiTest
     [TestMethod]
     public async Task GetFirst()
     {
-        var entity = await Api.Track.GetFirstAsync();
+        var entity = await Api.Track.GetFirst();
         entity.ShouldNotBeNull();
     }
 
@@ -97,7 +97,7 @@ public partial class TrackApiTest
 	[TestMethod]
     public async Task GetByAlbumId()
     {
-        var list = await Api.Track.GetByAlbumIdAsync(2);
+        var list = await Api.Track.GetByAlbumId(2);
 
         foreach (var item in list)
             item.AlbumId.ShouldBe(2);
@@ -106,7 +106,7 @@ public partial class TrackApiTest
 	[TestMethod]
     public async Task GetByGenreId()
     {
-        var list = await Api.Track.GetByGenreIdAsync(1);
+        var list = await Api.Track.GetByGenreId(1);
 
         foreach (var item in list)
             item.GenreId.ShouldBe(1);
@@ -115,7 +115,7 @@ public partial class TrackApiTest
 	[TestMethod]
     public async Task GetByMediaTypeId()
     {
-        var list = await Api.Track.GetByMediaTypeIdAsync(1);
+        var list = await Api.Track.GetByMediaTypeId(1);
 
         foreach (var item in list)
             item.MediaTypeId.ShouldBe(1);

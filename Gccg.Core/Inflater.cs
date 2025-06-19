@@ -11,8 +11,6 @@ public static class Inflater
     {
         StringBuilder builder = new (template);
 
-        GccgConfig.Instance.Fill(builder);
-
         var tableMatches = Regex.Matches(template, "`T(.*?)T`", RegexOptions.Singleline);
         foreach (Match tableMatch in tableMatches)
         {
@@ -27,6 +25,9 @@ public static class Inflater
 #if DEBUG
         // Console.WriteLine(builder.ToString());
 #endif
+
+        GccgConfig.Instance.Fill(builder);
+
 
         return builder.ToString();
     }

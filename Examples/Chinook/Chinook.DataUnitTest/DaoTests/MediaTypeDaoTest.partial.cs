@@ -23,9 +23,9 @@ public partial class MediaTypeDaoTest
     }
 
     [TestMethod]
-    public void GetLast()
+    public async Task GetLast()
     {
-        var entity = Dao.MediaType.GetLast(x => x.MediaTypeId );
+        var entity = await Dao.MediaType.GetLast(x => x.MediaTypeId );
         entity.ShouldNotBeNull();
     }
 }

@@ -13,7 +13,11 @@ internal class Program
         var procedures = new ChinookContextProcedures(DbContextFactory.Create());
         await procedures.usp_InitializeAsync();
 
-        Console.WriteLine(await Dao.Album.GetCountAsync());
+        var list = await Dao.Album.SelectAsHashSet(x  => x.AlbumId > 0, x => x.Title);
+        foreach (var x in list)
+        {
+            Console.WriteLine(x);
+        }
         return;
 
 

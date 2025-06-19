@@ -5,6 +5,6 @@ namespace Chinook.DataUnitTest.DaoTests;
 
 public class EntityDaoTest<T> where T : Entity<T>, new()
 {
-    internal virtual T GetForDelete()
-        => Dao.Get<T>().GetFirst();
+    internal virtual async Task<T> GetForDelete()
+        => await Dao.Get<T>().GetFirst();
 }

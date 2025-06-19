@@ -13,7 +13,7 @@ using System.Text.Json.Serialization;
 using `DataProjectNamespace`;
 #endregion
 
-namespace Chinook.DataUnitTest.DaoTests;
+namespace `SolutionName`.DataUnitTest.DaoTests;
 
 `T
 public partial class `Name`DaoTest
@@ -29,9 +29,9 @@ public partial class `Name`DaoTest
         => entity.;
 
     [TestMethod]
-    public void GetLast()
+    public async Task GetLast()
     {
-        var entity = Dao.`Name`.GetLast(x => `P:,:x.`Name` ``);
+        var entity = await Dao.`Name`.GetLast(x => `P:,:x.`Name` ``);
         entity.ShouldNotBeNull();
     }
 }

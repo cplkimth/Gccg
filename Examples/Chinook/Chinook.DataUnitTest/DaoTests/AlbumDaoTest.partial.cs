@@ -23,9 +23,9 @@ public partial class AlbumDaoTest
     }
 
     [TestMethod]
-    public void GetLast()
+    public async Task GetLast()
     {
-        var entity = Dao.Album.GetLast(x => x.AlbumId );
+        var entity = await Dao.Album.GetLast(x => x.AlbumId );
         entity.ShouldNotBeNull();
     }
 }

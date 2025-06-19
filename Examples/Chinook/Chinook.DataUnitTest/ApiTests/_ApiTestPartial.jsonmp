@@ -1,4 +1,4 @@
-{
+﻿{
 	"Version":2,
 	"Scope":1,
 	"TargetPath":"`Name`ApiTest.partial.cs",
@@ -9,7 +9,7 @@
 
 #endregion
 
-namespace Chinook.DataUnitTest.ApiTests;
+namespace `SolutionName`.DataUnitTest.ApiTests;
 
 `T
 public partial class AlbumApiTest

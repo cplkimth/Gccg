@@ -18,7 +18,7 @@ public partial class InvoiceLineApiTest
     [TestMethod]
     public async Task GetCount()
     {
-        var count = await Api.InvoiceLine.GetCountAsync();
+        var count = await Api.InvoiceLine.GetCount();
 
         count.ShouldBeGreaterThan(0);
     }
@@ -26,8 +26,8 @@ public partial class InvoiceLineApiTest
     [TestMethod]
     public async Task GetByKey()
     {
-        var first = await Api.InvoiceLine.GetFirstAsync();
-        var entity = await Api.InvoiceLine.GetByKeyAsync(first.InvoiceLineId );
+        var first = await Api.InvoiceLine.GetFirst();
+        var entity = await Api.InvoiceLine.GetByKey(first.InvoiceLineId );
 
         entity.PrimaryKeyValues.ShouldBe(first.PrimaryKeyValues);
     }
@@ -35,41 +35,41 @@ public partial class InvoiceLineApiTest
     [TestMethod]
     public async Task ExistsByKey()
     {
-        var first = await Api.InvoiceLine.GetFirstAsync();
+        var first = await Api.InvoiceLine.GetFirst();
 
-        (await Dao.InvoiceLine.ExistsByKeyAsync(first.InvoiceLineId )).ShouldBeTrue();
+        (await Dao.InvoiceLine.ExistsByKey(first.InvoiceLineId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task Exists()
     {
-        var first = await Api.InvoiceLine.GetFirstAsync();
+        var first = await Api.InvoiceLine.GetFirst();
 
-        (await Api.InvoiceLine.ExistsByKeyAsync(first.InvoiceLineId )).ShouldBeTrue();
+        (await Api.InvoiceLine.ExistsByKey(first.InvoiceLineId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task DeleteByKey()
     {
-        var first = await Api.InvoiceLine.GetFirstAsync();
-        await Api.InvoiceLine.DeleteByKeyAsync(first.InvoiceLineId );
+        var first = await Api.InvoiceLine.GetFirst();
+        await Api.InvoiceLine.DeleteByKey(first.InvoiceLineId );
 
-        (await Api.InvoiceLine.ExistsByKeyAsync(first.InvoiceLineId )).ShouldBeFalse();
+        (await Api.InvoiceLine.ExistsByKey(first.InvoiceLineId )).ShouldBeFalse();
     }
 
     [TestMethod]
     public async Task Insert()
     {
-        var first = await Api.InvoiceLine.GetFirstAsync();
+        var first = await Api.InvoiceLine.GetFirst();
 
-        var oldCount = await Api.InvoiceLine.GetCountAsync();
+        var oldCount = await Api.InvoiceLine.GetCount();
 
         var entity = first.Clone();
         entity.ClearKeyValues();
         InvoiceLineDaoTest.FillForInsert(entity);
-        entity = await Api.InvoiceLine.InsertAsync(entity);
+        entity = await Api.InvoiceLine.Insert(entity);
 
-        var newCount = await Api.InvoiceLine.GetCountAsync();
+        var newCount = await Api.InvoiceLine.GetCount();
 
         newCount.ShouldBe(oldCount + 1);
     }
@@ -77,11 +77,11 @@ public partial class InvoiceLineApiTest
     [TestMethod]
     public async Task Update()
     {
-        var entity = await Api.InvoiceLine.GetFirstAsync();
+        var entity = await Api.InvoiceLine.GetFirst();
         object value = InvoiceLineDaoTest.SetUpdateField(entity);
-        await Api.InvoiceLine.UpdateAsync(entity);
+        await Api.InvoiceLine.Update(entity);
 
-        entity = await Api.InvoiceLine.GetFirstAsync();
+        entity = await Api.InvoiceLine.GetFirst();
 
         InvoiceLineDaoTest.GetUpdateField(entity).ShouldBe(value);
     }
@@ -89,7 +89,7 @@ public partial class InvoiceLineApiTest
     [TestMethod]
     public async Task GetFirst()
     {
-        var entity = await Api.InvoiceLine.GetFirstAsync();
+        var entity = await Api.InvoiceLine.GetFirst();
         entity.ShouldNotBeNull();
     }
 
@@ -97,7 +97,7 @@ public partial class InvoiceLineApiTest
 	[TestMethod]
     public async Task GetByInvoiceId()
     {
-        var list = await Api.InvoiceLine.GetByInvoiceIdAsync(1);
+        var list = await Api.InvoiceLine.GetByInvoiceId(1);
 
         foreach (var item in list)
             item.InvoiceId.ShouldBe(1);

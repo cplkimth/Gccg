@@ -18,7 +18,7 @@ public partial class CodeCategoryApiTest
     [TestMethod]
     public async Task GetCount()
     {
-        var count = await Api.CodeCategory.GetCountAsync();
+        var count = await Api.CodeCategory.GetCount();
 
         count.ShouldBeGreaterThan(0);
     }
@@ -26,8 +26,8 @@ public partial class CodeCategoryApiTest
     [TestMethod]
     public async Task GetByKey()
     {
-        var first = await Api.CodeCategory.GetFirstAsync();
-        var entity = await Api.CodeCategory.GetByKeyAsync(first.CodeCategoryId );
+        var first = await Api.CodeCategory.GetFirst();
+        var entity = await Api.CodeCategory.GetByKey(first.CodeCategoryId );
 
         entity.PrimaryKeyValues.ShouldBe(first.PrimaryKeyValues);
     }
@@ -35,41 +35,41 @@ public partial class CodeCategoryApiTest
     [TestMethod]
     public async Task ExistsByKey()
     {
-        var first = await Api.CodeCategory.GetFirstAsync();
+        var first = await Api.CodeCategory.GetFirst();
 
-        (await Dao.CodeCategory.ExistsByKeyAsync(first.CodeCategoryId )).ShouldBeTrue();
+        (await Dao.CodeCategory.ExistsByKey(first.CodeCategoryId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task Exists()
     {
-        var first = await Api.CodeCategory.GetFirstAsync();
+        var first = await Api.CodeCategory.GetFirst();
 
-        (await Api.CodeCategory.ExistsByKeyAsync(first.CodeCategoryId )).ShouldBeTrue();
+        (await Api.CodeCategory.ExistsByKey(first.CodeCategoryId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task DeleteByKey()
     {
-        var first = await Api.CodeCategory.GetFirstAsync();
-        await Api.CodeCategory.DeleteByKeyAsync(first.CodeCategoryId );
+        var first = await Api.CodeCategory.GetFirst();
+        await Api.CodeCategory.DeleteByKey(first.CodeCategoryId );
 
-        (await Api.CodeCategory.ExistsByKeyAsync(first.CodeCategoryId )).ShouldBeFalse();
+        (await Api.CodeCategory.ExistsByKey(first.CodeCategoryId )).ShouldBeFalse();
     }
 
     [TestMethod]
     public async Task Insert()
     {
-        var first = await Api.CodeCategory.GetFirstAsync();
+        var first = await Api.CodeCategory.GetFirst();
 
-        var oldCount = await Api.CodeCategory.GetCountAsync();
+        var oldCount = await Api.CodeCategory.GetCount();
 
         var entity = first.Clone();
         entity.ClearKeyValues();
         CodeCategoryDaoTest.FillForInsert(entity);
-        entity = await Api.CodeCategory.InsertAsync(entity);
+        entity = await Api.CodeCategory.Insert(entity);
 
-        var newCount = await Api.CodeCategory.GetCountAsync();
+        var newCount = await Api.CodeCategory.GetCount();
 
         newCount.ShouldBe(oldCount + 1);
     }
@@ -77,11 +77,11 @@ public partial class CodeCategoryApiTest
     [TestMethod]
     public async Task Update()
     {
-        var entity = await Api.CodeCategory.GetFirstAsync();
+        var entity = await Api.CodeCategory.GetFirst();
         object value = CodeCategoryDaoTest.SetUpdateField(entity);
-        await Api.CodeCategory.UpdateAsync(entity);
+        await Api.CodeCategory.Update(entity);
 
-        entity = await Api.CodeCategory.GetFirstAsync();
+        entity = await Api.CodeCategory.GetFirst();
 
         CodeCategoryDaoTest.GetUpdateField(entity).ShouldBe(value);
     }
@@ -89,7 +89,7 @@ public partial class CodeCategoryApiTest
     [TestMethod]
     public async Task GetFirst()
     {
-        var entity = await Api.CodeCategory.GetFirstAsync();
+        var entity = await Api.CodeCategory.GetFirst();
         entity.ShouldNotBeNull();
     }
 

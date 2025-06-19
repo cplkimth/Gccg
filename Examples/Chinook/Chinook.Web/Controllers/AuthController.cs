@@ -20,11 +20,14 @@ public class AuthController : ControllerBase
 
     [HttpPost]
     [Produces("text/plain")]
-    public Task<string> SignInAsync([FromBody] AuthInfo authInfo) => Task.Run(() => SignIn(authInfo));
-
-    private string SignIn(AuthInfo authInfo )
+    public async Task<string> SignInAsync([FromBody] AuthInfo authInfo)
     {
-        var employee = Dao.Employee.GetFirst(x => x.LastName == authInfo.UserName && x.FirstName == authInfo.Password);
+        return await SignIn(authInfo);
+    }
+
+    private async Task<string> SignIn(AuthInfo authInfo )
+    {
+        var employee = await Dao.Employee.GetFirst(x => x.LastName == authInfo.UserName && x.FirstName == authInfo.Password);
         if (employee == null)
             return "Wrong";
 

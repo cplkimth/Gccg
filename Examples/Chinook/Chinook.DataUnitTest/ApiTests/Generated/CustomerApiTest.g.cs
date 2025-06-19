@@ -18,7 +18,7 @@ public partial class CustomerApiTest
     [TestMethod]
     public async Task GetCount()
     {
-        var count = await Api.Customer.GetCountAsync();
+        var count = await Api.Customer.GetCount();
 
         count.ShouldBeGreaterThan(0);
     }
@@ -26,8 +26,8 @@ public partial class CustomerApiTest
     [TestMethod]
     public async Task GetByKey()
     {
-        var first = await Api.Customer.GetFirstAsync();
-        var entity = await Api.Customer.GetByKeyAsync(first.CustomerId );
+        var first = await Api.Customer.GetFirst();
+        var entity = await Api.Customer.GetByKey(first.CustomerId );
 
         entity.PrimaryKeyValues.ShouldBe(first.PrimaryKeyValues);
     }
@@ -35,41 +35,41 @@ public partial class CustomerApiTest
     [TestMethod]
     public async Task ExistsByKey()
     {
-        var first = await Api.Customer.GetFirstAsync();
+        var first = await Api.Customer.GetFirst();
 
-        (await Dao.Customer.ExistsByKeyAsync(first.CustomerId )).ShouldBeTrue();
+        (await Dao.Customer.ExistsByKey(first.CustomerId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task Exists()
     {
-        var first = await Api.Customer.GetFirstAsync();
+        var first = await Api.Customer.GetFirst();
 
-        (await Api.Customer.ExistsByKeyAsync(first.CustomerId )).ShouldBeTrue();
+        (await Api.Customer.ExistsByKey(first.CustomerId )).ShouldBeTrue();
     }
 
     [TestMethod]
     public async Task DeleteByKey()
     {
-        var first = await Api.Customer.GetFirstAsync();
-        await Api.Customer.DeleteByKeyAsync(first.CustomerId );
+        var first = await Api.Customer.GetFirst();
+        await Api.Customer.DeleteByKey(first.CustomerId );
 
-        (await Api.Customer.ExistsByKeyAsync(first.CustomerId )).ShouldBeFalse();
+        (await Api.Customer.ExistsByKey(first.CustomerId )).ShouldBeFalse();
     }
 
     [TestMethod]
     public async Task Insert()
     {
-        var first = await Api.Customer.GetFirstAsync();
+        var first = await Api.Customer.GetFirst();
 
-        var oldCount = await Api.Customer.GetCountAsync();
+        var oldCount = await Api.Customer.GetCount();
 
         var entity = first.Clone();
         entity.ClearKeyValues();
         CustomerDaoTest.FillForInsert(entity);
-        entity = await Api.Customer.InsertAsync(entity);
+        entity = await Api.Customer.Insert(entity);
 
-        var newCount = await Api.Customer.GetCountAsync();
+        var newCount = await Api.Customer.GetCount();
 
         newCount.ShouldBe(oldCount + 1);
     }
@@ -77,11 +77,11 @@ public partial class CustomerApiTest
     [TestMethod]
     public async Task Update()
     {
-        var entity = await Api.Customer.GetFirstAsync();
+        var entity = await Api.Customer.GetFirst();
         object value = CustomerDaoTest.SetUpdateField(entity);
-        await Api.Customer.UpdateAsync(entity);
+        await Api.Customer.Update(entity);
 
-        entity = await Api.Customer.GetFirstAsync();
+        entity = await Api.Customer.GetFirst();
 
         CustomerDaoTest.GetUpdateField(entity).ShouldBe(value);
     }
@@ -89,7 +89,7 @@ public partial class CustomerApiTest
     [TestMethod]
     public async Task GetFirst()
     {
-        var entity = await Api.Customer.GetFirstAsync();
+        var entity = await Api.Customer.GetFirst();
         entity.ShouldNotBeNull();
     }
 
@@ -97,7 +97,7 @@ public partial class CustomerApiTest
 	[TestMethod]
     public async Task GetBySupportRepId()
     {
-        var list = await Api.Customer.GetBySupportRepIdAsync(1);
+        var list = await Api.Customer.GetBySupportRepId(1);
 
         foreach (var item in list)
             item.SupportRepId.ShouldBe(1);

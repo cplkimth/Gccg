@@ -13,38 +13,38 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 #endregion
 
-namespace Chinook.Web.Controllers;
+namespace `SolutionName`.Web.Controllers;
 
 public abstract partial class EntityController<T> : ControllerBase where T : Entity<T>, new()
 {
     [HttpGet]
-    public virtual async Task<List<T>> GetAsync()
+    public virtual async Task<List<T>> Get()
     {
-        return await Dao.Get<T>().GetAsync();
+        return await Dao.Get<T>().Get();
     }
     
     [HttpGet("first")]
-    public virtual async Task<T> GetFirstAsync()
+    public virtual async Task<T> GetFirst()
     {
-        return await Dao.Get<T>().GetFirstAsync();
+        return await Dao.Get<T>().GetFirst();
     }
 
     [HttpGet("count")]
-    public virtual async Task<int> GetCountAsync()
+    public virtual async Task<int> GetCount()
     {
-        return await Dao.Get<T>().GetCountAsync();
+        return await Dao.Get<T>().GetCount();
     }
 
     [HttpPost]
-    public virtual async Task<T> InsertAsync(T entity)
+    public virtual async Task<T> Insert(T entity)
     {
-        return await Dao.Get<T>().InsertAsync(entity);
+        return await Dao.Get<T>().Insert(entity);
     }
 
     [HttpPut]
-    public virtual async Task<int> UpdateAsync(T entity)
+    public virtual async Task<int> Update(T entity)
     {
-        return await Dao.Get<T>().UpdateAsync(entity);
+        return await Dao.Get<T>().Update(entity);
     }
 }
 
@@ -53,34 +53,34 @@ public abstract partial class EntityController<T> : ControllerBase where T : Ent
 public abstract partial class `Name`ControllerBase : EntityController<`Name`>
 {
     [HttpGet("`P:/:{`name`}``")]
-    public virtual async Task<`Name`> GetByKeyAsync(`P:, :`Type` `name` ``)
+    public virtual async Task<`Name`> GetByKey(`P:, :`Type` `name` ``)
     {
-        return await Dao.`Name`.GetByKeyAsync(`P:, :`name` ``);
+        return await Dao.`Name`.GetByKey(`P:, :`name` ``);
     }
 
     [HttpGet("exists/`P:/:{`name`}``")]
-    public virtual async Task<bool> ExistsByKeyAsync(`P:, :`Type` `name` ``)
+    public virtual async Task<bool> ExistsByKey(`P:, :`Type` `name` ``)
     {
-        return await Dao.`Name`.ExistsByKeyAsync(`P:, :`name` ``);
+        return await Dao.`Name`.ExistsByKey(`P:, :`name` ``);
     }
 
     `F::[HttpGet("`Name`/{`name`}")]
-    public virtual async Task<List<`Table`>> GetBy`Name`Async(`Type` `name`)
+    public virtual async Task<List<`Table`>> GetBy`Name`(`Type` `name`)
     {
-        return await Dao.`Table`.GetBy`Name`Async(`name`);
+        return await Dao.`Table`.GetBy`Name`(`name`);
     }
     ``
 
     [HttpDelete("`P:/:{`name`}``")]
-    public virtual async Task<int> DeleteByKeyAsync(`P:, :`Type` `name` ``)
+    public virtual async Task<int> DeleteByKey(`P:, :`Type` `name` ``)
     {
-        return await Dao.`Name`.DeleteByKeyAsync(`P:,:`name` ``);
+        return await Dao.`Name`.DeleteByKey(`P:,:`name` ``);
     }
     
     [HttpGet("last")]
-    public virtual async Task<`Name`> GetLastAsync()
+    public virtual async Task<`Name`> GetLast()
     {
-        return await Dao.`Name`.GetLastAsync(x => new {`P:, :x.`Name` ``} );
+        return await Dao.`Name`.GetLast(x => new {`P:, :x.`Name` ``} );
     }
 }
 
