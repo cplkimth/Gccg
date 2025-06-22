@@ -2474,7 +2474,7 @@ public partial class AlbumDao : EntityDao<Album>
 	}
 
 	
-	private IQueryable<Album> GetByArtistIdCore(DbContext context, int artistId)
+	public IQueryable<Album> GetByArtistIdCore(DbContext context, int artistId)
     {
         return context.Set<Album>().Where(x => x.ArtistId == artistId);
     }
@@ -2505,7 +2505,7 @@ public partial class CodeDao : EntityDao<Code>
 	}
 
 	
-	private IQueryable<Code> GetByCodeCategoryIdCore(DbContext context, int codeCategoryId)
+	public IQueryable<Code> GetByCodeCategoryIdCore(DbContext context, int codeCategoryId)
     {
         return context.Set<Code>().Where(x => x.CodeCategoryId == codeCategoryId);
     }
@@ -2536,7 +2536,7 @@ public partial class CustomerDao : EntityDao<Customer>
 	}
 
 	
-	private IQueryable<Customer> GetBySupportRepIdCore(DbContext context, int? supportRepId)
+	public IQueryable<Customer> GetBySupportRepIdCore(DbContext context, int? supportRepId)
     {
         return context.Set<Customer>().Where(x => x.SupportRepId == supportRepId);
     }
@@ -2567,7 +2567,7 @@ public partial class EmployeeDao : EntityDao<Employee>
 	}
 
 	
-	private IQueryable<Employee> GetByReportsToCore(DbContext context, int? reportsTo)
+	public IQueryable<Employee> GetByReportsToCore(DbContext context, int? reportsTo)
     {
         return context.Set<Employee>().Where(x => x.ReportsTo == reportsTo);
     }
@@ -2598,7 +2598,7 @@ public partial class InvoiceDao : EntityDao<Invoice>
 	}
 
 	
-	private IQueryable<Invoice> GetByCustomerIdCore(DbContext context, int customerId)
+	public IQueryable<Invoice> GetByCustomerIdCore(DbContext context, int customerId)
     {
         return context.Set<Invoice>().Where(x => x.CustomerId == customerId);
     }
@@ -2616,7 +2616,7 @@ public partial class InvoiceLineDao : EntityDao<InvoiceLine>
 	}
 
 	
-	private IQueryable<InvoiceLine> GetByInvoiceIdCore(DbContext context, int invoiceId)
+	public IQueryable<InvoiceLine> GetByInvoiceIdCore(DbContext context, int invoiceId)
     {
         return context.Set<InvoiceLine>().Where(x => x.InvoiceId == invoiceId);
     }
@@ -2660,12 +2660,12 @@ public partial class PlaylistTrackDao : EntityDao<PlaylistTrack>
 	}
 
 	
-	private IQueryable<PlaylistTrack> GetByPlaylistIdCore(DbContext context, int playlistId)
+	public IQueryable<PlaylistTrack> GetByPlaylistIdCore(DbContext context, int playlistId)
     {
         return context.Set<PlaylistTrack>().Where(x => x.PlaylistId == playlistId);
     }
 	
-	private IQueryable<PlaylistTrack> GetByTrackIdCore(DbContext context, int trackId)
+	public IQueryable<PlaylistTrack> GetByTrackIdCore(DbContext context, int trackId)
     {
         return context.Set<PlaylistTrack>().Where(x => x.TrackId == trackId);
     }
@@ -2683,12 +2683,12 @@ public partial class PlaylistTrackHistoryDao : EntityDao<PlaylistTrackHistory>
 	}
 
 	
-	private IQueryable<PlaylistTrackHistory> GetByPlaylistIdCore(DbContext context, int playlistId)
+	public IQueryable<PlaylistTrackHistory> GetByPlaylistIdCore(DbContext context, int playlistId)
     {
         return context.Set<PlaylistTrackHistory>().Where(x => x.PlaylistId == playlistId);
     }
 	
-	private IQueryable<PlaylistTrackHistory> GetByTrackIdCore(DbContext context, int trackId)
+	public IQueryable<PlaylistTrackHistory> GetByTrackIdCore(DbContext context, int trackId)
     {
         return context.Set<PlaylistTrackHistory>().Where(x => x.TrackId == trackId);
     }
@@ -2719,17 +2719,17 @@ public partial class TrackDao : EntityDao<Track>
 	}
 
 	
-	private IQueryable<Track> GetByAlbumIdCore(DbContext context, int? albumId)
+	public IQueryable<Track> GetByAlbumIdCore(DbContext context, int? albumId)
     {
         return context.Set<Track>().Where(x => x.AlbumId == albumId);
     }
 	
-	private IQueryable<Track> GetByGenreIdCore(DbContext context, int genreId)
+	public IQueryable<Track> GetByGenreIdCore(DbContext context, int genreId)
     {
         return context.Set<Track>().Where(x => x.GenreId == genreId);
     }
 	
-	private IQueryable<Track> GetByMediaTypeIdCore(DbContext context, int mediaTypeId)
+	public IQueryable<Track> GetByMediaTypeIdCore(DbContext context, int mediaTypeId)
     {
         return context.Set<Track>().Where(x => x.MediaTypeId == mediaTypeId);
     }

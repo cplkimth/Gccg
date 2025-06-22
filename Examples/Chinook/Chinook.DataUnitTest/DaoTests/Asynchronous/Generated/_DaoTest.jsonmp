@@ -17,7 +17,7 @@ namespace `SolutionName`.DataUnitTest.DaoTests.Asynchronous;
 
 `T
 [TestClass]
-public partial class `Name`DaoTest : EntityDaoTest<`Name`>
+public partial class `Name`DaoTestAsync : EntityDaoTest<`Name`>
 {
 
     [TestInitialize]

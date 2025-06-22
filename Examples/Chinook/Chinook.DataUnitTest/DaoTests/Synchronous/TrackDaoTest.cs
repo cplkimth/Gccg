@@ -1,5 +1,7 @@
 ﻿#region
+using System.Collections.Frozen;
 using Chinook.Data;
+using Microsoft.EntityFrameworkCore;
 #endregion
 
 namespace Chinook.DataUnitTest.DaoTests.Synchronous;
@@ -365,6 +367,30 @@ public partial class TrackDaoTest
         Assert.AreEqual(2, tracks.Count);
         tracks.ShouldContain(x => x.Key == 4 && x.Value == 3);
         tracks.ShouldContain(x => x.Key == 5 && x.Value == 3);
+    }
+
+    [TestMethod]
+    public void GetAsQueryable()
+    {
+        using var context = DbContextFactory.Create();
+
+        var query = Dao.Track.GetByAlbumIdCore(context, 3);
+        var frozenSet = query.ToFrozenSet();
+        frozenSet.Count.ShouldBe(2);
+        frozenSet.ShouldContain(x => x.TrackId == 4 && x.AlbumId == 3);
+        frozenSet.ShouldContain(x => x.TrackId == 5 && x.AlbumId == 3);
+    }
+
+    [TestMethod]
+    public async Task GetAsQueryableAsync()
+    {
+        await using var context = DbContextFactory.Create();
+
+        var query = Dao.Track.GetByAlbumIdCore(context, 3);
+        var frozenSet = await query.ToHashSetAsync();
+        frozenSet.Count.ShouldBe(2);
+        frozenSet.ShouldContain(x => x.TrackId == 4 && x.AlbumId == 3);
+        frozenSet.ShouldContain(x => x.TrackId == 5 && x.AlbumId == 3);
     }
     #endregion
 

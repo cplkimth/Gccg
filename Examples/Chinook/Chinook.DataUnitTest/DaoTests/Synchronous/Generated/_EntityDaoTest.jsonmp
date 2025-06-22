@@ -11,6 +11,6 @@ namespace `SolutionName`.DataUnitTest.DaoTests.Synchronous;
 
 public class EntityDaoTest<T> where T : Entity<T>, new()
 {
-    internal virtual void<T> GetForDelete()
+    internal virtual T GetForDelete()
         => Dao.Get<T>().GetFirst();
 }

@@ -617,7 +617,7 @@ public partial class `Name`Dao : EntityDao<`Name`>
 	}
 
 	`F::
-	private IQueryable<`Table`> GetBy`Name`Core(DbContext context, `Type` `name`)
+	public IQueryable<`Table`> GetBy`Name`Core(DbContext context, `Type` `name`)
     {
         return context.Set<`Table`>().Where(x => x.`Name` == `name`);
     }

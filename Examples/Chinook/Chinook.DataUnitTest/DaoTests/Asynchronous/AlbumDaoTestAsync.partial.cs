@@ -1,8 +1,14 @@
-﻿#region
+﻿
+#region using
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Chinook.Data;
 #endregion
 
 namespace Chinook.DataUnitTest.DaoTests.Asynchronous;
+
 
 public partial class AlbumDaoTestAsync
 {
@@ -21,9 +27,9 @@ public partial class AlbumDaoTestAsync
     }
 
     [TestMethod]
-    public async Task GetLast()
+    public void GetLast()
     {
-        var entity = await Dao.Album.GetLastAsync(x => x.AlbumId );
+        var entity = Dao.Album.GetLast(x => x.AlbumId );
         entity.ShouldNotBeNull();
     }
 }
