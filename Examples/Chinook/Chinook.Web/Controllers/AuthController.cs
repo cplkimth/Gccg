@@ -27,7 +27,7 @@ public class AuthController : ControllerBase
 
     private async Task<string> SignIn(AuthInfo authInfo )
     {
-        var employee = await Dao.Employee.GetFirst(x => x.LastName == authInfo.UserName && x.FirstName == authInfo.Password);
+        var employee = await Dao.Employee.GetFirstAsync(x => x.LastName == authInfo.UserName && x.FirstName == authInfo.Password);
         if (employee == null)
             return "Wrong";
 

@@ -12,8 +12,8 @@ internal class Program
     {
         var procedures = new ChinookContextProcedures(DbContextFactory.Create());
         await procedures.usp_InitializeAsync();
-
-        var list = await Dao.Album.SelectAsHashSet(x  => x.AlbumId > 0, x => x.Title);
+        
+        var list = await Dao.Album.SelectAsHashSetAsync(x  => x.AlbumId > 0, x => x.Title);
         foreach (var x in list)
         {
             Console.WriteLine(x);

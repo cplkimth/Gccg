@@ -20,31 +20,31 @@ public abstract partial class EntityController<T> : ControllerBase where T : Ent
     [HttpGet]
     public virtual async Task<List<T>> Get()
     {
-        return await Dao.Get<T>().Get();
+        return await Dao.Get<T>().GetAsync();
     }
     
     [HttpGet("first")]
     public virtual async Task<T> GetFirst()
     {
-        return await Dao.Get<T>().GetFirst();
+        return await Dao.Get<T>().GetFirstAsync();
     }
 
     [HttpGet("count")]
     public virtual async Task<int> GetCount()
     {
-        return await Dao.Get<T>().GetCount();
+        return await Dao.Get<T>().GetCountAsync();
     }
 
     [HttpPost]
     public virtual async Task<T> Insert(T entity)
     {
-        return await Dao.Get<T>().Insert(entity);
+        return await Dao.Get<T>().InsertAsync(entity);
     }
 
     [HttpPut]
     public virtual async Task<int> Update(T entity)
     {
-        return await Dao.Get<T>().Update(entity);
+        return await Dao.Get<T>().UpdateAsync(entity);
     }
 }
 
@@ -55,32 +55,32 @@ public abstract partial class `Name`ControllerBase : EntityController<`Name`>
     [HttpGet("`P:/:{`name`}``")]
     public virtual async Task<`Name`> GetByKey(`P:, :`Type` `name` ``)
     {
-        return await Dao.`Name`.GetByKey(`P:, :`name` ``);
+        return await Dao.`Name`.GetByKeyAsync(`P:, :`name` ``);
     }
 
     [HttpGet("exists/`P:/:{`name`}``")]
     public virtual async Task<bool> ExistsByKey(`P:, :`Type` `name` ``)
     {
-        return await Dao.`Name`.ExistsByKey(`P:, :`name` ``);
+        return await Dao.`Name`.ExistsByKeyAsync(`P:, :`name` ``);
     }
 
     `F::[HttpGet("`Name`/{`name`}")]
     public virtual async Task<List<`Table`>> GetBy`Name`(`Type` `name`)
     {
-        return await Dao.`Table`.GetBy`Name`(`name`);
+        return await Dao.`Table`.GetBy`Name`Async(`name`);
     }
     ``
 
     [HttpDelete("`P:/:{`name`}``")]
     public virtual async Task<int> DeleteByKey(`P:, :`Type` `name` ``)
     {
-        return await Dao.`Name`.DeleteByKey(`P:,:`name` ``);
+        return await Dao.`Name`.DeleteByKeyAsync(`P:,:`name` ``);
     }
     
     [HttpGet("last")]
     public virtual async Task<`Name`> GetLast()
     {
-        return await Dao.`Name`.GetLast(x => new {`P:, :x.`Name` ``} );
+        return await Dao.`Name`.GetLastAsync(x => new {`P:, :x.`Name` ``} );
     }
 }
 

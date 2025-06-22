@@ -1,0 +1,38 @@
+﻿{
+	"Version":2,
+	"Scope":1,
+	"TargetPath":"`Name`DaoTestAsync.partial.cs",
+	"Overwritable": false
+}
+*** body starts here ***
+#region using
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using `DataProjectNamespace`;
+#endregion
+
+namespace `SolutionName`.DataUnitTest.DaoTests.Asynchronous;
+
+`T
+public partial class `Name`DaoTest
+{
+    internal static void FillForInsert(`Name` entity)
+    {
+    }
+    
+    internal static object SetUpdateField(`Name` entity)
+        => entity. = DateTime.Now.Ticks.ToString();
+
+    internal static object GetUpdateField(`Name` entity)
+        => entity.;
+
+    [TestMethod]
+    public async Task GetLast()
+    {
+        var entity = await Dao.`Name`.GetLast(x => `P:,:x.`Name` ``);
+        entity.ShouldNotBeNull();
+    }
+}
+T`
