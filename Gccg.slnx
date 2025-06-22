@@ -1,0 +1,23 @@
+<Solution>
+  <Folder Name="/Examples/">
+    <Project Path="Examples/Chinook/Chinook.ConsoleTest/Chinook.ConsoleTest.csproj">
+      <Build Solution="Debug|*" Project="false" />
+    </Project>
+    <Project Path="Examples/Chinook/Chinook.Data/Chinook.Data.csproj">
+      <Build Solution="Debug|*" Project="false" />
+    </Project>
+    <Project Path="Examples/Chinook/Chinook.DataUnitTest/Chinook.DataUnitTest.csproj">
+      <Build Solution="Debug|*" Project="false" />
+    </Project>
+    <Project Path="Examples/Chinook/Chinook.Gccg/Chinook.Gccg.csproj" />
+    <Project Path="Examples/Chinook/Chinook.GccgTool/Chinook.GccgTool.csproj">
+      <Build Solution="Debug|*" Project="false" />
+    </Project>
+    <Project Path="Examples/Chinook/Chinook.Web/Chinook.Web.csproj">
+      <Build Solution="Debug|*" Project="false" />
+    </Project>
+  </Folder>
+  <Project Path="Gccg.Core/Gccg.Core.csproj" />
+  <Project Path="Gccg.Tools/Gccg.Tools.csproj" />
+  <Project Path="Gccg.UnitTest/Gccg.UnitTest.csproj" />
+</Solution>

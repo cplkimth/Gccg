@@ -298,82 +298,16 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// 모든 엔터티를 반환한다.
     /// </summary>
     /// <returns>엔터티의 리스트</returns>
-    public virtual async Task<List<T>> Get(CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore<T>(null, null, true, 0, int.MaxValue, context).ToListAsync(ctk);
-    }
-
-    public virtual async Task<T[]> GetAsArray(CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore<T>(null, null, true, 0, int.MaxValue, context).ToArrayAsync(ctk);
-    }
-
-    public virtual async Task<HashSet<T>> GetAsHashSet(CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore<T>(null, null, true, 0, int.MaxValue, context).ToHashSetAsync(ctk);
-    }
-
-    public virtual async Task<Dictionary<K, T>> GetAsDictionary<K>(Func<T, K> keySelector, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore<T>(null, null, true, 0, int.MaxValue, context).ToDictionaryAsync(keySelector, ctk);
-    }
-
-    public virtual async Task<Dictionary<K, E>> GetAsDictionary<K, E>(Func<T, K> keySelector, Func<T, E> elementSelector, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore<T>(null, null, true, 0, int.MaxValue, context).ToDictionaryAsync(keySelector, elementSelector, ctk);
-    }
+    public virtual async Task<List<T>> Get()
+        => await Get<T>(null, null, true, 0, int.MaxValue);
 
     /// <summary>
     /// 조건식에 맞는 엔터티들을 반환한다.
     /// </summary>
     /// <param name="where">조건식</param>
     /// <returns>엔터티의 리스트</returns>
-    public virtual async Task<List<T>> Get(Expression<Func<T, bool>> where, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore<T>(where, null, true, 0, int.MaxValue, context).ToListAsync(ctk);
-    }
-
-    public virtual async Task<T[]> GetAsArray(Expression<Func<T, bool>> where, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore<T>(where, null, true, 0, int.MaxValue, context).ToArrayAsync(ctk);
-    }
-
-    public virtual async Task<HashSet<T>> GetAsHashSet(Expression<Func<T, bool>> where, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore<T>(where, null, true, 0, int.MaxValue, context).ToHashSetAsync(ctk);
-    }
-
-    public virtual async Task<Dictionary<K, T>> GetAsDictionary<K>(
-        Expression<Func<T, bool>> where, Func<T, K> keySelector, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore<T>(where, null, true, 0, int.MaxValue, context).ToDictionaryAsync(keySelector, ctk);
-    }
-
-    public virtual async Task<Dictionary<K, E>> GetAsDictionary<K, E>(
-        Expression<Func<T, bool>> where, Func<T, K> keySelector, Func<T, E> elementSelector, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore<T>(where, null, true, 0, int.MaxValue, context).ToDictionaryAsync(keySelector, elementSelector, ctk);
-    }
+    public virtual async Task<List<T>> Get(Expression<Func<T, bool>> where)
+        => await Get<T>(where, null, true, 0, int.MaxValue);
 
     /// <summary>
     /// 모든 엔터티들을 정렬식에 따라 정렬한 후 반환한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
@@ -382,19 +316,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="orderBy">정렬식</param>
     /// <param name="ascending">true이면 오름차순, false이면 내림차순</param>
     /// <returns>엔터티의 리스트</returns>
-    public virtual async Task<List<T>> Get<O>(Expression<Func<T, O>> orderBy, bool ascending, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore(null, orderBy, ascending, 0, int.MaxValue, context).ToListAsync(ctk);
-    }
-
-    public virtual async Task<T[]> GetAsArray<O>(Expression<Func<T, O>> orderBy, bool ascending, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore(null, orderBy, ascending, 0, int.MaxValue, context).ToArrayAsync(ctk);
-    }
+    public virtual async Task<List<T>> Get<O>(Expression<Func<T, O>> orderBy, bool ascending)
+        => await Get<O>(null, orderBy, ascending, 0, int.MaxValue);
 
     /// <summary>
     /// 조건식에 맞는 엔터티들을 정렬식에 따라 정렬한 후 반환한다. 페이징을 지원한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
@@ -405,19 +328,9 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="startRowIndex">반환할 엔터티의 시작 인덱스</param>
     /// <param name="maximumRows">반환할 엔터티의 갯수</param>
     /// <returns>엔터티의 리스트</returns>
-    public virtual async Task<List<T>> Get<O>(Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore(null, orderBy, ascending, startRowIndex, maximumRows, context).ToListAsync(ctk);
-    }
-    
-    public virtual async Task<T[]> GetAsArray<O>(Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore(null, orderBy, ascending, startRowIndex, maximumRows, context).ToArrayAsync(ctk);
-    }
+    public virtual Task<List<T>> Get<O>(Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex,
+        int maximumRows)
+        => Get(null, orderBy, ascending, startRowIndex, maximumRows);
 
     /// <summary>
     /// 조건식에 맞는 엔터티들을 정렬식에 따라 정렬한 후 반환한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
@@ -427,19 +340,9 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="orderBy">정렬식</param>
     /// <param name="ascending">true이면 오름차순, false이면 내림차순</param>
     /// <returns>엔터티의 리스트</returns>
-    public virtual async Task<List<T>> Get<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore(where, orderBy, ascending, 0, int.MaxValue, context).ToListAsync(ctk);
-    }
-
-    public virtual async Task<T[]> GetAsArray<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore(where, orderBy, ascending, 0, int.MaxValue, context).ToArrayAsync(ctk);
-    }
+    public virtual Task<List<T>> Get<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy,
+        bool ascending)
+        => Get(where, orderBy, ascending, 0, int.MaxValue);
 
     /// <summary>
     /// 조건식에 맞는 엔터티들을 정렬식에 따라 정렬한 후 반환한다. 페이징을 지원한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
@@ -451,87 +354,35 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="startRowIndex">반환할 엔터티의 시작 인덱스</param>
     /// <param name="maximumRows">반환할 엔터티의 갯수</param>
     /// <returns>엔터티의 리스트</returns>
-    public virtual async Task<List<T>> Get<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows, CancellationToken ctk = default)
+    public virtual async Task<List<T>> Get<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows)
     {
         await using var context = DbContextFactory.Create();
 
-        return await GetListCore(where, orderBy, ascending, startRowIndex, maximumRows, context).ToListAsync(ctk);
-    }
-    
-    public virtual async Task<T[]> GetAsArray<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        return await GetListCore(where, orderBy, ascending, startRowIndex, maximumRows, context).ToArrayAsync(ctk);
+        return await GetListCore(where, orderBy, ascending, startRowIndex, maximumRows, context).ToListAsync();
     }
     #endregion Get
 
 	#region select
-    /// <summary>
-    ///   모든 선택식의 결과를 반환한다.
-    /// </summary>
-    /// <typeparam name="S"> 선택 형식 </typeparam>
-    /// <param name="where"></param>
-    /// <param name="select"> 선택식 </param>
-    /// <param name="ctk"></param>
-    /// <returns> 엔터티의 리스트 </returns>
-    public virtual async Task<List<S>> Select<S>(Expression<Func<T, S>> select,
-        CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
+	/// <summary>
+	///   모든 선택식의 결과를 반환한다.
+	/// </summary>
+	/// <typeparam name="S"> 선택 형식 </typeparam>
+	/// <param name="select"> 선택식 </param>
+	/// <returns> 엔터티의 리스트 </returns>
+    public virtual Task<List<S>> Select<S>(Expression<Func<T, S>> select)
+        => Select<T, S>(null, null, true, 0, int.MaxValue, select);
 
-        var query = GetListCore<T>(null, null, true, 0, int.MaxValue, context);
-        return await query.Select(select).ToListAsync(ctk);
-    }
-
-    public virtual async Task<S[]> SelectAsArray<S>(Expression<Func<T, S>> select, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        var query = GetListCore<T>(null, null, true, 0, int.MaxValue, context);
-        return await query.Select(select).ToArrayAsync(ctk);
-    }
-
-    public virtual async Task<HashSet<S>> SelectAsHashSet<S>(Expression<Func<T, S>> select, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        var query = GetListCore<T>(null, null, true, 0, int.MaxValue, context);
-        return await query.Select(select).ToHashSetAsync(ctk);
-    }
-
-    /// <summary>
+	/// <summary>
 	///   조건식에 맞는 선택식의 결과를 반환한다.
 	/// </summary>
 	/// <typeparam name="S"> 선택 형식 </typeparam>
 	/// <param name="where"> 조건식 </param>
 	/// <param name="select"> 선택식 </param>
 	/// <returns> 엔터티의 리스트 </returns>
-    public virtual async Task<List<S>> Select<S>(Expression<Func<T, bool>> where, Expression<Func<T, S>> select, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
+    public virtual Task<List<S>> Select<S>(Expression<Func<T, bool>> where, Expression<Func<T, S>> select)
+        => Select<T, S>(where, null, true, 0, int.MaxValue, select);
 
-        var query = GetListCore<T>(where, null, true, 0, int.MaxValue, context);
-        return await query.Select(select).ToListAsync(ctk);
-    }
-
-    public virtual async Task<S[]> SelectAsArray<S>(Expression<Func<T, bool>> where, Expression<Func<T, S>> select, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        var query = GetListCore<T>(where, null, true, 0, int.MaxValue, context);
-        return await query.Select(select).ToArrayAsync(ctk);
-    }
-
-    public virtual async Task<HashSet<S>> SelectAsHashSet<S>(Expression<Func<T, bool>> where, Expression<Func<T, S>> select, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        var query = GetListCore<T>(where, null, true, 0, int.MaxValue, context);
-        return await query.Select(select).ToHashSetAsync(ctk);
-    }
-
-    /// <summary>
+	/// <summary>
 	///   모든 엔터티들을 정렬식에 따라 정렬한 후 선택식의 결과를 반환한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
 	/// </summary>
 	/// <typeparam name="O"> 정렬 기준이 되는 속성의 형식 </typeparam>
@@ -540,23 +391,10 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// <param name="ascending"> true이면 오름차순, false이면 내림차순 </param>
 	/// <param name="select"> 선택식 </param>
 	/// <returns> 엔터티의 리스트 </returns>
-    public virtual async Task<List<S>> Select<O, S>(Expression<Func<T, O>> orderBy, bool ascending, Expression<Func<T, S>> select, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
+    public virtual Task<List<S>> Select<O, S>(Expression<Func<T, O>> orderBy, bool ascending, Expression<Func<T, S>> select)
+        => Select(null, orderBy, ascending, 0, int.MaxValue, select);
 
-        var query = GetListCore(null, orderBy, ascending, 0, int.MaxValue, context);
-        return await query.Select(select).ToListAsync(ctk);
-    }
-
-    public virtual async Task<S[]> SelectAsArray<O, S>(Expression<Func<T, O>> orderBy, bool ascending, Expression<Func<T, S>> select, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        var query = GetListCore(null, orderBy, ascending, 0, int.MaxValue, context);
-        return await query.Select(select).ToArrayAsync(ctk);
-    }
-
-    /// <summary>
+	/// <summary>
 	///   조건식에 맞는 엔터티들을 정렬식에 따라 정렬한 후 선택식의 결과를 반환한다. 페이징을 지원한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
 	/// </summary>
 	/// <typeparam name="O"> 정렬 기준이 되는 속성의 형식 </typeparam>
@@ -567,23 +405,10 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// <param name="maximumRows"> 반환할 엔터티의 갯수 </param>
 	/// <param name="select"> 선택식 </param>
 	/// <returns> 엔터티의 리스트 </returns>
-    public virtual async Task<List<S>> Select<O, S>(Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows, Expression<Func<T, S>> select, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        var query = GetListCore(null, orderBy, ascending, startRowIndex, maximumRows, context);
-        return await query.Select(select).ToListAsync(ctk);
-    }
-
-    public virtual async Task<S[]> SelectAsArray<O, S>(Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows, Expression<Func<T, S>> select, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        var query = GetListCore(null, orderBy, ascending, startRowIndex, maximumRows, context);
-        return await query.Select(select).ToArrayAsync(ctk);
-    }
-
-    /// <summary>
+    public virtual Task<List<S>> Select<O, S>(Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows, Expression<Func<T, S>> select)
+        => Select(null, orderBy, ascending, startRowIndex, maximumRows, select);
+		
+	/// <summary>
 	///   조건식에 맞는 엔터티들을 정렬식에 따라 정렬한 후 선택식의 결과를 반환한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
 	/// </summary>
 	/// <typeparam name="O"> 정렬 기준이 되는 속성의 형식 </typeparam>
@@ -593,23 +418,10 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// <param name="ascending"> true이면 오름차순, false이면 내림차순 </param>
 	/// <param name="select"> 선택식 </param>
 	/// <returns> 엔터티의 리스트 </returns>
-    public virtual async Task<List<S>> Select<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, Expression<Func<T, S>> select, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
+    public virtual Task<List<S>> Select<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, Expression<Func<T, S>> select)
+        => Select(where, orderBy, ascending, 0, int.MaxValue, select);
 
-        var query = GetListCore(where, orderBy, ascending, 0, int.MaxValue, context);
-        return await query.Select(select).ToListAsync(ctk);
-    }
-
-    public virtual async Task<S[]> SelectAsArray<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, Expression<Func<T, S>> select, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        var query = GetListCore(where, orderBy, ascending, 0, int.MaxValue, context);
-        return await query.Select(select).ToArrayAsync(ctk);
-    }
-
-    /// <summary>
+	/// <summary>
 	///   조건식에 맞는 엔터티들을 정렬식에 따라 정렬한 후 선택식의 결과를 반환한다. 페이징과 프로젝션을을 지원한다. 제네릭 메서드이므로 ObjectDataSource에서는 사용할 수 없다.
 	/// </summary>
 	/// <typeparam name="O"> 정렬 기준이 되는 속성의 형식 </typeparam>
@@ -621,20 +433,12 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// <param name="maximumRows"> 반환할 엔터티의 갯수 </param>
 	/// <param name="select"> 선택식 </param>
 	/// <returns> 엔터티의 리스트 </returns>
-    public virtual async Task<List<S>> Select<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows, Expression<Func<T, S>> select, CancellationToken ctk = default)
+    public virtual async Task<List<S>> Select<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows, Expression<Func<T, S>> select)
     {
         await using var context = DbContextFactory.Create();
 
         var query = GetListCore(where, orderBy, ascending, startRowIndex, maximumRows, context);
-        return await query.Select(select).ToListAsync(ctk);
-    }
-
-    public virtual async Task<S[]> SelectAsArray<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows, Expression<Func<T, S>> select, CancellationToken ctk = default)
-    {
-        await using var context = DbContextFactory.Create();
-
-        var query = GetListCore(where, orderBy, ascending, startRowIndex, maximumRows, context);
-        return await query.Select(select).ToArrayAsync(ctk);
+        return await query.Select(select).ToListAsync();
     }
 
 	private static IQueryable<T> GetListCore<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, int startRowIndex, int maximumRows, DbContext context)
@@ -667,16 +471,16 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// 모든 엔터티 중 첫번째 엔터티를 반환한다. 엔터티의 순서는 DB에 의해 결정된다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
     /// </summary>
     /// <returns>엔터티</returns>
-    public virtual Task<T> GetFirst()
-        => GetScalr<T>(null, null, true);
+    public virtual Task<T> GetFirst(CancellationToken ctk = default)
+        => GetScalr<T>(null, null, true, ctk);
 
 	/// <summary>
 	/// 조건식에 맞는 엔터티 중 첫번째 엔터티를 반환한다. 엔터티의 순서는 DB에 의해 결정된다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
 	/// </summary>
 	/// <param name="where">조건식</param>
 	/// <returns>엔터티</returns>
-    public virtual Task<T> GetFirst(Expression<Func<T, bool>> where) 
-        => GetScalr<T>(where, null, true);
+    public virtual Task<T> GetFirst(Expression<Func<T, bool>> where, CancellationToken ctk = default) 
+        => GetScalr<T>(where, null, true, ctk);
 
     /// <summary>
 	/// 모든 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
@@ -684,8 +488,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
 	/// <param name="orderBy">정렬식</param>
 	/// <returns>엔터티</returns>
-    public virtual Task<T> GetFirst<O>(Expression<Func<T, O>> orderBy)
-        => GetScalr<O>(null, orderBy, true);
+    public virtual Task<T> GetFirst<O>(Expression<Func<T, O>> orderBy, CancellationToken ctk = default)
+        => GetScalr<O>(null, orderBy, true, ctk);
 
     /// <summary>
     /// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
@@ -694,14 +498,14 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="where">조건식</param>
     /// <param name="orderBy">정렬식</param>
     /// <returns>엔터티</returns>
-    public virtual Task<T> GetFirst<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy)
-        => GetScalr(where, orderBy, true);
+    public virtual Task<T> GetFirst<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, CancellationToken ctk = default)
+        => GetScalr(where, orderBy, true, ctk);
 
-	private async Task<T> GetScalr<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending)
+	private async Task<T> GetScalr<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, CancellationToken ctk)
 	{
         await using var context = DbContextFactory.Create();
 
-	    return await GetScalarCore(where, orderBy, ascending, context).FirstOrDefaultAsync();
+	    return await GetScalarCore(where, orderBy, ascending, context).FirstOrDefaultAsync(ctk);
 	}
 
     /// <summary>
@@ -710,8 +514,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
     /// <param name="orderBy">정렬식</param>
     /// <returns>엔터티</returns>
-    public virtual Task<T> GetLast<O>(Expression<Func<T, O>> orderBy)
-        => GetScalr(null, orderBy, false);
+    public virtual Task<T> GetLast<O>(Expression<Func<T, O>> orderBy, CancellationToken ctk = default)
+        => GetScalr(null, orderBy, false, ctk);
 
 	/// <summary>
 	/// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 마지막 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
@@ -720,8 +524,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// <param name="where">조건식</param>
 	/// <param name="orderBy">정렬식</param>
 	/// <returns>엔터티</returns>
-    public virtual Task<T> GetLast<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy)
-        => GetScalr(where, orderBy, false);
+    public virtual Task<T> GetLast<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, CancellationToken ctk = default)
+        => GetScalr(where, orderBy, false, ctk);
 
     private static IQueryable<T> GetScalarCore<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, DbContext context)
 	{
@@ -745,8 +549,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// </summary>
 	/// <param name="select">선택식</param>
 	/// <returns>엔터티</returns>
-    public virtual Task<S> SelectFirst<S>(Expression<Func<T, S>> select)
-        => SelectScalar<T, S>(null, null, select, false);
+    public virtual Task<S> SelectFirst<S>(Expression<Func<T, S>> select, CancellationToken ctk = default)
+        => SelectScalar<T, S>(null, null, select, false, ctk);
 
 	/// <summary>
 	/// 조건식에 맞는 엔터티 중 첫번째 엔터티를 반환한다. 엔터티의 순서는 DB에 의해 결정된다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
@@ -755,8 +559,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// <param name="where">조건식</param>
 	/// <param name="select">선택식</param>
 	/// <returns>엔터티</returns>
-    public virtual Task<S> SelectFirst<S>(Expression<Func<T, bool>> where, Expression<Func<T, S>> select)
-        => SelectScalar<T, S>(where, null, select, false);
+    public virtual Task<S> SelectFirst<S>(Expression<Func<T, bool>> where, Expression<Func<T, S>> select, CancellationToken ctk = default)
+        => SelectScalar<T, S>(where, null, select, false, ctk);
 
 	/// <summary>
 	/// 모든 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
@@ -766,8 +570,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// <param name="orderBy">정렬식</param>
 	/// <param name="select">선택식</param>
 	/// <returns>엔터티</returns>
-    public virtual Task<S> SelectFirst<O, S>(Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select)
-        => SelectScalar(null, orderBy, select, true);
+    public virtual Task<S> SelectFirst<O, S>(Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select, CancellationToken ctk = default)
+        => SelectScalar(null, orderBy, select, true, ctk);
 
     /// <summary>
     /// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
@@ -778,8 +582,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="orderBy">정렬식</param>
     /// <param name="select">선택식</param>
     /// <returns>엔터티</returns>
-    public virtual Task<S> SelectFirst<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select)
-        => SelectScalar(where, orderBy, select, true);
+    public virtual Task<S> SelectFirst<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select, CancellationToken ctk = default)
+        => SelectScalar(where, orderBy, select, true, ctk);
 
     /// <summary>
     /// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
@@ -791,7 +595,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="select">선택식</param>
     /// <param name="ascending">true이면 오름차순, false이면 내림차순</param>
     /// <returns>엔터티</returns>
-    private async Task<S> SelectScalar<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select, bool ascending)
+    private async Task<S> SelectScalar<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select, bool ascending, CancellationToken ctk)
 	{
         await using var context = DbContextFactory.Create();
 
@@ -807,8 +611,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="orderBy">정렬식</param>
     /// <param name="select">선택식</param>
     /// <returns>엔터티</returns>
-    public virtual Task<S> SelectLast<O, S>(Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select)
-        => SelectScalar(null, orderBy, select, false);
+    public virtual Task<S> SelectLast<O, S>(Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select, CancellationToken ctk = default)
+        => SelectScalar(null, orderBy, select, false, ctk);
 
     /// <summary>
     /// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 마지막 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
@@ -819,8 +623,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="orderBy">정렬식</param>
     /// <param name="select">선택식</param>
     /// <returns>엔터티</returns>
-    public virtual Task<S> SelectLast<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select)
-        => SelectScalar(where, orderBy, select, false);
+    public virtual Task<S> SelectLast<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select, CancellationToken ctk = default)
+        => SelectScalar(where, orderBy, select, false, ctk);
     #endregion SelectFirst / SelectLast
 
 	#region GetCount
@@ -828,7 +632,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// 모든 엔터티의 갯수를 구한다.
 	/// </summary>
 	/// <returns>엔터티의 갯수</returns>
-    public virtual Task<int> GetCount()
+    public virtual Task<int> GetCount(CancellationToken ctk = default)
         => GetCount(null);
 
     /// <summary>
@@ -836,12 +640,12 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// </summary>
     /// <param name="where">조건식</param>
     /// <returns>엔터티의 갯수</returns>
-    public virtual async Task<int> GetCount(Expression<Func<T, bool>> where)
+    public virtual async Task<int> GetCount(Expression<Func<T, bool>> where, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         var query = MakeCountQuery(where, context);
-        return await query.CountAsync();
+        return await query.CountAsync(ctk);
     }
 
     private IQueryable<T> MakeCountQuery(Expression<Func<T, bool>> where, DbContext context)
@@ -862,7 +666,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// </summary>
 	/// <param name="where">조건식</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> Exists(Expression<Func<T, bool>> where)
+    public virtual async Task<bool> Exists(Expression<Func<T, bool>> where, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
@@ -896,14 +700,14 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
         };
     }
     
-    internal async Task<(int Count, T Entity)> SaveChanges(LogType logType, params IEnumerable<T> entities)
+    internal async Task<(int Count, T Entity)> SaveChanges(LogType logType, CancellationToken ctk, params IEnumerable<T> entities)
 	{
         await using var context = DbContextFactory.Create();
 
         foreach (var entity in entities)
     		MarkToSave(context, logType, entity);
 			
-		int count = await context.SaveChangesAsync();
+		int count = await context.SaveChangesAsync(ctk);
 		if (count > 0)
             foreach (var entity in entities)
     			OnSaved(entity, logType);
@@ -911,31 +715,31 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
         return (count, count > 0 ? entities.First() : null);
 	}
 
-	public virtual async Task<T> Insert(T entity)
-        => (await SaveChanges(LogType.Insert, entity)).Entity;
+	public virtual async Task<T> Insert(T entity, CancellationToken ctk = default)
+        => (await SaveChanges(LogType.Insert, ctk, entity)).Entity;
 
-	public virtual async Task<int> InsertMany(IEnumerable<T> entities)
-        => (await SaveChanges(LogType.Insert, entities)).Count;
+	public virtual async Task<int> InsertMany(IEnumerable<T> entities, CancellationToken ctk = default)
+        => (await SaveChanges(LogType.Insert, ctk, entities)).Count;
 
-	public virtual async Task<int> Update(T entity) 
-        => (await SaveChanges(LogType.Update, entity)).Count;
+	public virtual async Task<int> Update(T entity, CancellationToken ctk = default) 
+        => (await SaveChanges(LogType.Update, ctk, entity)).Count;
 
-	public virtual async Task<int> UpdateMany(IEnumerable<T> entities) 
-        => (await SaveChanges(LogType.Update, entities)).Count;
+	public virtual async Task<int> UpdateMany(IEnumerable<T> entities, CancellationToken ctk = default) 
+        => (await SaveChanges(LogType.Update, ctk, entities)).Count;
 
-	public virtual async Task<int> Delete(T entity) 
-        => (await SaveChanges(LogType.Delete, entity)).Count;
+	public virtual async Task<int> Delete(T entity, CancellationToken ctk = default) 
+        => (await SaveChanges(LogType.Delete, ctk, entity)).Count;
 
-	public virtual async Task<int> DeleteMany(IEnumerable<T> entities) 
-        => (await SaveChanges(LogType.Delete, entities)).Count;
+	public virtual async Task<int> DeleteMany(IEnumerable<T> entities, CancellationToken ctk = default) 
+        => (await SaveChanges(LogType.Delete, ctk, entities)).Count;
 
-	public virtual async Task<int> DeleteAll(Expression<Func<T, bool>> where)
+	public virtual async Task<int> DeleteAll(Expression<Func<T, bool>> where, CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
 		var entities = await Get(where);
 
-        return await DeleteMany(entities);
+        return await DeleteMany(entities, ctk);
 	}
 
     /// <summary>
@@ -943,15 +747,15 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// </summary>
     /// <param name="entity">삽입할 엔터티</param>
     /// <returns>삽입된 엔터티</returns>
-    public virtual async Task<T> InsertIfNotExist(T entity)
+    public virtual async Task<T> InsertIfNotExist(T entity, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
-        int count = await context.Set<T>().CountAsync(HasSameKey(entity));
+        int count = await context.Set<T>().CountAsync(HasSameKey(entity), ctk);
         if (count > 0)
             return null;
 
-        return await Insert(entity);
+        return await Insert(entity, ctk);
     }
 
     /// <summary>
@@ -960,19 +764,19 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="entity">삽입 혹은 갱신할 엔터티</param>
     /// <param name="withAudit">감사정보(수정자, 수정일)를 기록한다.</param>
     /// <returns>삽입했으면 true, 갱신했으면 false</returns>
-    public virtual async Task<bool> InsertOrUpdate(T entity, bool withAudit = false)
+    public virtual async Task<bool> InsertOrUpdate(T entity, bool withAudit = false, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
-        int count = await context.Set<T>().CountAsync(HasSameKey(entity));
+        int count = await context.Set<T>().CountAsync(HasSameKey(entity), ctk);
         if (count > 0)
         {
-            await Update(entity);
+            await Update(entity, ctk);
             return false;
         }
         else
         {
-            await Insert(entity);
+            await Insert(entity, ctk);
             return true;
         }
     }	
@@ -985,11 +789,11 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="predicate">조건식</param>
     /// <param name="setPropertyCalls">변경할 속성. 엔티티의 다른 속성도 참조 가능. 예)p => p.TypeCode, p => p.TypeCode + 1</param>
     /// <returns></returns>
-    public async Task<int> ExecuteUpdate(Expression<Func<T, bool>> predicate, Expression<Func<SetPropertyCalls<T>, SetPropertyCalls<T>>> setPropertyCalls)
+    public async Task<int> ExecuteUpdate(Expression<Func<T, bool>> predicate, Expression<Func<SetPropertyCalls<T>, SetPropertyCalls<T>>> setPropertyCalls, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<T>().Where(predicate).ExecuteUpdateAsync(setPropertyCalls);
+        return await context.Set<T>().Where(predicate).ExecuteUpdateAsync(setPropertyCalls, ctk);
     }
 
     /// <summary>
@@ -997,11 +801,11 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// </summary>
     /// <param name="predicate">조건식</param>
     /// <returns></returns>
-    public async Task<int> ExecuteDelete(Expression<Func<T, bool>> predicate)
+    public async Task<int> ExecuteDelete(Expression<Func<T, bool>> predicate, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<T>().Where(predicate).ExecuteDeleteAsync();
+        return await context.Set<T>().Where(predicate).ExecuteDeleteAsync(ctk);
     }
     #endregion ExecuteUpdate / ExecuteDelete
 
@@ -3465,11 +3269,11 @@ public partial class AlbumDao : EntityDao<Album>
 	/// </summary>
 	/// <param name="albumId">기본키</param>
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public virtual async Task<Album> GetByKey(int albumId )
+    public async Task<Album> GetByKey(int albumId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<Album>().FirstOrDefaultAsync(x =>  x.AlbumId == albumId );
+        return await context.Set<Album>().FirstOrDefaultAsync(x =>  x.AlbumId == albumId , ctk);
 	}
 
 	/// <summary>
@@ -3477,11 +3281,11 @@ public partial class AlbumDao : EntityDao<Album>
 	/// </summary>
 	/// <param name="albumId">기본키</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> ExistsByKey(int albumId )
+    public async Task<bool> ExistsByKey(int albumId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<Album>().CountAsync(x =>  x.AlbumId == albumId ) > 0;
+		return await context.Set<Album>().CountAsync(x =>  x.AlbumId == albumId , ctk) > 0;
 	}
 
 	/// <summary>
@@ -3489,14 +3293,14 @@ public partial class AlbumDao : EntityDao<Album>
 	/// </summary>
 	/// <param name="albumId">기본키</param> 
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public virtual async Task<int> DeleteByKey(int albumId )
+    public async Task<int> DeleteByKey(int albumId , CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(albumId );
+        var entity = await GetByKey(albumId , ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	
@@ -3513,28 +3317,43 @@ public partial class AlbumDao : EntityDao<Album>
         return await GetByArtistIdCore(context, artistId).ToListAsync(ctk);
     }
     
-    public virtual async Task<Album[]> GetByArtistIdAsArray(int artistId, CancellationToken ctk = default)
+    public async Task<Album[]> GetByArtistIdAsArray(int artistId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByArtistIdCore(context, artistId).ToArrayAsync(ctk);
     }
     
-    public virtual async Task<HashSet<Album>> GetByArtistIdAsHastSet(int artistId, CancellationToken ctk = default)
+    public async Task<HashSet<Album>> GetByArtistIdAsHastSet(int artistId, CancellationToken ctk = default)
     {
-        await using var context = DbContextFactory.Create();
+        try
+        {
+            await using var context = DbContextFactory.Create();
 
-        return await GetByArtistIdCore(context, artistId).ToHashSetAsync(ctk);
+            var query = from x in context.Albums.Include(x => x.Tracks)
+                select x;
+
+            var list = await query.ToListAsync(ctk);
+            Console.WriteLine($"finished with {list.Count}");
+            return new HashSet<Album>();
+
+            return await GetByArtistIdCore(context, artistId).ToHashSetAsync(ctk);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("cancelled");
+            return new();
+        }
     }
     
-    public virtual async Task<Dictionary<K, Album>> GetByArtistIdAsDictionary<K>(int artistId, Func<Album, K> keySelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, Album>> GetByArtistIdAsDictionary<K>(int artistId, Func<Album, K> keySelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByArtistIdCore(context, artistId).ToDictionaryAsync(keySelector, ctk);
     }
     
-    public virtual async Task<Dictionary<K, E>> GetByArtistIdAsDictionary<K, E>(int artistId, Func<Album, K> keySelector,Func<Album, E> elementSelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, E>> GetByArtistIdAsDictionary<K, E>(int artistId, Func<Album, K> keySelector,Func<Album, E> elementSelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
@@ -3580,11 +3399,11 @@ public partial class ArtistDao : EntityDao<Artist>
 	/// </summary>
 	/// <param name="artistId">기본키</param>
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public virtual async Task<Artist> GetByKey(int artistId )
+    public async Task<Artist> GetByKey(int artistId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<Artist>().FirstOrDefaultAsync(x =>  x.ArtistId == artistId );
+        return await context.Set<Artist>().FirstOrDefaultAsync(x =>  x.ArtistId == artistId , ctk);
 	}
 
 	/// <summary>
@@ -3592,11 +3411,11 @@ public partial class ArtistDao : EntityDao<Artist>
 	/// </summary>
 	/// <param name="artistId">기본키</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> ExistsByKey(int artistId )
+    public async Task<bool> ExistsByKey(int artistId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<Artist>().CountAsync(x =>  x.ArtistId == artistId ) > 0;
+		return await context.Set<Artist>().CountAsync(x =>  x.ArtistId == artistId , ctk) > 0;
 	}
 
 	/// <summary>
@@ -3604,14 +3423,14 @@ public partial class ArtistDao : EntityDao<Artist>
 	/// </summary>
 	/// <param name="artistId">기본키</param> 
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public virtual async Task<int> DeleteByKey(int artistId )
+    public async Task<int> DeleteByKey(int artistId , CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(artistId );
+        var entity = await GetByKey(artistId , ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	
@@ -3653,11 +3472,11 @@ public partial class CodeDao : EntityDao<Code>
 	/// </summary>
 	/// <param name="codeId">기본키</param>
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public virtual async Task<Code> GetByKey(int codeId )
+    public async Task<Code> GetByKey(int codeId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<Code>().FirstOrDefaultAsync(x =>  x.CodeId == codeId );
+        return await context.Set<Code>().FirstOrDefaultAsync(x =>  x.CodeId == codeId , ctk);
 	}
 
 	/// <summary>
@@ -3665,11 +3484,11 @@ public partial class CodeDao : EntityDao<Code>
 	/// </summary>
 	/// <param name="codeId">기본키</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> ExistsByKey(int codeId )
+    public async Task<bool> ExistsByKey(int codeId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<Code>().CountAsync(x =>  x.CodeId == codeId ) > 0;
+		return await context.Set<Code>().CountAsync(x =>  x.CodeId == codeId , ctk) > 0;
 	}
 
 	/// <summary>
@@ -3677,14 +3496,14 @@ public partial class CodeDao : EntityDao<Code>
 	/// </summary>
 	/// <param name="codeId">기본키</param> 
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public virtual async Task<int> DeleteByKey(int codeId )
+    public async Task<int> DeleteByKey(int codeId , CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(codeId );
+        var entity = await GetByKey(codeId , ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	
@@ -3701,28 +3520,28 @@ public partial class CodeDao : EntityDao<Code>
         return await GetByCodeCategoryIdCore(context, codeCategoryId).ToListAsync(ctk);
     }
     
-    public virtual async Task<Code[]> GetByCodeCategoryIdAsArray(int codeCategoryId, CancellationToken ctk = default)
+    public async Task<Code[]> GetByCodeCategoryIdAsArray(int codeCategoryId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByCodeCategoryIdCore(context, codeCategoryId).ToArrayAsync(ctk);
     }
     
-    public virtual async Task<HashSet<Code>> GetByCodeCategoryIdAsHastSet(int codeCategoryId, CancellationToken ctk = default)
+    public async Task<HashSet<Code>> GetByCodeCategoryIdAsHastSet(int codeCategoryId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByCodeCategoryIdCore(context, codeCategoryId).ToHashSetAsync(ctk);
     }
     
-    public virtual async Task<Dictionary<K, Code>> GetByCodeCategoryIdAsDictionary<K>(int codeCategoryId, Func<Code, K> keySelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, Code>> GetByCodeCategoryIdAsDictionary<K>(int codeCategoryId, Func<Code, K> keySelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByCodeCategoryIdCore(context, codeCategoryId).ToDictionaryAsync(keySelector, ctk);
     }
     
-    public virtual async Task<Dictionary<K, E>> GetByCodeCategoryIdAsDictionary<K, E>(int codeCategoryId, Func<Code, K> keySelector,Func<Code, E> elementSelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, E>> GetByCodeCategoryIdAsDictionary<K, E>(int codeCategoryId, Func<Code, K> keySelector,Func<Code, E> elementSelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
@@ -3768,11 +3587,11 @@ public partial class CodeCategoryDao : EntityDao<CodeCategory>
 	/// </summary>
 	/// <param name="codeCategoryId">기본키</param>
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public virtual async Task<CodeCategory> GetByKey(int codeCategoryId )
+    public async Task<CodeCategory> GetByKey(int codeCategoryId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<CodeCategory>().FirstOrDefaultAsync(x =>  x.CodeCategoryId == codeCategoryId );
+        return await context.Set<CodeCategory>().FirstOrDefaultAsync(x =>  x.CodeCategoryId == codeCategoryId , ctk);
 	}
 
 	/// <summary>
@@ -3780,11 +3599,11 @@ public partial class CodeCategoryDao : EntityDao<CodeCategory>
 	/// </summary>
 	/// <param name="codeCategoryId">기본키</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> ExistsByKey(int codeCategoryId )
+    public async Task<bool> ExistsByKey(int codeCategoryId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<CodeCategory>().CountAsync(x =>  x.CodeCategoryId == codeCategoryId ) > 0;
+		return await context.Set<CodeCategory>().CountAsync(x =>  x.CodeCategoryId == codeCategoryId , ctk) > 0;
 	}
 
 	/// <summary>
@@ -3792,14 +3611,14 @@ public partial class CodeCategoryDao : EntityDao<CodeCategory>
 	/// </summary>
 	/// <param name="codeCategoryId">기본키</param> 
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public virtual async Task<int> DeleteByKey(int codeCategoryId )
+    public async Task<int> DeleteByKey(int codeCategoryId , CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(codeCategoryId );
+        var entity = await GetByKey(codeCategoryId , ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	
@@ -3841,11 +3660,11 @@ public partial class CustomerDao : EntityDao<Customer>
 	/// </summary>
 	/// <param name="customerId">기본키</param>
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public virtual async Task<Customer> GetByKey(int customerId )
+    public async Task<Customer> GetByKey(int customerId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<Customer>().FirstOrDefaultAsync(x =>  x.CustomerId == customerId );
+        return await context.Set<Customer>().FirstOrDefaultAsync(x =>  x.CustomerId == customerId , ctk);
 	}
 
 	/// <summary>
@@ -3853,11 +3672,11 @@ public partial class CustomerDao : EntityDao<Customer>
 	/// </summary>
 	/// <param name="customerId">기본키</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> ExistsByKey(int customerId )
+    public async Task<bool> ExistsByKey(int customerId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<Customer>().CountAsync(x =>  x.CustomerId == customerId ) > 0;
+		return await context.Set<Customer>().CountAsync(x =>  x.CustomerId == customerId , ctk) > 0;
 	}
 
 	/// <summary>
@@ -3865,14 +3684,14 @@ public partial class CustomerDao : EntityDao<Customer>
 	/// </summary>
 	/// <param name="customerId">기본키</param> 
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public virtual async Task<int> DeleteByKey(int customerId )
+    public async Task<int> DeleteByKey(int customerId , CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(customerId );
+        var entity = await GetByKey(customerId , ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	
@@ -3889,28 +3708,28 @@ public partial class CustomerDao : EntityDao<Customer>
         return await GetBySupportRepIdCore(context, supportRepId).ToListAsync(ctk);
     }
     
-    public virtual async Task<Customer[]> GetBySupportRepIdAsArray(int? supportRepId, CancellationToken ctk = default)
+    public async Task<Customer[]> GetBySupportRepIdAsArray(int? supportRepId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetBySupportRepIdCore(context, supportRepId).ToArrayAsync(ctk);
     }
     
-    public virtual async Task<HashSet<Customer>> GetBySupportRepIdAsHastSet(int? supportRepId, CancellationToken ctk = default)
+    public async Task<HashSet<Customer>> GetBySupportRepIdAsHastSet(int? supportRepId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetBySupportRepIdCore(context, supportRepId).ToHashSetAsync(ctk);
     }
     
-    public virtual async Task<Dictionary<K, Customer>> GetBySupportRepIdAsDictionary<K>(int? supportRepId, Func<Customer, K> keySelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, Customer>> GetBySupportRepIdAsDictionary<K>(int? supportRepId, Func<Customer, K> keySelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetBySupportRepIdCore(context, supportRepId).ToDictionaryAsync(keySelector, ctk);
     }
     
-    public virtual async Task<Dictionary<K, E>> GetBySupportRepIdAsDictionary<K, E>(int? supportRepId, Func<Customer, K> keySelector,Func<Customer, E> elementSelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, E>> GetBySupportRepIdAsDictionary<K, E>(int? supportRepId, Func<Customer, K> keySelector,Func<Customer, E> elementSelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
@@ -3956,11 +3775,11 @@ public partial class DateTableDao : EntityDao<DateTable>
 	/// </summary>
 	/// <param name="date">기본키</param>
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public virtual async Task<DateTable> GetByKey(DateOnly date )
+    public async Task<DateTable> GetByKey(DateOnly date , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<DateTable>().FirstOrDefaultAsync(x =>  x.Date == date );
+        return await context.Set<DateTable>().FirstOrDefaultAsync(x =>  x.Date == date , ctk);
 	}
 
 	/// <summary>
@@ -3968,11 +3787,11 @@ public partial class DateTableDao : EntityDao<DateTable>
 	/// </summary>
 	/// <param name="date">기본키</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> ExistsByKey(DateOnly date )
+    public async Task<bool> ExistsByKey(DateOnly date , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<DateTable>().CountAsync(x =>  x.Date == date ) > 0;
+		return await context.Set<DateTable>().CountAsync(x =>  x.Date == date , ctk) > 0;
 	}
 
 	/// <summary>
@@ -3980,14 +3799,14 @@ public partial class DateTableDao : EntityDao<DateTable>
 	/// </summary>
 	/// <param name="date">기본키</param> 
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public virtual async Task<int> DeleteByKey(DateOnly date )
+    public async Task<int> DeleteByKey(DateOnly date , CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(date );
+        var entity = await GetByKey(date , ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	
@@ -4029,11 +3848,11 @@ public partial class EmployeeDao : EntityDao<Employee>
 	/// </summary>
 	/// <param name="employeeId">기본키</param>
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public virtual async Task<Employee> GetByKey(int employeeId )
+    public async Task<Employee> GetByKey(int employeeId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<Employee>().FirstOrDefaultAsync(x =>  x.EmployeeId == employeeId );
+        return await context.Set<Employee>().FirstOrDefaultAsync(x =>  x.EmployeeId == employeeId , ctk);
 	}
 
 	/// <summary>
@@ -4041,11 +3860,11 @@ public partial class EmployeeDao : EntityDao<Employee>
 	/// </summary>
 	/// <param name="employeeId">기본키</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> ExistsByKey(int employeeId )
+    public async Task<bool> ExistsByKey(int employeeId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<Employee>().CountAsync(x =>  x.EmployeeId == employeeId ) > 0;
+		return await context.Set<Employee>().CountAsync(x =>  x.EmployeeId == employeeId , ctk) > 0;
 	}
 
 	/// <summary>
@@ -4053,14 +3872,14 @@ public partial class EmployeeDao : EntityDao<Employee>
 	/// </summary>
 	/// <param name="employeeId">기본키</param> 
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public virtual async Task<int> DeleteByKey(int employeeId )
+    public async Task<int> DeleteByKey(int employeeId , CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(employeeId );
+        var entity = await GetByKey(employeeId , ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	
@@ -4077,28 +3896,28 @@ public partial class EmployeeDao : EntityDao<Employee>
         return await GetByReportsToCore(context, reportsTo).ToListAsync(ctk);
     }
     
-    public virtual async Task<Employee[]> GetByReportsToAsArray(int? reportsTo, CancellationToken ctk = default)
+    public async Task<Employee[]> GetByReportsToAsArray(int? reportsTo, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByReportsToCore(context, reportsTo).ToArrayAsync(ctk);
     }
     
-    public virtual async Task<HashSet<Employee>> GetByReportsToAsHastSet(int? reportsTo, CancellationToken ctk = default)
+    public async Task<HashSet<Employee>> GetByReportsToAsHastSet(int? reportsTo, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByReportsToCore(context, reportsTo).ToHashSetAsync(ctk);
     }
     
-    public virtual async Task<Dictionary<K, Employee>> GetByReportsToAsDictionary<K>(int? reportsTo, Func<Employee, K> keySelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, Employee>> GetByReportsToAsDictionary<K>(int? reportsTo, Func<Employee, K> keySelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByReportsToCore(context, reportsTo).ToDictionaryAsync(keySelector, ctk);
     }
     
-    public virtual async Task<Dictionary<K, E>> GetByReportsToAsDictionary<K, E>(int? reportsTo, Func<Employee, K> keySelector,Func<Employee, E> elementSelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, E>> GetByReportsToAsDictionary<K, E>(int? reportsTo, Func<Employee, K> keySelector,Func<Employee, E> elementSelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
@@ -4144,11 +3963,11 @@ public partial class GenreDao : EntityDao<Genre>
 	/// </summary>
 	/// <param name="genreId">기본키</param>
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public virtual async Task<Genre> GetByKey(int genreId )
+    public async Task<Genre> GetByKey(int genreId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<Genre>().FirstOrDefaultAsync(x =>  x.GenreId == genreId );
+        return await context.Set<Genre>().FirstOrDefaultAsync(x =>  x.GenreId == genreId , ctk);
 	}
 
 	/// <summary>
@@ -4156,11 +3975,11 @@ public partial class GenreDao : EntityDao<Genre>
 	/// </summary>
 	/// <param name="genreId">기본키</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> ExistsByKey(int genreId )
+    public async Task<bool> ExistsByKey(int genreId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<Genre>().CountAsync(x =>  x.GenreId == genreId ) > 0;
+		return await context.Set<Genre>().CountAsync(x =>  x.GenreId == genreId , ctk) > 0;
 	}
 
 	/// <summary>
@@ -4168,14 +3987,14 @@ public partial class GenreDao : EntityDao<Genre>
 	/// </summary>
 	/// <param name="genreId">기본키</param> 
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public virtual async Task<int> DeleteByKey(int genreId )
+    public async Task<int> DeleteByKey(int genreId , CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(genreId );
+        var entity = await GetByKey(genreId , ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	
@@ -4217,11 +4036,11 @@ public partial class InvoiceDao : EntityDao<Invoice>
 	/// </summary>
 	/// <param name="invoiceId">기본키</param>
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public virtual async Task<Invoice> GetByKey(int invoiceId )
+    public async Task<Invoice> GetByKey(int invoiceId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<Invoice>().FirstOrDefaultAsync(x =>  x.InvoiceId == invoiceId );
+        return await context.Set<Invoice>().FirstOrDefaultAsync(x =>  x.InvoiceId == invoiceId , ctk);
 	}
 
 	/// <summary>
@@ -4229,11 +4048,11 @@ public partial class InvoiceDao : EntityDao<Invoice>
 	/// </summary>
 	/// <param name="invoiceId">기본키</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> ExistsByKey(int invoiceId )
+    public async Task<bool> ExistsByKey(int invoiceId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<Invoice>().CountAsync(x =>  x.InvoiceId == invoiceId ) > 0;
+		return await context.Set<Invoice>().CountAsync(x =>  x.InvoiceId == invoiceId , ctk) > 0;
 	}
 
 	/// <summary>
@@ -4241,14 +4060,14 @@ public partial class InvoiceDao : EntityDao<Invoice>
 	/// </summary>
 	/// <param name="invoiceId">기본키</param> 
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public virtual async Task<int> DeleteByKey(int invoiceId )
+    public async Task<int> DeleteByKey(int invoiceId , CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(invoiceId );
+        var entity = await GetByKey(invoiceId , ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	
@@ -4265,28 +4084,28 @@ public partial class InvoiceDao : EntityDao<Invoice>
         return await GetByCustomerIdCore(context, customerId).ToListAsync(ctk);
     }
     
-    public virtual async Task<Invoice[]> GetByCustomerIdAsArray(int customerId, CancellationToken ctk = default)
+    public async Task<Invoice[]> GetByCustomerIdAsArray(int customerId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByCustomerIdCore(context, customerId).ToArrayAsync(ctk);
     }
     
-    public virtual async Task<HashSet<Invoice>> GetByCustomerIdAsHastSet(int customerId, CancellationToken ctk = default)
+    public async Task<HashSet<Invoice>> GetByCustomerIdAsHastSet(int customerId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByCustomerIdCore(context, customerId).ToHashSetAsync(ctk);
     }
     
-    public virtual async Task<Dictionary<K, Invoice>> GetByCustomerIdAsDictionary<K>(int customerId, Func<Invoice, K> keySelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, Invoice>> GetByCustomerIdAsDictionary<K>(int customerId, Func<Invoice, K> keySelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByCustomerIdCore(context, customerId).ToDictionaryAsync(keySelector, ctk);
     }
     
-    public virtual async Task<Dictionary<K, E>> GetByCustomerIdAsDictionary<K, E>(int customerId, Func<Invoice, K> keySelector,Func<Invoice, E> elementSelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, E>> GetByCustomerIdAsDictionary<K, E>(int customerId, Func<Invoice, K> keySelector,Func<Invoice, E> elementSelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
@@ -4332,11 +4151,11 @@ public partial class InvoiceLineDao : EntityDao<InvoiceLine>
 	/// </summary>
 	/// <param name="invoiceLineId">기본키</param>
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public virtual async Task<InvoiceLine> GetByKey(int invoiceLineId )
+    public async Task<InvoiceLine> GetByKey(int invoiceLineId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<InvoiceLine>().FirstOrDefaultAsync(x =>  x.InvoiceLineId == invoiceLineId );
+        return await context.Set<InvoiceLine>().FirstOrDefaultAsync(x =>  x.InvoiceLineId == invoiceLineId , ctk);
 	}
 
 	/// <summary>
@@ -4344,11 +4163,11 @@ public partial class InvoiceLineDao : EntityDao<InvoiceLine>
 	/// </summary>
 	/// <param name="invoiceLineId">기본키</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> ExistsByKey(int invoiceLineId )
+    public async Task<bool> ExistsByKey(int invoiceLineId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<InvoiceLine>().CountAsync(x =>  x.InvoiceLineId == invoiceLineId ) > 0;
+		return await context.Set<InvoiceLine>().CountAsync(x =>  x.InvoiceLineId == invoiceLineId , ctk) > 0;
 	}
 
 	/// <summary>
@@ -4356,14 +4175,14 @@ public partial class InvoiceLineDao : EntityDao<InvoiceLine>
 	/// </summary>
 	/// <param name="invoiceLineId">기본키</param> 
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public virtual async Task<int> DeleteByKey(int invoiceLineId )
+    public async Task<int> DeleteByKey(int invoiceLineId , CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(invoiceLineId );
+        var entity = await GetByKey(invoiceLineId , ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	
@@ -4380,28 +4199,28 @@ public partial class InvoiceLineDao : EntityDao<InvoiceLine>
         return await GetByInvoiceIdCore(context, invoiceId).ToListAsync(ctk);
     }
     
-    public virtual async Task<InvoiceLine[]> GetByInvoiceIdAsArray(int invoiceId, CancellationToken ctk = default)
+    public async Task<InvoiceLine[]> GetByInvoiceIdAsArray(int invoiceId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByInvoiceIdCore(context, invoiceId).ToArrayAsync(ctk);
     }
     
-    public virtual async Task<HashSet<InvoiceLine>> GetByInvoiceIdAsHastSet(int invoiceId, CancellationToken ctk = default)
+    public async Task<HashSet<InvoiceLine>> GetByInvoiceIdAsHastSet(int invoiceId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByInvoiceIdCore(context, invoiceId).ToHashSetAsync(ctk);
     }
     
-    public virtual async Task<Dictionary<K, InvoiceLine>> GetByInvoiceIdAsDictionary<K>(int invoiceId, Func<InvoiceLine, K> keySelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, InvoiceLine>> GetByInvoiceIdAsDictionary<K>(int invoiceId, Func<InvoiceLine, K> keySelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByInvoiceIdCore(context, invoiceId).ToDictionaryAsync(keySelector, ctk);
     }
     
-    public virtual async Task<Dictionary<K, E>> GetByInvoiceIdAsDictionary<K, E>(int invoiceId, Func<InvoiceLine, K> keySelector,Func<InvoiceLine, E> elementSelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, E>> GetByInvoiceIdAsDictionary<K, E>(int invoiceId, Func<InvoiceLine, K> keySelector,Func<InvoiceLine, E> elementSelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
@@ -4447,11 +4266,11 @@ public partial class MediaTypeDao : EntityDao<MediaType>
 	/// </summary>
 	/// <param name="mediaTypeId">기본키</param>
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public virtual async Task<MediaType> GetByKey(int mediaTypeId )
+    public async Task<MediaType> GetByKey(int mediaTypeId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<MediaType>().FirstOrDefaultAsync(x =>  x.MediaTypeId == mediaTypeId );
+        return await context.Set<MediaType>().FirstOrDefaultAsync(x =>  x.MediaTypeId == mediaTypeId , ctk);
 	}
 
 	/// <summary>
@@ -4459,11 +4278,11 @@ public partial class MediaTypeDao : EntityDao<MediaType>
 	/// </summary>
 	/// <param name="mediaTypeId">기본키</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> ExistsByKey(int mediaTypeId )
+    public async Task<bool> ExistsByKey(int mediaTypeId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<MediaType>().CountAsync(x =>  x.MediaTypeId == mediaTypeId ) > 0;
+		return await context.Set<MediaType>().CountAsync(x =>  x.MediaTypeId == mediaTypeId , ctk) > 0;
 	}
 
 	/// <summary>
@@ -4471,14 +4290,14 @@ public partial class MediaTypeDao : EntityDao<MediaType>
 	/// </summary>
 	/// <param name="mediaTypeId">기본키</param> 
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public virtual async Task<int> DeleteByKey(int mediaTypeId )
+    public async Task<int> DeleteByKey(int mediaTypeId , CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(mediaTypeId );
+        var entity = await GetByKey(mediaTypeId , ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	
@@ -4520,11 +4339,11 @@ public partial class PlaylistDao : EntityDao<Playlist>
 	/// </summary>
 	/// <param name="playlistId">기본키</param>
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public virtual async Task<Playlist> GetByKey(int playlistId )
+    public async Task<Playlist> GetByKey(int playlistId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<Playlist>().FirstOrDefaultAsync(x =>  x.PlaylistId == playlistId );
+        return await context.Set<Playlist>().FirstOrDefaultAsync(x =>  x.PlaylistId == playlistId , ctk);
 	}
 
 	/// <summary>
@@ -4532,11 +4351,11 @@ public partial class PlaylistDao : EntityDao<Playlist>
 	/// </summary>
 	/// <param name="playlistId">기본키</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> ExistsByKey(int playlistId )
+    public async Task<bool> ExistsByKey(int playlistId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<Playlist>().CountAsync(x =>  x.PlaylistId == playlistId ) > 0;
+		return await context.Set<Playlist>().CountAsync(x =>  x.PlaylistId == playlistId , ctk) > 0;
 	}
 
 	/// <summary>
@@ -4544,14 +4363,14 @@ public partial class PlaylistDao : EntityDao<Playlist>
 	/// </summary>
 	/// <param name="playlistId">기본키</param> 
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public virtual async Task<int> DeleteByKey(int playlistId )
+    public async Task<int> DeleteByKey(int playlistId , CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(playlistId );
+        var entity = await GetByKey(playlistId , ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	
@@ -4594,11 +4413,11 @@ public partial class PlaylistTrackDao : EntityDao<PlaylistTrack>
 	/// <param name="playlistId">기본키</param>
 /// <param name="trackId">기본키</param>
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public virtual async Task<PlaylistTrack> GetByKey(int playlistId , int trackId )
+    public async Task<PlaylistTrack> GetByKey(int playlistId , int trackId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<PlaylistTrack>().FirstOrDefaultAsync(x =>  x.PlaylistId == playlistId  &&  x.TrackId == trackId );
+        return await context.Set<PlaylistTrack>().FirstOrDefaultAsync(x =>  x.PlaylistId == playlistId  &&  x.TrackId == trackId , ctk);
 	}
 
 	/// <summary>
@@ -4607,11 +4426,11 @@ public partial class PlaylistTrackDao : EntityDao<PlaylistTrack>
 	/// <param name="playlistId">기본키</param>
 /// <param name="trackId">기본키</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> ExistsByKey(int playlistId , int trackId )
+    public async Task<bool> ExistsByKey(int playlistId , int trackId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<PlaylistTrack>().CountAsync(x =>  x.PlaylistId == playlistId  &&  x.TrackId == trackId ) > 0;
+		return await context.Set<PlaylistTrack>().CountAsync(x =>  x.PlaylistId == playlistId  &&  x.TrackId == trackId , ctk) > 0;
 	}
 
 	/// <summary>
@@ -4619,14 +4438,14 @@ public partial class PlaylistTrackDao : EntityDao<PlaylistTrack>
 	/// </summary>
 	/// <param name="playlistId">기본키</param> /// <param name="trackId">기본키</param> 
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public virtual async Task<int> DeleteByKey(int playlistId , int trackId )
+    public async Task<int> DeleteByKey(int playlistId , int trackId , CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(playlistId , trackId );
+        var entity = await GetByKey(playlistId , trackId , ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	
@@ -4643,28 +4462,28 @@ public partial class PlaylistTrackDao : EntityDao<PlaylistTrack>
         return await GetByPlaylistIdCore(context, playlistId).ToListAsync(ctk);
     }
     
-    public virtual async Task<PlaylistTrack[]> GetByPlaylistIdAsArray(int playlistId, CancellationToken ctk = default)
+    public async Task<PlaylistTrack[]> GetByPlaylistIdAsArray(int playlistId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByPlaylistIdCore(context, playlistId).ToArrayAsync(ctk);
     }
     
-    public virtual async Task<HashSet<PlaylistTrack>> GetByPlaylistIdAsHastSet(int playlistId, CancellationToken ctk = default)
+    public async Task<HashSet<PlaylistTrack>> GetByPlaylistIdAsHastSet(int playlistId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByPlaylistIdCore(context, playlistId).ToHashSetAsync(ctk);
     }
     
-    public virtual async Task<Dictionary<K, PlaylistTrack>> GetByPlaylistIdAsDictionary<K>(int playlistId, Func<PlaylistTrack, K> keySelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, PlaylistTrack>> GetByPlaylistIdAsDictionary<K>(int playlistId, Func<PlaylistTrack, K> keySelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByPlaylistIdCore(context, playlistId).ToDictionaryAsync(keySelector, ctk);
     }
     
-    public virtual async Task<Dictionary<K, E>> GetByPlaylistIdAsDictionary<K, E>(int playlistId, Func<PlaylistTrack, K> keySelector,Func<PlaylistTrack, E> elementSelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, E>> GetByPlaylistIdAsDictionary<K, E>(int playlistId, Func<PlaylistTrack, K> keySelector,Func<PlaylistTrack, E> elementSelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
@@ -4685,28 +4504,28 @@ public partial class PlaylistTrackDao : EntityDao<PlaylistTrack>
         return await GetByTrackIdCore(context, trackId).ToListAsync(ctk);
     }
     
-    public virtual async Task<PlaylistTrack[]> GetByTrackIdAsArray(int trackId, CancellationToken ctk = default)
+    public async Task<PlaylistTrack[]> GetByTrackIdAsArray(int trackId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByTrackIdCore(context, trackId).ToArrayAsync(ctk);
     }
     
-    public virtual async Task<HashSet<PlaylistTrack>> GetByTrackIdAsHastSet(int trackId, CancellationToken ctk = default)
+    public async Task<HashSet<PlaylistTrack>> GetByTrackIdAsHastSet(int trackId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByTrackIdCore(context, trackId).ToHashSetAsync(ctk);
     }
     
-    public virtual async Task<Dictionary<K, PlaylistTrack>> GetByTrackIdAsDictionary<K>(int trackId, Func<PlaylistTrack, K> keySelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, PlaylistTrack>> GetByTrackIdAsDictionary<K>(int trackId, Func<PlaylistTrack, K> keySelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByTrackIdCore(context, trackId).ToDictionaryAsync(keySelector, ctk);
     }
     
-    public virtual async Task<Dictionary<K, E>> GetByTrackIdAsDictionary<K, E>(int trackId, Func<PlaylistTrack, K> keySelector,Func<PlaylistTrack, E> elementSelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, E>> GetByTrackIdAsDictionary<K, E>(int trackId, Func<PlaylistTrack, K> keySelector,Func<PlaylistTrack, E> elementSelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
@@ -4754,11 +4573,11 @@ public partial class PlaylistTrackHistoryDao : EntityDao<PlaylistTrackHistory>
 /// <param name="trackId">기본키</param>
 /// <param name="writtenAt">기본키</param>
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public virtual async Task<PlaylistTrackHistory> GetByKey(int playlistId , int trackId , DateTime writtenAt )
+    public async Task<PlaylistTrackHistory> GetByKey(int playlistId , int trackId , DateTime writtenAt , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<PlaylistTrackHistory>().FirstOrDefaultAsync(x =>  x.PlaylistId == playlistId  &&  x.TrackId == trackId  &&  x.WrittenAt == writtenAt );
+        return await context.Set<PlaylistTrackHistory>().FirstOrDefaultAsync(x =>  x.PlaylistId == playlistId  &&  x.TrackId == trackId  &&  x.WrittenAt == writtenAt , ctk);
 	}
 
 	/// <summary>
@@ -4768,11 +4587,11 @@ public partial class PlaylistTrackHistoryDao : EntityDao<PlaylistTrackHistory>
 /// <param name="trackId">기본키</param>
 /// <param name="writtenAt">기본키</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> ExistsByKey(int playlistId , int trackId , DateTime writtenAt )
+    public async Task<bool> ExistsByKey(int playlistId , int trackId , DateTime writtenAt , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<PlaylistTrackHistory>().CountAsync(x =>  x.PlaylistId == playlistId  &&  x.TrackId == trackId  &&  x.WrittenAt == writtenAt ) > 0;
+		return await context.Set<PlaylistTrackHistory>().CountAsync(x =>  x.PlaylistId == playlistId  &&  x.TrackId == trackId  &&  x.WrittenAt == writtenAt , ctk) > 0;
 	}
 
 	/// <summary>
@@ -4780,14 +4599,14 @@ public partial class PlaylistTrackHistoryDao : EntityDao<PlaylistTrackHistory>
 	/// </summary>
 	/// <param name="playlistId">기본키</param> /// <param name="trackId">기본키</param> /// <param name="writtenAt">기본키</param> 
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public virtual async Task<int> DeleteByKey(int playlistId , int trackId , DateTime writtenAt )
+    public async Task<int> DeleteByKey(int playlistId , int trackId , DateTime writtenAt , CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(playlistId , trackId , writtenAt );
+        var entity = await GetByKey(playlistId , trackId , writtenAt , ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	
@@ -4804,28 +4623,28 @@ public partial class PlaylistTrackHistoryDao : EntityDao<PlaylistTrackHistory>
         return await GetByPlaylistIdCore(context, playlistId).ToListAsync(ctk);
     }
     
-    public virtual async Task<PlaylistTrackHistory[]> GetByPlaylistIdAsArray(int playlistId, CancellationToken ctk = default)
+    public async Task<PlaylistTrackHistory[]> GetByPlaylistIdAsArray(int playlistId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByPlaylistIdCore(context, playlistId).ToArrayAsync(ctk);
     }
     
-    public virtual async Task<HashSet<PlaylistTrackHistory>> GetByPlaylistIdAsHastSet(int playlistId, CancellationToken ctk = default)
+    public async Task<HashSet<PlaylistTrackHistory>> GetByPlaylistIdAsHastSet(int playlistId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByPlaylistIdCore(context, playlistId).ToHashSetAsync(ctk);
     }
     
-    public virtual async Task<Dictionary<K, PlaylistTrackHistory>> GetByPlaylistIdAsDictionary<K>(int playlistId, Func<PlaylistTrackHistory, K> keySelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, PlaylistTrackHistory>> GetByPlaylistIdAsDictionary<K>(int playlistId, Func<PlaylistTrackHistory, K> keySelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByPlaylistIdCore(context, playlistId).ToDictionaryAsync(keySelector, ctk);
     }
     
-    public virtual async Task<Dictionary<K, E>> GetByPlaylistIdAsDictionary<K, E>(int playlistId, Func<PlaylistTrackHistory, K> keySelector,Func<PlaylistTrackHistory, E> elementSelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, E>> GetByPlaylistIdAsDictionary<K, E>(int playlistId, Func<PlaylistTrackHistory, K> keySelector,Func<PlaylistTrackHistory, E> elementSelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
@@ -4846,28 +4665,28 @@ public partial class PlaylistTrackHistoryDao : EntityDao<PlaylistTrackHistory>
         return await GetByTrackIdCore(context, trackId).ToListAsync(ctk);
     }
     
-    public virtual async Task<PlaylistTrackHistory[]> GetByTrackIdAsArray(int trackId, CancellationToken ctk = default)
+    public async Task<PlaylistTrackHistory[]> GetByTrackIdAsArray(int trackId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByTrackIdCore(context, trackId).ToArrayAsync(ctk);
     }
     
-    public virtual async Task<HashSet<PlaylistTrackHistory>> GetByTrackIdAsHastSet(int trackId, CancellationToken ctk = default)
+    public async Task<HashSet<PlaylistTrackHistory>> GetByTrackIdAsHastSet(int trackId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByTrackIdCore(context, trackId).ToHashSetAsync(ctk);
     }
     
-    public virtual async Task<Dictionary<K, PlaylistTrackHistory>> GetByTrackIdAsDictionary<K>(int trackId, Func<PlaylistTrackHistory, K> keySelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, PlaylistTrackHistory>> GetByTrackIdAsDictionary<K>(int trackId, Func<PlaylistTrackHistory, K> keySelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByTrackIdCore(context, trackId).ToDictionaryAsync(keySelector, ctk);
     }
     
-    public virtual async Task<Dictionary<K, E>> GetByTrackIdAsDictionary<K, E>(int trackId, Func<PlaylistTrackHistory, K> keySelector,Func<PlaylistTrackHistory, E> elementSelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, E>> GetByTrackIdAsDictionary<K, E>(int trackId, Func<PlaylistTrackHistory, K> keySelector,Func<PlaylistTrackHistory, E> elementSelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
@@ -4913,11 +4732,11 @@ public partial class TimeTableDao : EntityDao<TimeTable>
 	/// </summary>
 	/// <param name="time">기본키</param>
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public virtual async Task<TimeTable> GetByKey(TimeOnly time )
+    public async Task<TimeTable> GetByKey(TimeOnly time , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<TimeTable>().FirstOrDefaultAsync(x =>  x.Time == time );
+        return await context.Set<TimeTable>().FirstOrDefaultAsync(x =>  x.Time == time , ctk);
 	}
 
 	/// <summary>
@@ -4925,11 +4744,11 @@ public partial class TimeTableDao : EntityDao<TimeTable>
 	/// </summary>
 	/// <param name="time">기본키</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> ExistsByKey(TimeOnly time )
+    public async Task<bool> ExistsByKey(TimeOnly time , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<TimeTable>().CountAsync(x =>  x.Time == time ) > 0;
+		return await context.Set<TimeTable>().CountAsync(x =>  x.Time == time , ctk) > 0;
 	}
 
 	/// <summary>
@@ -4937,14 +4756,14 @@ public partial class TimeTableDao : EntityDao<TimeTable>
 	/// </summary>
 	/// <param name="time">기본키</param> 
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public virtual async Task<int> DeleteByKey(TimeOnly time )
+    public async Task<int> DeleteByKey(TimeOnly time , CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(time );
+        var entity = await GetByKey(time , ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	
@@ -4986,11 +4805,11 @@ public partial class TrackDao : EntityDao<Track>
 	/// </summary>
 	/// <param name="trackId">기본키</param>
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public virtual async Task<Track> GetByKey(int trackId )
+    public async Task<Track> GetByKey(int trackId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<Track>().FirstOrDefaultAsync(x =>  x.TrackId == trackId );
+        return await context.Set<Track>().FirstOrDefaultAsync(x =>  x.TrackId == trackId , ctk);
 	}
 
 	/// <summary>
@@ -4998,11 +4817,11 @@ public partial class TrackDao : EntityDao<Track>
 	/// </summary>
 	/// <param name="trackId">기본키</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> ExistsByKey(int trackId )
+    public async Task<bool> ExistsByKey(int trackId , CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<Track>().CountAsync(x =>  x.TrackId == trackId ) > 0;
+		return await context.Set<Track>().CountAsync(x =>  x.TrackId == trackId , ctk) > 0;
 	}
 
 	/// <summary>
@@ -5010,14 +4829,14 @@ public partial class TrackDao : EntityDao<Track>
 	/// </summary>
 	/// <param name="trackId">기본키</param> 
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public virtual async Task<int> DeleteByKey(int trackId )
+    public async Task<int> DeleteByKey(int trackId , CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(trackId );
+        var entity = await GetByKey(trackId , ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	
@@ -5034,28 +4853,28 @@ public partial class TrackDao : EntityDao<Track>
         return await GetByAlbumIdCore(context, albumId).ToListAsync(ctk);
     }
     
-    public virtual async Task<Track[]> GetByAlbumIdAsArray(int? albumId, CancellationToken ctk = default)
+    public async Task<Track[]> GetByAlbumIdAsArray(int? albumId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByAlbumIdCore(context, albumId).ToArrayAsync(ctk);
     }
     
-    public virtual async Task<HashSet<Track>> GetByAlbumIdAsHastSet(int? albumId, CancellationToken ctk = default)
+    public async Task<HashSet<Track>> GetByAlbumIdAsHastSet(int? albumId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByAlbumIdCore(context, albumId).ToHashSetAsync(ctk);
     }
     
-    public virtual async Task<Dictionary<K, Track>> GetByAlbumIdAsDictionary<K>(int? albumId, Func<Track, K> keySelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, Track>> GetByAlbumIdAsDictionary<K>(int? albumId, Func<Track, K> keySelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByAlbumIdCore(context, albumId).ToDictionaryAsync(keySelector, ctk);
     }
     
-    public virtual async Task<Dictionary<K, E>> GetByAlbumIdAsDictionary<K, E>(int? albumId, Func<Track, K> keySelector,Func<Track, E> elementSelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, E>> GetByAlbumIdAsDictionary<K, E>(int? albumId, Func<Track, K> keySelector,Func<Track, E> elementSelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
@@ -5076,28 +4895,28 @@ public partial class TrackDao : EntityDao<Track>
         return await GetByGenreIdCore(context, genreId).ToListAsync(ctk);
     }
     
-    public virtual async Task<Track[]> GetByGenreIdAsArray(int genreId, CancellationToken ctk = default)
+    public async Task<Track[]> GetByGenreIdAsArray(int genreId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByGenreIdCore(context, genreId).ToArrayAsync(ctk);
     }
     
-    public virtual async Task<HashSet<Track>> GetByGenreIdAsHastSet(int genreId, CancellationToken ctk = default)
+    public async Task<HashSet<Track>> GetByGenreIdAsHastSet(int genreId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByGenreIdCore(context, genreId).ToHashSetAsync(ctk);
     }
     
-    public virtual async Task<Dictionary<K, Track>> GetByGenreIdAsDictionary<K>(int genreId, Func<Track, K> keySelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, Track>> GetByGenreIdAsDictionary<K>(int genreId, Func<Track, K> keySelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByGenreIdCore(context, genreId).ToDictionaryAsync(keySelector, ctk);
     }
     
-    public virtual async Task<Dictionary<K, E>> GetByGenreIdAsDictionary<K, E>(int genreId, Func<Track, K> keySelector,Func<Track, E> elementSelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, E>> GetByGenreIdAsDictionary<K, E>(int genreId, Func<Track, K> keySelector,Func<Track, E> elementSelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
@@ -5118,28 +4937,28 @@ public partial class TrackDao : EntityDao<Track>
         return await GetByMediaTypeIdCore(context, mediaTypeId).ToListAsync(ctk);
     }
     
-    public virtual async Task<Track[]> GetByMediaTypeIdAsArray(int mediaTypeId, CancellationToken ctk = default)
+    public async Task<Track[]> GetByMediaTypeIdAsArray(int mediaTypeId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByMediaTypeIdCore(context, mediaTypeId).ToArrayAsync(ctk);
     }
     
-    public virtual async Task<HashSet<Track>> GetByMediaTypeIdAsHastSet(int mediaTypeId, CancellationToken ctk = default)
+    public async Task<HashSet<Track>> GetByMediaTypeIdAsHastSet(int mediaTypeId, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByMediaTypeIdCore(context, mediaTypeId).ToHashSetAsync(ctk);
     }
     
-    public virtual async Task<Dictionary<K, Track>> GetByMediaTypeIdAsDictionary<K>(int mediaTypeId, Func<Track, K> keySelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, Track>> GetByMediaTypeIdAsDictionary<K>(int mediaTypeId, Func<Track, K> keySelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         return await GetByMediaTypeIdCore(context, mediaTypeId).ToDictionaryAsync(keySelector, ctk);
     }
     
-    public virtual async Task<Dictionary<K, E>> GetByMediaTypeIdAsDictionary<K, E>(int mediaTypeId, Func<Track, K> keySelector,Func<Track, E> elementSelector, CancellationToken ctk = default)
+    public async Task<Dictionary<K, E>> GetByMediaTypeIdAsDictionary<K, E>(int mediaTypeId, Func<Track, K> keySelector,Func<Track, E> elementSelector, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 

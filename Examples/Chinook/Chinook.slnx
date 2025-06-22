@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Chinook.ConsoleTest/Chinook.ConsoleTest.csproj" />
+  <Project Path="Chinook.Data/Chinook.Data.csproj" />
+  <Project Path="Chinook.DataUnitTest/Chinook.DataUnitTest.csproj" />
+  <Project Path="Chinook.Web/Chinook.Web.csproj" />
+</Solution>

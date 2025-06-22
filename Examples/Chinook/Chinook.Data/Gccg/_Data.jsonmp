@@ -477,16 +477,16 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// 모든 엔터티 중 첫번째 엔터티를 반환한다. 엔터티의 순서는 DB에 의해 결정된다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
     /// </summary>
     /// <returns>엔터티</returns>
-    public virtual Task<T> GetFirst()
-        => GetScalr<T>(null, null, true);
+    public virtual Task<T> GetFirst(CancellationToken ctk = default)
+        => GetScalr<T>(null, null, true, ctk);
 
 	/// <summary>
 	/// 조건식에 맞는 엔터티 중 첫번째 엔터티를 반환한다. 엔터티의 순서는 DB에 의해 결정된다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
 	/// </summary>
 	/// <param name="where">조건식</param>
 	/// <returns>엔터티</returns>
-    public virtual Task<T> GetFirst(Expression<Func<T, bool>> where) 
-        => GetScalr<T>(where, null, true);
+    public virtual Task<T> GetFirst(Expression<Func<T, bool>> where, CancellationToken ctk = default) 
+        => GetScalr<T>(where, null, true, ctk);
 
     /// <summary>
 	/// 모든 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
@@ -494,8 +494,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
 	/// <param name="orderBy">정렬식</param>
 	/// <returns>엔터티</returns>
-    public virtual Task<T> GetFirst<O>(Expression<Func<T, O>> orderBy)
-        => GetScalr<O>(null, orderBy, true);
+    public virtual Task<T> GetFirst<O>(Expression<Func<T, O>> orderBy, CancellationToken ctk = default)
+        => GetScalr<O>(null, orderBy, true, ctk);
 
     /// <summary>
     /// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
@@ -504,14 +504,14 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="where">조건식</param>
     /// <param name="orderBy">정렬식</param>
     /// <returns>엔터티</returns>
-    public virtual Task<T> GetFirst<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy)
-        => GetScalr(where, orderBy, true);
+    public virtual Task<T> GetFirst<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, CancellationToken ctk = default)
+        => GetScalr(where, orderBy, true, ctk);
 
-	private async Task<T> GetScalr<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending)
+	private async Task<T> GetScalr<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, CancellationToken ctk)
 	{
         await using var context = DbContextFactory.Create();
 
-	    return await GetScalarCore(where, orderBy, ascending, context).FirstOrDefaultAsync();
+	    return await GetScalarCore(where, orderBy, ascending, context).FirstOrDefaultAsync(ctk);
 	}
 
     /// <summary>
@@ -520,8 +520,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <typeparam name="O">정렬 기준이 되는 속성의 형식</typeparam>
     /// <param name="orderBy">정렬식</param>
     /// <returns>엔터티</returns>
-    public virtual Task<T> GetLast<O>(Expression<Func<T, O>> orderBy)
-        => GetScalr(null, orderBy, false);
+    public virtual Task<T> GetLast<O>(Expression<Func<T, O>> orderBy, CancellationToken ctk = default)
+        => GetScalr(null, orderBy, false, ctk);
 
 	/// <summary>
 	/// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 마지막 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
@@ -530,8 +530,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// <param name="where">조건식</param>
 	/// <param name="orderBy">정렬식</param>
 	/// <returns>엔터티</returns>
-    public virtual Task<T> GetLast<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy)
-        => GetScalr(where, orderBy, false);
+    public virtual Task<T> GetLast<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, CancellationToken ctk = default)
+        => GetScalr(where, orderBy, false, ctk);
 
     private static IQueryable<T> GetScalarCore<O>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, bool ascending, DbContext context)
 	{
@@ -555,8 +555,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// </summary>
 	/// <param name="select">선택식</param>
 	/// <returns>엔터티</returns>
-    public virtual Task<S> SelectFirst<S>(Expression<Func<T, S>> select)
-        => SelectScalar<T, S>(null, null, select, false);
+    public virtual Task<S> SelectFirst<S>(Expression<Func<T, S>> select, CancellationToken ctk = default)
+        => SelectScalar<T, S>(null, null, select, false, ctk);
 
 	/// <summary>
 	/// 조건식에 맞는 엔터티 중 첫번째 엔터티를 반환한다. 엔터티의 순서는 DB에 의해 결정된다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
@@ -565,8 +565,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// <param name="where">조건식</param>
 	/// <param name="select">선택식</param>
 	/// <returns>엔터티</returns>
-    public virtual Task<S> SelectFirst<S>(Expression<Func<T, bool>> where, Expression<Func<T, S>> select)
-        => SelectScalar<T, S>(where, null, select, false);
+    public virtual Task<S> SelectFirst<S>(Expression<Func<T, bool>> where, Expression<Func<T, S>> select, CancellationToken ctk = default)
+        => SelectScalar<T, S>(where, null, select, false, ctk);
 
 	/// <summary>
 	/// 모든 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
@@ -576,8 +576,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// <param name="orderBy">정렬식</param>
 	/// <param name="select">선택식</param>
 	/// <returns>엔터티</returns>
-    public virtual Task<S> SelectFirst<O, S>(Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select)
-        => SelectScalar(null, orderBy, select, true);
+    public virtual Task<S> SelectFirst<O, S>(Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select, CancellationToken ctk = default)
+        => SelectScalar(null, orderBy, select, true, ctk);
 
     /// <summary>
     /// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
@@ -588,8 +588,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="orderBy">정렬식</param>
     /// <param name="select">선택식</param>
     /// <returns>엔터티</returns>
-    public virtual Task<S> SelectFirst<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select)
-        => SelectScalar(where, orderBy, select, true);
+    public virtual Task<S> SelectFirst<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select, CancellationToken ctk = default)
+        => SelectScalar(where, orderBy, select, true, ctk);
 
     /// <summary>
     /// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 첫번째 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
@@ -601,7 +601,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="select">선택식</param>
     /// <param name="ascending">true이면 오름차순, false이면 내림차순</param>
     /// <returns>엔터티</returns>
-    private async Task<S> SelectScalar<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select, bool ascending)
+    private async Task<S> SelectScalar<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select, bool ascending, CancellationToken ctk)
 	{
         await using var context = DbContextFactory.Create();
 
@@ -617,8 +617,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="orderBy">정렬식</param>
     /// <param name="select">선택식</param>
     /// <returns>엔터티</returns>
-    public virtual Task<S> SelectLast<O, S>(Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select)
-        => SelectScalar(null, orderBy, select, false);
+    public virtual Task<S> SelectLast<O, S>(Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select, CancellationToken ctk = default)
+        => SelectScalar(null, orderBy, select, false, ctk);
 
     /// <summary>
     /// 조건식에 맞는 엔터티를 정렬식에 따라 정렬했을 때 마지막 엔터티를 반환한다. 조건식에 맞는 엔터티가 없으면 null이 반환된다.
@@ -629,8 +629,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="orderBy">정렬식</param>
     /// <param name="select">선택식</param>
     /// <returns>엔터티</returns>
-    public virtual Task<S> SelectLast<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select)
-        => SelectScalar(where, orderBy, select, false);
+    public virtual Task<S> SelectLast<O, S>(Expression<Func<T, bool>> where, Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select, CancellationToken ctk = default)
+        => SelectScalar(where, orderBy, select, false, ctk);
     #endregion SelectFirst / SelectLast
 
 	#region GetCount
@@ -638,7 +638,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// 모든 엔터티의 갯수를 구한다.
 	/// </summary>
 	/// <returns>엔터티의 갯수</returns>
-    public virtual Task<int> GetCount()
+    public virtual Task<int> GetCount(CancellationToken ctk = default)
         => GetCount(null);
 
     /// <summary>
@@ -646,12 +646,12 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// </summary>
     /// <param name="where">조건식</param>
     /// <returns>엔터티의 갯수</returns>
-    public virtual async Task<int> GetCount(Expression<Func<T, bool>> where)
+    public virtual async Task<int> GetCount(Expression<Func<T, bool>> where, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
         var query = MakeCountQuery(where, context);
-        return await query.CountAsync();
+        return await query.CountAsync(ctk);
     }
 
     private IQueryable<T> MakeCountQuery(Expression<Func<T, bool>> where, DbContext context)
@@ -672,7 +672,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// </summary>
 	/// <param name="where">조건식</param>
 	/// <returns>존재 여부</returns>
-    public virtual async Task<bool> Exists(Expression<Func<T, bool>> where)
+    public virtual async Task<bool> Exists(Expression<Func<T, bool>> where, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
@@ -706,14 +706,14 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
         };
     }
     
-    internal async Task<(int Count, T Entity)> SaveChanges(LogType logType, params IEnumerable<T> entities)
+    internal async Task<(int Count, T Entity)> SaveChanges(LogType logType, CancellationToken ctk, params IEnumerable<T> entities)
 	{
         await using var context = DbContextFactory.Create();
 
         foreach (var entity in entities)
     		MarkToSave(context, logType, entity);
 			
-		int count = await context.SaveChangesAsync();
+		int count = await context.SaveChangesAsync(ctk);
 		if (count > 0)
             foreach (var entity in entities)
     			OnSaved(entity, logType);
@@ -721,31 +721,31 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
         return (count, count > 0 ? entities.First() : null);
 	}
 
-	public virtual async Task<T> Insert(T entity)
-        => (await SaveChanges(LogType.Insert, entity)).Entity;
+	public virtual async Task<T> Insert(T entity, CancellationToken ctk = default)
+        => (await SaveChanges(LogType.Insert, ctk, entity)).Entity;
 
-	public virtual async Task<int> InsertMany(IEnumerable<T> entities)
-        => (await SaveChanges(LogType.Insert, entities)).Count;
+	public virtual async Task<int> InsertMany(IEnumerable<T> entities, CancellationToken ctk = default)
+        => (await SaveChanges(LogType.Insert, ctk, entities)).Count;
 
-	public virtual async Task<int> Update(T entity) 
-        => (await SaveChanges(LogType.Update, entity)).Count;
+	public virtual async Task<int> Update(T entity, CancellationToken ctk = default) 
+        => (await SaveChanges(LogType.Update, ctk, entity)).Count;
 
-	public virtual async Task<int> UpdateMany(IEnumerable<T> entities) 
-        => (await SaveChanges(LogType.Update, entities)).Count;
+	public virtual async Task<int> UpdateMany(IEnumerable<T> entities, CancellationToken ctk = default) 
+        => (await SaveChanges(LogType.Update, ctk, entities)).Count;
 
-	public virtual async Task<int> Delete(T entity) 
-        => (await SaveChanges(LogType.Delete, entity)).Count;
+	public virtual async Task<int> Delete(T entity, CancellationToken ctk = default) 
+        => (await SaveChanges(LogType.Delete, ctk, entity)).Count;
 
-	public virtual async Task<int> DeleteMany(IEnumerable<T> entities) 
-        => (await SaveChanges(LogType.Delete, entities)).Count;
+	public virtual async Task<int> DeleteMany(IEnumerable<T> entities, CancellationToken ctk = default) 
+        => (await SaveChanges(LogType.Delete, ctk, entities)).Count;
 
-	public virtual async Task<int> DeleteAll(Expression<Func<T, bool>> where)
+	public virtual async Task<int> DeleteAll(Expression<Func<T, bool>> where, CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
 		var entities = await Get(where);
 
-        return await DeleteMany(entities);
+        return await DeleteMany(entities, ctk);
 	}
 
     /// <summary>
@@ -753,15 +753,15 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// </summary>
     /// <param name="entity">삽입할 엔터티</param>
     /// <returns>삽입된 엔터티</returns>
-    public virtual async Task<T> InsertIfNotExist(T entity)
+    public virtual async Task<T> InsertIfNotExist(T entity, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
-        int count = await context.Set<T>().CountAsync(HasSameKey(entity));
+        int count = await context.Set<T>().CountAsync(HasSameKey(entity), ctk);
         if (count > 0)
             return null;
 
-        return await Insert(entity);
+        return await Insert(entity, ctk);
     }
 
     /// <summary>
@@ -770,19 +770,19 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="entity">삽입 혹은 갱신할 엔터티</param>
     /// <param name="withAudit">감사정보(수정자, 수정일)를 기록한다.</param>
     /// <returns>삽입했으면 true, 갱신했으면 false</returns>
-    public virtual async Task<bool> InsertOrUpdate(T entity, bool withAudit = false)
+    public virtual async Task<bool> InsertOrUpdate(T entity, bool withAudit = false, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
-        int count = await context.Set<T>().CountAsync(HasSameKey(entity));
+        int count = await context.Set<T>().CountAsync(HasSameKey(entity), ctk);
         if (count > 0)
         {
-            await Update(entity);
+            await Update(entity, ctk);
             return false;
         }
         else
         {
-            await Insert(entity);
+            await Insert(entity, ctk);
             return true;
         }
     }	
@@ -795,11 +795,11 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// <param name="predicate">조건식</param>
     /// <param name="setPropertyCalls">변경할 속성. 엔티티의 다른 속성도 참조 가능. 예)p => p.TypeCode, p => p.TypeCode + 1</param>
     /// <returns></returns>
-    public async Task<int> ExecuteUpdate(Expression<Func<T, bool>> predicate, Expression<Func<SetPropertyCalls<T>, SetPropertyCalls<T>>> setPropertyCalls)
+    public async Task<int> ExecuteUpdate(Expression<Func<T, bool>> predicate, Expression<Func<SetPropertyCalls<T>, SetPropertyCalls<T>>> setPropertyCalls, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<T>().Where(predicate).ExecuteUpdateAsync(setPropertyCalls);
+        return await context.Set<T>().Where(predicate).ExecuteUpdateAsync(setPropertyCalls, ctk);
     }
 
     /// <summary>
@@ -807,11 +807,11 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     /// </summary>
     /// <param name="predicate">조건식</param>
     /// <returns></returns>
-    public async Task<int> ExecuteDelete(Expression<Func<T, bool>> predicate)
+    public async Task<int> ExecuteDelete(Expression<Func<T, bool>> predicate, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<T>().Where(predicate).ExecuteDeleteAsync();
+        return await context.Set<T>().Where(predicate).ExecuteDeleteAsync(ctk);
     }
     #endregion ExecuteUpdate / ExecuteDelete
 
@@ -1160,11 +1160,11 @@ public partial class `Name`Dao : EntityDao<`Name`>
 	/// </summary>
 	`P:[N]:/// <param name="`name`">기본키</param>``
 	/// <returns>기본키가 일치하는 엔터티</returns>
-    public async Task<`Name`> GetByKey(`P:, :`Type` `name` ``)
+    public async Task<`Name`> GetByKey(`P:, :`Type` `name` ``, CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<`Name`>().FirstOrDefaultAsync(x => `P: && : x.`Name` == `name` ``);
+        return await context.Set<`Name`>().FirstOrDefaultAsync(x => `P: && : x.`Name` == `name` ``, ctk);
 	}
 
 	/// <summary>
@@ -1172,11 +1172,11 @@ public partial class `Name`Dao : EntityDao<`Name`>
 	/// </summary>
 	`P:[N]:/// <param name="`name`">기본키</param>``
 	/// <returns>존재 여부</returns>
-    public async Task<bool> ExistsByKey(`P:, :`Type` `name` ``)
+    public async Task<bool> ExistsByKey(`P:, :`Type` `name` ``, CancellationToken ctk = default)
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<`Name`>().CountAsync(x => `P: && : x.`Name` == `name` ``) > 0;
+		return await context.Set<`Name`>().CountAsync(x => `P: && : x.`Name` == `name` ``, ctk) > 0;
 	}
 
 	/// <summary>
@@ -1184,14 +1184,14 @@ public partial class `Name`Dao : EntityDao<`Name`>
 	/// </summary>
 	`P::/// <param name="`name`">기본키</param> ``
 	/// <returns>삭제된 엔터티의 갯수</returns>
-    public async Task<int> DeleteByKey(`P:, :`Type` `name` ``)
+    public async Task<int> DeleteByKey(`P:, :`Type` `name` ``, CancellationToken ctk = default)
 	{
-        var entity = await GetByKey(`P:, :`name` ``);
+        var entity = await GetByKey(`P:, :`name` ``, ctk);
 
         if (entity == null)
             return 0;
 
-        return await Delete(entity);
+        return await Delete(entity, ctk);
 	}
 	
 	`F::
