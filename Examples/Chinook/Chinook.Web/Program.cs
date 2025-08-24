@@ -1,10 +1,10 @@
+﻿#region
+using System.Text;
 using System.Text.Encodings.Web;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using Chinook.WebApi.Controllers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Identity.Web;
-using static Microsoft.AspNetCore.Mvc.JsonOptions;
-using Microsoft.AspNetCore.Builder;
+using Microsoft.IdentityModel.Tokens;
+#endregion
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,15 +15,39 @@ builder.Services.AddServerSideBlazor();
 // builder.Services.AddScoped<DialogService>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
- {
-     options.JsonSerializerOptions.IgnoreReadOnlyProperties = true;
-     options.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
-     options.JsonSerializerOptions.WriteIndented = true;
-     options.JsonSerializerOptions.PropertyNamingPolicy = null;
- });
+{
+    options.JsonSerializerOptions.IgnoreReadOnlyProperties = true;
+    options.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+    options.JsonSerializerOptions.WriteIndented = true;
+    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
+var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
+if (jwtSettings == null)
+    throw new InvalidOperationException("JWT configuration not found.");
+
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings.Issuer,
+            ValidAudience = jwtSettings.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -47,6 +71,10 @@ app.UseRouting();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
+// 3. 미들웨어 파이프라인 구성
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

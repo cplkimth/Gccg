@@ -1,0 +1,27 @@
+﻿@BaseUrl = https://localhost:7266
+@AccessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6Ik1hcmdhcmV0IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiUGFyayIsImp0aSI6ImE1NDZmOGI3LTI1ODEtNDgxOC04Yzc1LWI2ZTUyOTU1ZTJiNCIsImV4cCI6MTc1NjA5MDIwNSwiaXNzIjoiVGVzdElzc3VlciIsImF1ZCI6IlRlc3RBdWRpZW5jZSJ9.ejGlvnjRL8UKMRZSgpR4U5DfvwLC8AVCKWhD6uXQ_rU
+
+### Step 1: Sign In and Extract JWT Token
+POST {{BaseUrl}}/api/auth/login
+Content-Type: application/json
+Accept: text/plain
+
+{
+  "Username": "4",
+  "Password": "password123"
+}
+
+### count2 id:1
+GET {{BaseUrl}}/api/album/count2
+Accept: application/json
+Authorization: Bearer {{AccessToken}}
+
+### identify id:4
+GET {{BaseUrl}}/api/auth/Identify
+Accept: application/json
+Authorization: Bearer {{AccessToken}}
+
+### count
+GET {{BaseUrl}}/api/album/count
+Accept: application/json
+Authorization: Bearer {{AccessToken}}

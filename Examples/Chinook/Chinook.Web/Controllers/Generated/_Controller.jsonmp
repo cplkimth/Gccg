@@ -86,6 +86,7 @@ public abstract partial class `Name`ControllerBase : EntityController<`Name`>
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public partial class `Name`Controller : `Name`ControllerBase
 {
 }

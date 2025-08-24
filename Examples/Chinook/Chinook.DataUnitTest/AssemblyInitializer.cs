@@ -8,7 +8,8 @@ public class AssemblyInitializer
     [AssemblyInitialize()]
     public static void AssemblyInit(TestContext context)
     {
-        Api.BaseAddress = "http://localhost:5213";
+        Api.BaseAddress = "https://localhost:7266";
+        Api.Login("1", "").Wait();
 
         Assert.IsTrue(true);
     }

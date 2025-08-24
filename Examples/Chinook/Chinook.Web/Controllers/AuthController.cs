@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using Chinook.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -18,55 +19,55 @@ public class AuthController : ControllerBase
         _configuration = configuration;
     }
 
-    [HttpPost]
+    [HttpPost("Login")]
     [Produces("text/plain")]
-    public async Task<string> SignInAsync([FromBody] AuthInfo authInfo)
+    public async Task<string> Login([FromBody] LoginInfo loginInfo)
     {
-        return await SignIn(authInfo);
-    }
+        var jwtSettings = _configuration.GetSection("Jwt").Get<JwtSettings>();
 
-    private async Task<string> SignIn(AuthInfo authInfo )
-    {
-        var employee = await Dao.Employee.GetFirstAsync(x => x.LastName == authInfo.UserName && x.FirstName == authInfo.Password);
+        int employeeId = int.Parse(loginInfo.Username);
+        var employee = await Dao.Employee.GetFirstAsync(x => x.EmployeeId == employeeId);
+
         if (employee == null)
-            return "Wrong";
+            return "";
 
-        var claims = new[] {
-                               new Claim(JwtRegisteredClaimNames.Sub, employee.EmployeeId.ToString()),
-                               new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                               new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString()),
-                               new Claim(JwtRegisteredClaimNames.Name, employee.LastName),
-                           };
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.Sid, employee.EmployeeId.ToString()),
+            new(ClaimTypes.Name, employee.FirstName),
+            new(ClaimTypes.Role, employee.LastName),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+
         var token = new JwtSecurityToken(
-            _configuration["Jwt:Issuer"],
-            _configuration["Jwt:Audience"],
-            claims,
-            expires: DateTime.UtcNow.AddHours(1),
+            issuer: jwtSettings.Issuer,
+            audience: jwtSettings.Audience,
+            claims: claims,
+            expires: DateTime.Now.AddHours(24),
             signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    [HttpGet("identify")]
-    [Produces("application/json")]
-    public string Identify()
+    [HttpGet("Identify")]
+    [Authorize]
+    public async Task<string> Identify()
     {
-        // var userId = User.Claims.GetSubClaimValue(x => int.Parse(x));
-        //     
-        // var userName = User.Claims.GetClaimValue(JwtRegisteredClaimNames.Name);
-        //     
-        // return $"{userId} / {userName}";
-        return "";
+        var id = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
+        var name = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+        var role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+        
+        return await Task.FromResult($"{id} / {name} / {role}");
     }
 }
 
-public class AuthInfo
+public class JwtSettings
 {
-    public string UserName { get; set; }
-    
-    // [JsonIgnore]
-    public string Password { get; set; }
+    public string Key { get; set; } = string.Empty;
+    public string Issuer { get; set; } = string.Empty;
+    public string Audience { get; set; } = string.Empty;
 }
+

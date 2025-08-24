@@ -1,10 +1,11 @@
-#region
+﻿#region
 
 #endregion
 
-namespace Chinook.DataUnitTest;
+namespace Chinook.DataUnitTest.ApiTests;
 
-public class AlbumApiTest
+
+public partial class AlbumApiTest
 {
 
 }

@@ -16,7 +16,7 @@ namespace `DataProjectNamespace`;
 
 public partial class Api
 {
-    public static string JwtToken { get; set; }
+    public static string Jwt { get; set; }
 
     public static string BaseAddress { get; set; }
     
@@ -28,13 +28,13 @@ public partial class Api
         HttpClient client = new HttpClient();
         client.BaseAddress = new Uri(Api.BaseAddress);
 
-        if (Api.JwtToken != null)
-            client.DefaultRequestHeaders.Add(Authorization, $"{Bearer} {Api.JwtToken}");
+        if (Api.Jwt != null)
+            client.DefaultRequestHeaders.Add(Authorization, $"{Bearer} {Api.Jwt}");
 
         return client;
     }
 
-    public static async Task<string> GetJwtToken(string userName, string password)
+    public static async Task<string> GetJwt(string userName, string password)
     {
         var authInfo = new {UserName = "5", Password = "Andrew"};
         var response = await CreateHttpClient().PostAsJsonAsync("api/auth", authInfo);

@@ -207,7 +207,18 @@ public enum LogType
 	/// </summary>
 	Delete
 }
-#endregion LogType
+
+public class LoginInfo
+{
+    public string Username { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+
+	public static string ToJson(LoginInfo loginInfo) => JsonSerializer.Serialize(loginInfo);
+
+    public static string ToJson(string userName, string password) =>
+        ToJson(new LoginInfo { Username = userName, Password = password });
+}
+#endregion Types
 
 #region Dao
 public partial class DaoBase
