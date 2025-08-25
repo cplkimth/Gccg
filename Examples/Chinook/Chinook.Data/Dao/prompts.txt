@@ -1,0 +1,48 @@
+﻿아래 변환 예시([샘플 입력] -> [샘플 출력])에 따라 [입력]을 변환.
+---
+[샘플 입력]
+// in Chinook.Data/Dao/AlbumDao.cs
+public async Task<List<Album>> Search(string artistName, string trackName)
+{
+    // 생략
+}
+---
+
+---
+[샘플 출력]
+// in Chinook.Data/Dao/AlbumDao.cs
+public record SearchArgs(string ArtistName, string TrackName);
+
+// in Chinook.Data/Dao/AlbumDao.cs
+public async Task<List<Album>> Search(string artistName, string trackName) 
+{
+    // 생략
+}
+
+// in Chinook.Web/Controllers/AlbumController.cs
+[HttpGet($"{nameof(Search)}/{{json}}")]
+public virtual async Task<List<Album>> Search(string json)
+{
+    var args = JsonSerializer.Deserialize<SearchArgs>(json);
+    return await Dao.Album.Search(args.ArtistName, args.TrackName);
+}
+
+// in Chinook.Data/Api/AlbumApi.cs
+public virtual async Task<List<Album>> Search(string artistName, string trackName)  
+{
+    var json = JsonSerializer.Serialize(new AlbumDao.SearchArgs(artistName, trackName), JsonHelper.DefaultOptions);
+
+    using var http = CreateHttpClient();
+    var address = GetAddress(nameof(Search), json);
+    return await http.GetFromJsonAsync<List<Album>>(address);
+}
+---
+
+---
+[입력]
+// in Chinook.Data/Dao/EmployeeDao.cs
+public async Task<List<Employee>> Load(string lastName, string firstName, int? reportsTo, DateTime? birthToFrom, DateTime? birthToTo)
+{
+    //  생략
+}
+---

@@ -1,16 +1,18 @@
 ﻿#region using
-
 #endregion
 
+#region
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.Query;
+using System.Text.Json;
+#endregion
 
 namespace Chinook.Data;
 
 public partial class AlbumDao
 {
-    public async Task<List<Album>> SearchAsync(string artistName, string trackName)
+    public record SearchArgs(string ArtistName, string TrackName);
+
+    public async Task<List<Album>> Search(string artistName, string trackName)
     {
         await using var context = DbContextFactory.Create();
 

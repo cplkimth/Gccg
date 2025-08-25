@@ -1,13 +1,8 @@
-
-#region using
-using System.Collections.Generic;
-using System.Linq;
+﻿#region using
 #endregion
 
-namespace Chinook.Data
+namespace Chinook.Data;
+
+public partial class TrackDao
 {
-    public partial class TrackDao
-    {
-        
-    }
 }
