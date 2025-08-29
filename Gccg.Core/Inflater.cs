@@ -58,7 +58,10 @@ public static class Inflater
             var criteria = $"{columnMatch.Groups[1].Value}{columnMatch.Groups[2].Value}";
             var columns = table.Search(criteria);
 
-            List<string> lines = columns.ConvertAll(x => ReplaceColumn(x, columnMatch.Groups[4].Value));
+            List<string> lines = new();
+            int index = 0;
+            foreach (var column in columns)
+                lines.Add(ReplaceColumn(column, columnMatch.Groups[4].Value, index++));
             var separator = BuildSeparator(columnMatch.Groups[3].Value);
             var replacedText = string.Join(separator, lines);
 
@@ -88,7 +91,7 @@ public static class Inflater
         return builder.ToString();
     }
 
-    private static string ReplaceColumn(Column column, string template)
+    private static string ReplaceColumn(Column column, string template, int index)
     {
         StringBuilder builder = new(template);
         ReplaceBaseModel(column, builder);
@@ -98,6 +101,8 @@ public static class Inflater
         builder.Replace("`Table`", column.Table.ToPascalCase());
         builder.Replace("`table`", column.Table.ToCamelCase());
         builder.Replace("`table_`", column.Table.ToSnakeCase());
+        
+        builder.Replace("`index`", index.ToString());
 
         return builder.ToString();
     }

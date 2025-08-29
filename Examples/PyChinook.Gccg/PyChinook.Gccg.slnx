@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../../Gccg.Core/Gccg.Core.csproj" />
+  <Project Path="PyChinook.Gccg.csproj" />
+</Solution>

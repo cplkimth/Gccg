@@ -25,7 +25,7 @@ public static class Generator
         return GenerateCore(schemaExtractor, dbContext);
     }
 
-    internal static string Generate(string modelFilePath)
+    public static string Generate(string modelFilePath)
     {
         var schemaExtractor = new JsonFileSchemaExtractor(modelFilePath);
 

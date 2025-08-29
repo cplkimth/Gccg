@@ -1,4 +1,4 @@
-
+﻿
 #region using
 using Chinook.Data;
 using System.IdentityModel.Tokens.Jwt;
@@ -80,7 +80,6 @@ public abstract partial class AlbumControllerBase : EntityController<Album>
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
 public partial class AlbumController : AlbumControllerBase
 {
 }
@@ -119,7 +118,7 @@ public abstract partial class ArtistControllerBase : EntityController<Artist>
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 public partial class ArtistController : ArtistControllerBase
 {
 }
@@ -163,7 +162,7 @@ public abstract partial class CodeControllerBase : EntityController<Code>
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 public partial class CodeController : CodeControllerBase
 {
 }
@@ -202,7 +201,7 @@ public abstract partial class CodeCategoryControllerBase : EntityController<Code
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 public partial class CodeCategoryController : CodeCategoryControllerBase
 {
 }
@@ -246,7 +245,7 @@ public abstract partial class CustomerControllerBase : EntityController<Customer
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 public partial class CustomerController : CustomerControllerBase
 {
 }
@@ -285,7 +284,7 @@ public abstract partial class DateTableControllerBase : EntityController<DateTab
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 public partial class DateTableController : DateTableControllerBase
 {
 }
@@ -329,7 +328,7 @@ public abstract partial class EmployeeControllerBase : EntityController<Employee
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 public partial class EmployeeController : EmployeeControllerBase
 {
 }
@@ -368,7 +367,7 @@ public abstract partial class GenreControllerBase : EntityController<Genre>
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 public partial class GenreController : GenreControllerBase
 {
 }
@@ -412,7 +411,7 @@ public abstract partial class InvoiceControllerBase : EntityController<Invoice>
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 public partial class InvoiceController : InvoiceControllerBase
 {
 }
@@ -456,7 +455,7 @@ public abstract partial class InvoiceLineControllerBase : EntityController<Invoi
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 public partial class InvoiceLineController : InvoiceLineControllerBase
 {
 }
@@ -495,7 +494,7 @@ public abstract partial class MediaTypeControllerBase : EntityController<MediaTy
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 public partial class MediaTypeController : MediaTypeControllerBase
 {
 }
@@ -534,7 +533,7 @@ public abstract partial class PlaylistControllerBase : EntityController<Playlist
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 public partial class PlaylistController : PlaylistControllerBase
 {
 }
@@ -583,7 +582,7 @@ public abstract partial class PlaylistTrackControllerBase : EntityController<Pla
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 public partial class PlaylistTrackController : PlaylistTrackControllerBase
 {
 }
@@ -632,7 +631,7 @@ public abstract partial class PlaylistTrackHistoryControllerBase : EntityControl
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 public partial class PlaylistTrackHistoryController : PlaylistTrackHistoryControllerBase
 {
 }
@@ -671,7 +670,7 @@ public abstract partial class TimeTableControllerBase : EntityController<TimeTab
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 public partial class TimeTableController : TimeTableControllerBase
 {
 }
@@ -725,7 +724,7 @@ public abstract partial class TrackControllerBase : EntityController<Track>
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 public partial class TrackController : TrackControllerBase
 {
 }

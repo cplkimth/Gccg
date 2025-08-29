@@ -1,0 +1,15 @@
+{
+	"Version":2,
+	"Scope":1,
+	"TargetPath":"`Name`_.py",
+	"Overwritable": false
+}
+*** body starts here ***
+`T
+from entities.Entity import Entity
+from models import `Name`
+
+class `Name`_(`Name`, Entity):
+    def __repr__(self):
+        return f"`A:, :[`Name`]{self.`Name`} ``"
+T`

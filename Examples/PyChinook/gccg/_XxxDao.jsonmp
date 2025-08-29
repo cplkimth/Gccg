@@ -1,0 +1,49 @@
+{
+	"Version":2,
+	"Scope":1,
+	"TargetPath":"`Name`Dao.py",
+	"Overwritable": true
+}
+*** body starts here ***
+`T
+from sqlalchemy import select, func, text
+from gccg.EntityDao import EntityDao
+from models import `Name`
+
+
+class `Name`Dao(EntityDao):
+    # region override
+    def _select(self):
+        return select(`Name`)
+
+    def _count(self):
+        return select(func.count("*")).select_from(`Name`)
+
+    def _by_key(self, *keys):
+        return text(f"`P: and :`Name` = {keys[`index`]} ``")
+
+    def _order_by(self):
+        return text("`P:, :`Name` ``")
+
+    def _order_by_desc(self):
+        return text("`P:, :`Name` desc ``")
+
+    def copy(self, source: `Name`, target: `Name`) -> None:
+        `P::
+        # target.`Name` = source.`Name` ``
+        `!P::
+        target.`Name` = source.`Name` ``
+
+    def clone(self, source: `Name`) -> `Name`:
+        target = `Name`()
+        self.copy(source, target)
+
+        return target
+    # endregion
+
+    `F:[N]:
+    def get_by_`name`(self, `name`):
+        return self.get(`Table`.`Name` == `name`)
+    ``
+
+T`

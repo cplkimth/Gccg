@@ -1,0 +1,95 @@
+{
+	"Version":2,
+	"Scope":0,
+	"TargetPath":"EntityDao.py",
+	"Overwritable": true
+}
+*** body starts here ***
+from sqlalchemy.orm import Session
+
+from gccg.Dao import Dao
+
+class EntityDao:
+    # region helpers
+    def _scalars(self, session: Session, stmt):
+        return session.scalars(stmt).all()
+
+    def _scalar(self, session: Session, stmt):
+        return session.scalar(stmt)
+    # endregion
+
+    # region abstract
+    def _select(self):
+        pass
+
+    def _count(self):
+        pass
+
+    def _by_key(self, *keys):
+        pass
+
+    def _order_by(self):
+        pass
+
+    def copy(self, source, target) -> None:
+        pass
+
+    def clone(self, source) :
+        pass
+    # endregion
+
+    def exists(self, *criteria) -> bool:
+        return self.count(*criteria) > 0
+
+    def exists_by_key(self, *keys) -> bool:
+        return self.count_by_key(*keys) > 0
+
+    def count(self, *criteria) -> int:
+        with Dao.get_session() as session:
+            stmt = self._count().filter(*criteria)
+
+            return self._scalar(session, stmt)
+
+    def count_by_key(self, *keys) -> int:
+        return self.count(self._by_key(*keys))
+
+    def get_by_key(self, *keys):
+        with (Dao.get_session() as session):
+            stmt = self._select().filter(self._by_key(*keys))
+
+            return self._scalar(session, stmt)
+
+    def get_first(self, *criteria) :
+        with Dao.get_session() as session:
+            stmt = self._select().filter(*criteria).order_by(self._order_by())
+
+            return self._scalar(session, stmt)
+
+    def get_last(self, *criteria) :
+        with Dao.get_session() as session:
+            stmt = self._select().filter(*criteria).order_by(self._order_by_desc())
+
+            return self._scalar(session, stmt)
+
+    def get(self, *criteria) :
+        with Dao.get_session() as session:
+            stmt = self._select().filter(*criteria)
+
+            return self._scalars(session, stmt)
+
+    def upsert(self, entity) :
+        with Dao.get_session() as session:
+            session.add(entity)
+            session.commit()
+
+            return entity
+
+    def delete(self, entity) -> None:
+        with Dao.get_session() as session:
+            session.delete(entity)
+            session.commit()
+
+    def delete_by_key(self, *keys) -> None:
+        entity = self.get_by_key(*keys)
+        self.delete(entity)
+

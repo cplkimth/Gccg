@@ -1,0 +1,59 @@
+{
+	"Version":2,
+	"Scope":0,
+	"TargetPath":"Dao.py",
+	"Overwritable": true
+}
+*** body starts here ***
+import os
+
+from dotenv import load_dotenv
+from sqlalchemy import create_engine, text
+from sqlalchemy.engine import Connection
+from sqlalchemy.orm import Session, sessionmaker
+
+class Dao:
+    _engine = None
+    _local_session = None
+
+    _connection_string = None
+    @classmethod
+    def connection_string(cls):
+        if cls._connection_string is None:
+            load_dotenv()
+            cls._connection_string = os.environ.get('CONNECTION_STRING')
+
+        return cls._connection_string
+
+    @classmethod
+    def _get_engine(cls):
+        if cls._engine is None:
+            cls._engine = create_engine(cls.connection_string(), echo=True)
+            # cls._engine = create_engine(config.connection_string)
+            cls._local_session = sessionmaker(bind=cls._engine)
+
+        return cls._engine
+
+    @classmethod
+    def get_session(cls) -> Session:
+        if cls._local_session is None:
+            cls._local_session = sessionmaker(bind=cls._get_engine())
+
+        return cls._local_session(expire_on_commit=False)
+
+    @classmethod
+    def get_connection(cls) -> Connection:
+        return cls._get_engine().connect()
+
+    @classmethod
+    def usp_initialize(cls):
+        with cls.get_session() as session:
+            session.execute(text("exec usp_Initialize"))
+            session.commit()
+
+`T
+    @classmethod
+    def `name`(cls):
+        from dao.`Name`Dao_ import `Name`Dao_
+        return `Name`Dao_()
+T`
