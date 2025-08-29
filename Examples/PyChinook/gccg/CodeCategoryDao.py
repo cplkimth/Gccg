@@ -1,11 +1,11 @@
 
 
+from typing import List
 from sqlalchemy import select, func, text
 from gccg.EntityDao import EntityDao
 from models import CodeCategory
 
-
-class CodeCategoryDao(EntityDao):
+class CodeCategoryDao(EntityDao[CodeCategory]):
     # region override
     def _select(self):
         return select(CodeCategory)
@@ -36,5 +36,4 @@ class CodeCategoryDao(EntityDao):
     # endregion
 
     
-
 

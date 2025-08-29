@@ -1,11 +1,11 @@
 
 
+from typing import List
 from sqlalchemy import select, func, text
 from gccg.EntityDao import EntityDao
 from models import Track
 
-
-class TrackDao(EntityDao):
+class TrackDao(EntityDao[Track]):
     # region override
     def _select(self):
         return select(Track)
@@ -82,16 +82,15 @@ class TrackDao(EntityDao):
     # endregion
 
     
-    def get_by_albumId(self, albumId):
+    def get_by_albumId(self, albumId) -> List[Track]:
         return self.get(Track.AlbumId == albumId)
     
 
-    def get_by_genreId(self, genreId):
+    def get_by_genreId(self, genreId) -> List[Track]:
         return self.get(Track.GenreId == genreId)
     
 
-    def get_by_mediaTypeId(self, mediaTypeId):
+    def get_by_mediaTypeId(self, mediaTypeId) -> List[Track]:
         return self.get(Track.MediaTypeId == mediaTypeId)
     
-
 

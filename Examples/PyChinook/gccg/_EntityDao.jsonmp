@@ -5,11 +5,13 @@
 	"Overwritable": true
 }
 *** body starts here ***
+from typing import TypeVar, Generic, List, Optional
 from sqlalchemy.orm import Session
-
 from gccg.Dao import Dao
 
-class EntityDao:
+T = TypeVar('T', bound='EntityDao[T]')
+
+class EntityDao(Generic[T]):
     # region helpers
     def _scalars(self, session: Session, stmt):
         return session.scalars(stmt).all()
@@ -34,7 +36,7 @@ class EntityDao:
     def copy(self, source, target) -> None:
         pass
 
-    def clone(self, source) :
+    def clone(self, source) -> T:
         pass
     # endregion
 
@@ -53,31 +55,31 @@ class EntityDao:
     def count_by_key(self, *keys) -> int:
         return self.count(self._by_key(*keys))
 
-    def get_by_key(self, *keys):
+    def get_by_key(self, *keys) -> T:
         with (Dao.get_session() as session):
             stmt = self._select().filter(self._by_key(*keys))
 
             return self._scalar(session, stmt)
 
-    def get_first(self, *criteria) :
+    def get_first(self, *criteria) -> T:
         with Dao.get_session() as session:
             stmt = self._select().filter(*criteria).order_by(self._order_by())
 
             return self._scalar(session, stmt)
 
-    def get_last(self, *criteria) :
+    def get_last(self, *criteria) -> T:
         with Dao.get_session() as session:
             stmt = self._select().filter(*criteria).order_by(self._order_by_desc())
 
             return self._scalar(session, stmt)
 
-    def get(self, *criteria) :
+    def get(self, *criteria) -> List[T]:
         with Dao.get_session() as session:
             stmt = self._select().filter(*criteria)
 
             return self._scalars(session, stmt)
 
-    def upsert(self, entity) :
+    def upsert(self, entity) -> Optional[T]:
         with Dao.get_session() as session:
             session.add(entity)
             session.commit()

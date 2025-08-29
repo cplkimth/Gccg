@@ -3,4 +3,6 @@ from gccg.AlbumDao import AlbumDao
 from gccg.Dao import Dao
 from models import Album
 
-print(Dao.album().count())
+albums = Dao.album().get()
+print(albums)
+print(type(albums))

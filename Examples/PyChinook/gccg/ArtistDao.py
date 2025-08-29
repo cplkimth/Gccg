@@ -1,11 +1,11 @@
 
 
+from typing import List
 from sqlalchemy import select, func, text
 from gccg.EntityDao import EntityDao
 from models import Artist
 
-
-class ArtistDao(EntityDao):
+class ArtistDao(EntityDao[Artist]):
     # region override
     def _select(self):
         return select(Artist)
@@ -37,5 +37,4 @@ class ArtistDao(EntityDao):
     # endregion
 
     
-
 

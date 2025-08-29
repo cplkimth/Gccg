@@ -1,11 +1,11 @@
 
 
+from typing import List
 from sqlalchemy import select, func, text
 from gccg.EntityDao import EntityDao
 from models import Invoice
 
-
-class InvoiceDao(EntityDao):
+class InvoiceDao(EntityDao[Invoice]):
     # region override
     def _select(self):
         return select(Invoice)
@@ -43,8 +43,7 @@ class InvoiceDao(EntityDao):
     # endregion
 
     
-    def get_by_customerId(self, customerId):
+    def get_by_customerId(self, customerId) -> List[Invoice]:
         return self.get(Invoice.CustomerId == customerId)
     
-
 

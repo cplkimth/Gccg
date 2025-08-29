@@ -1,11 +1,11 @@
 
 
+from typing import List
 from sqlalchemy import select, func, text
 from gccg.EntityDao import EntityDao
 from models import TimeTable
 
-
-class TimeTableDao(EntityDao):
+class TimeTableDao(EntityDao[TimeTable]):
     # region override
     def _select(self):
         return select(TimeTable)
@@ -36,5 +36,4 @@ class TimeTableDao(EntityDao):
     # endregion
 
     
-
 

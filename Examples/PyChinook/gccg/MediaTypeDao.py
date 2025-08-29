@@ -1,11 +1,11 @@
 
 
+from typing import List
 from sqlalchemy import select, func, text
 from gccg.EntityDao import EntityDao
 from models import MediaType
 
-
-class MediaTypeDao(EntityDao):
+class MediaTypeDao(EntityDao[MediaType]):
     # region override
     def _select(self):
         return select(MediaType)
@@ -36,5 +36,4 @@ class MediaTypeDao(EntityDao):
     # endregion
 
     
-
 

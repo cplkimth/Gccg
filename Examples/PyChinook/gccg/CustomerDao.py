@@ -1,11 +1,11 @@
 
 
+from typing import List
 from sqlalchemy import select, func, text
 from gccg.EntityDao import EntityDao
 from models import Customer
 
-
-class CustomerDao(EntityDao):
+class CustomerDao(EntityDao[Customer]):
     # region override
     def _select(self):
         return select(Customer)
@@ -47,8 +47,7 @@ class CustomerDao(EntityDao):
     # endregion
 
     
-    def get_by_supportRepId(self, supportRepId):
+    def get_by_supportRepId(self, supportRepId) -> List[Customer]:
         return self.get(Customer.SupportRepId == supportRepId)
     
-
 

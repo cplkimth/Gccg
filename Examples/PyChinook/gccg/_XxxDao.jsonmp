@@ -6,12 +6,12 @@
 }
 *** body starts here ***
 `T
+from typing import List
 from sqlalchemy import select, func, text
 from gccg.EntityDao import EntityDao
 from models import `Name`
 
-
-class `Name`Dao(EntityDao):
+class `Name`Dao(EntityDao[`Name`]):
     # region override
     def _select(self):
         return select(`Name`)
@@ -42,8 +42,7 @@ class `Name`Dao(EntityDao):
     # endregion
 
     `F:[N]:
-    def get_by_`name`(self, `name`):
+    def get_by_`name`(self, `name`) -> List[`Table`]:
         return self.get(`Table`.`Name` == `name`)
     ``
-
 T`

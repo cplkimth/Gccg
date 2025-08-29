@@ -1,11 +1,11 @@
 
 
+from typing import List
 from sqlalchemy import select, func, text
 from gccg.EntityDao import EntityDao
 from models import Album
 
-
-class AlbumDao(EntityDao):
+class AlbumDao(EntityDao[Album]):
     # region override
     def _select(self):
         return select(Album)
@@ -38,8 +38,7 @@ class AlbumDao(EntityDao):
     # endregion
 
     
-    def get_by_artistId(self, artistId):
+    def get_by_artistId(self, artistId) -> List[Album]:
         return self.get(Album.ArtistId == artistId)
     
-
 
