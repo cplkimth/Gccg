@@ -1,36 +1,41 @@
 
-from typing import TypeVar, Generic, List, Optional
+from typing import TypeVar, Generic, Optional, Sequence
+from sqlalchemy import Select, TextClause
 from sqlalchemy.orm import Session
 from gccg.Dao import Dao
 
-T = TypeVar('T', bound='EntityDao[T]')
+T = TypeVar('T', bound='Entity[T]')
 
 class EntityDao(Generic[T]):
-    # region helpers
-    def _scalars(self, session: Session, stmt):
+    # region abstract
+    def _scalars(self, session: Session, stmt) -> Sequence[T]:
         return session.scalars(stmt).all()
 
     def _scalar(self, session: Session, stmt):
         return session.scalar(stmt)
-    # endregion
 
-    # region abstract
-    def _select(self):
+    def _select(self) -> Select[T]:
         pass
 
-    def _count(self):
+    def _count(self) -> Select[int]:
         pass
 
-    def _by_key(self, *keys):
+    def _by_key(self, *keys) -> TextClause:
         pass
 
-    def _order_by(self):
+    def _order_by(self) -> TextClause:
         pass
 
-    def copy(self, source, target) -> None:
+    def _order_by_desc(self) -> TextClause:
         pass
 
-    def clone(self, source) -> T:
+    def copy(self, source: T, target: T) -> None:
+        pass
+
+    def clone(self, source: T) -> T:
+        pass
+
+    def _create_core(self, source: T) -> None:
         pass
     # endregion
 
@@ -51,7 +56,7 @@ class EntityDao(Generic[T]):
 
     def get_by_key(self, *keys) -> T:
         with (Dao.get_session() as session):
-            stmt = self._select().filter(self._by_key(*keys))
+            stmt = self._select().where(self._by_key(*keys))
 
             return self._scalar(session, stmt)
 
@@ -67,7 +72,7 @@ class EntityDao(Generic[T]):
 
             return self._scalar(session, stmt)
 
-    def get(self, *criteria) -> List[T]:
+    def get(self, *criteria) -> Sequence[T]:
         with Dao.get_session() as session:
             stmt = self._select().filter(*criteria)
 
@@ -88,4 +93,3 @@ class EntityDao(Generic[T]):
     def delete_by_key(self, *keys) -> None:
         entity = self.get_by_key(*keys)
         self.delete(entity)
-

@@ -6,9 +6,11 @@
 }
 *** body starts here ***
 `T
+from typing import List, Sequence
 from entities.Entity import Entity
 from models import `Name`
 
+# noinspection PyPep8Naming
 class `Name`_(`Name`, Entity[`Name`]):
     def __repr__(self):
         return f"`A:, :[`Name`]{self.`Name`} ``"

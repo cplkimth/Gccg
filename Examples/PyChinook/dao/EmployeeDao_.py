@@ -1,12 +1,15 @@
 
 
-from gccg.EmployeeDao import EmployeeDao
+from typing import List, Sequence
+from sqlalchemy.orm import contains_eager, selectinload, joinedload
+from gccg.Dao import Dao
+from entities.Employee_ import Employee_
 from models import Employee
+from gccg.EmployeeDao import EmployeeDao
 
-
+# noinspection PyPep8Naming
 class EmployeeDao_(EmployeeDao):
-    def create(self) -> Employee:
-        entity = Employee()
-        return entity
+    def _create_core(self, source: Employee_) -> None:
+        pass
 
 

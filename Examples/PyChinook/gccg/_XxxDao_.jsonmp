@@ -1,0 +1,56 @@
+{
+	"Version":2,
+	"Scope":1,
+	"TargetPath":"`Name`Dao.py",
+	"Overwritable": true
+}
+*** body starts here ***
+`T
+from typing import Sequence
+from sqlalchemy import select, func, text, Select, TextClause
+from gccg.EntityDao import EntityDao
+from entities.`Name`_ import `Name`_
+from models import `Name`
+
+class `Name`Dao(EntityDao[`Name`_]):
+    # region override
+    def _select(self) -> Select[tuple[`Name`_]]:
+        return select(`Name`_)
+
+    def _count(self) -> Select[int]:
+        return select(func.count("*")).select_from(`Name`_)
+
+    def _by_key(self, *keys) -> TextClause:
+        return text(f"`P: and :`Name` = {keys[`index`]} ``")
+
+    def _order_by(self) -> TextClause:
+        return text("`P:, :`Name` ``")
+
+    def _order_by_desc(self) -> TextClause:
+        return text("`P:, :`Name` desc ``")
+
+    def copy(self, source: `Name`_, target: `Name`_) -> None:
+        `P::
+        # target.`Name` = source.`Name` ``
+        `!P::
+        target.`Name` = source.`Name` ``
+
+    def clone(self, source: `Name`_) -> `Name`_:
+        target = self.clone()
+        self.copy(source, target)
+
+        return target
+
+    # endregion
+
+    def create(self) -> `Name`_:
+        entity = `Name`_()
+        self._create_core(entity)
+        return entity
+
+    # region by foreign key
+    `F:[N]:
+    def get_by_`name`(self, `name`) -> Sequence[`Table`_]:
+        return self.get(`Table`.`Name` == `name`) ``
+    # endregion
+T`

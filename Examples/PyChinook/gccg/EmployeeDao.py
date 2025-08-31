@@ -1,28 +1,29 @@
 
 
-from typing import List
-from sqlalchemy import select, func, text
+from typing import Sequence
+from sqlalchemy import select, func, text, Select, TextClause
 from gccg.EntityDao import EntityDao
+from entities.Employee_ import Employee_
 from models import Employee
 
-class EmployeeDao(EntityDao[Employee]):
+class EmployeeDao(EntityDao[Employee_]):
     # region override
-    def _select(self):
-        return select(Employee)
+    def _select(self) -> Select[tuple[Employee_]]:
+        return select(Employee_)
 
-    def _count(self):
-        return select(func.count("*")).select_from(Employee)
+    def _count(self) -> Select[int]:
+        return select(func.count("*")).select_from(Employee_)
 
-    def _by_key(self, *keys):
+    def _by_key(self, *keys) -> TextClause:
         return text(f"EmployeeId = {keys[0]} ")
 
-    def _order_by(self):
+    def _order_by(self) -> TextClause:
         return text("EmployeeId ")
 
-    def _order_by_desc(self):
+    def _order_by_desc(self) -> TextClause:
         return text("EmployeeId desc ")
 
-    def copy(self, source: Employee, target: Employee) -> None:
+    def copy(self, source: Employee_, target: Employee_) -> None:
         
         # target.EmployeeId = source.EmployeeId 
         
@@ -41,15 +42,22 @@ class EmployeeDao(EntityDao[Employee]):
         target.State = source.State 
         target.Title = source.Title 
 
-    def clone(self, source: Employee) -> Employee:
-        target = Employee()
+    def clone(self, source: Employee_) -> Employee_:
+        target = self.clone()
         self.copy(source, target)
 
         return target
+
     # endregion
 
+    def create(self) -> Employee_:
+        entity = Employee_()
+        self._create_core(entity)
+        return entity
+
+    # region by foreign key
     
-    def get_by_reportsTo(self, reportsTo) -> List[Employee]:
-        return self.get(Employee.ReportsTo == reportsTo)
-    
+    def get_by_reportsTo(self, reportsTo) -> Sequence[Employee_]:
+        return self.get(Employee.ReportsTo == reportsTo) 
+    # endregion
 

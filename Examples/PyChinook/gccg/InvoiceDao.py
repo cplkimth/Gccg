@@ -1,28 +1,29 @@
 
 
-from typing import List
-from sqlalchemy import select, func, text
+from typing import Sequence
+from sqlalchemy import select, func, text, Select, TextClause
 from gccg.EntityDao import EntityDao
+from entities.Invoice_ import Invoice_
 from models import Invoice
 
-class InvoiceDao(EntityDao[Invoice]):
+class InvoiceDao(EntityDao[Invoice_]):
     # region override
-    def _select(self):
-        return select(Invoice)
+    def _select(self) -> Select[tuple[Invoice_]]:
+        return select(Invoice_)
 
-    def _count(self):
-        return select(func.count("*")).select_from(Invoice)
+    def _count(self) -> Select[int]:
+        return select(func.count("*")).select_from(Invoice_)
 
-    def _by_key(self, *keys):
+    def _by_key(self, *keys) -> TextClause:
         return text(f"InvoiceId = {keys[0]} ")
 
-    def _order_by(self):
+    def _order_by(self) -> TextClause:
         return text("InvoiceId ")
 
-    def _order_by_desc(self):
+    def _order_by_desc(self) -> TextClause:
         return text("InvoiceId desc ")
 
-    def copy(self, source: Invoice, target: Invoice) -> None:
+    def copy(self, source: Invoice_, target: Invoice_) -> None:
         
         # target.InvoiceId = source.InvoiceId 
         
@@ -35,15 +36,22 @@ class InvoiceDao(EntityDao[Invoice]):
         target.InvoiceDate = source.InvoiceDate 
         target.Total = source.Total 
 
-    def clone(self, source: Invoice) -> Invoice:
-        target = Invoice()
+    def clone(self, source: Invoice_) -> Invoice_:
+        target = self.clone()
         self.copy(source, target)
 
         return target
+
     # endregion
 
+    def create(self) -> Invoice_:
+        entity = Invoice_()
+        self._create_core(entity)
+        return entity
+
+    # region by foreign key
     
-    def get_by_customerId(self, customerId) -> List[Invoice]:
-        return self.get(Invoice.CustomerId == customerId)
-    
+    def get_by_customerId(self, customerId) -> Sequence[Invoice_]:
+        return self.get(Invoice.CustomerId == customerId) 
+    # endregion
 

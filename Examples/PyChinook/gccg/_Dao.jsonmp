@@ -6,11 +6,20 @@
 }
 *** body starts here ***
 import os
-
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Connection
 from sqlalchemy.orm import Session, sessionmaker
+#region import entities
+`Tfrom entities.`Name`_ import `Name`_ T`
+`Tfrom models import `Name` T`
+#endregion import entities
+
+def _initialized():
+    #region __repr__
+    `T
+    setattr(`Name`, '__repr__', `Name`_.__repr__) T`
+    #endregion __repr__
 
 class Dao:
     _engine = None
@@ -22,6 +31,7 @@ class Dao:
         if cls._connection_string is None:
             load_dotenv()
             cls._connection_string = os.environ.get('CONNECTION_STRING')
+            _initialized()
 
         return cls._connection_string
 
@@ -51,9 +61,10 @@ class Dao:
             session.execute(text("exec usp_Initialize"))
             session.commit()
 
-`T
+    #region dao
+    `T
     @classmethod
     def `name`(cls):
         from dao.`Name`Dao_ import `Name`Dao_
-        return `Name`Dao_()
-T`
+        return `Name`Dao_()T`
+    #endregion dao

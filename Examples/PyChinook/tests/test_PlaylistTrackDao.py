@@ -1,10 +1,9 @@
 from datetime import datetime
-
 from gccg.Dao import Dao
 from models import PlaylistTrack
 
 
-class TestAlbumDao:
+class TestPlaylistTrackDao:
     def test_exists(self):
         assert Dao.playlistTrack().exists(PlaylistTrack.PlaylistId == 1, PlaylistTrack.TrackId == 5)
         assert not Dao.playlistTrack().exists(PlaylistTrack.PlaylistId == 1, PlaylistTrack.TrackId == 0)

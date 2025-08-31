@@ -1,12 +1,15 @@
 
 
-from gccg.DateTableDao import DateTableDao
+from typing import List, Sequence
+from sqlalchemy.orm import contains_eager, selectinload, joinedload
+from gccg.Dao import Dao
+from entities.DateTable_ import DateTable_
 from models import DateTable
+from gccg.DateTableDao import DateTableDao
 
-
+# noinspection PyPep8Naming
 class DateTableDao_(DateTableDao):
-    def create(self) -> DateTable:
-        entity = DateTable()
-        return entity
+    def _create_core(self, source: DateTable_) -> None:
+        pass
 
 

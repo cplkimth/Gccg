@@ -1,0 +1,20 @@
+{
+	"Version":2,
+	"Scope":1,
+	"TargetPath":"`Name`Dao_.py",
+	"Overwritable": false
+}
+*** body starts here ***
+`T
+from typing import List, Sequence
+from sqlalchemy.orm import contains_eager, selectinload, joinedload, aliased
+from gccg.Dao import Dao
+from entities.`Name`_ import `Name`_
+from models import `Name`
+from gccg.`Name`Dao import `Name`Dao
+
+# noinspection PyPep8Naming
+class `Name`Dao_(`Name`Dao):
+    def _create_core(self, source: `Name`_) -> None:
+        pass
+T`

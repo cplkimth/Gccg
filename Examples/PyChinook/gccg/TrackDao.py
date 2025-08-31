@@ -1,28 +1,29 @@
 
 
-from typing import List
-from sqlalchemy import select, func, text
+from typing import Sequence
+from sqlalchemy import select, func, text, Select, TextClause
 from gccg.EntityDao import EntityDao
+from entities.Track_ import Track_
 from models import Track
 
-class TrackDao(EntityDao[Track]):
+class TrackDao(EntityDao[Track_]):
     # region override
-    def _select(self):
-        return select(Track)
+    def _select(self) -> Select[tuple[Track_]]:
+        return select(Track_)
 
-    def _count(self):
-        return select(func.count("*")).select_from(Track)
+    def _count(self) -> Select[int]:
+        return select(func.count("*")).select_from(Track_)
 
-    def _by_key(self, *keys):
+    def _by_key(self, *keys) -> TextClause:
         return text(f"TrackId = {keys[0]} ")
 
-    def _order_by(self):
+    def _order_by(self) -> TextClause:
         return text("TrackId ")
 
-    def _order_by_desc(self):
+    def _order_by_desc(self) -> TextClause:
         return text("TrackId desc ")
 
-    def copy(self, source: Track, target: Track) -> None:
+    def copy(self, source: Track_, target: Track_) -> None:
         
         # target.TrackId = source.TrackId 
         
@@ -74,23 +75,28 @@ class TrackDao(EntityDao[Track]):
         target.VarCharCol = source.VarCharCol 
         target.VarCharColNull = source.VarCharColNull 
 
-    def clone(self, source: Track) -> Track:
-        target = Track()
+    def clone(self, source: Track_) -> Track_:
+        target = self.clone()
         self.copy(source, target)
 
         return target
+
     # endregion
 
-    
-    def get_by_albumId(self, albumId) -> List[Track]:
-        return self.get(Track.AlbumId == albumId)
-    
+    def create(self) -> Track_:
+        entity = Track_()
+        self._create_core(entity)
+        return entity
 
-    def get_by_genreId(self, genreId) -> List[Track]:
-        return self.get(Track.GenreId == genreId)
+    # region by foreign key
     
+    def get_by_albumId(self, albumId) -> Sequence[Track_]:
+        return self.get(Track.AlbumId == albumId) 
 
-    def get_by_mediaTypeId(self, mediaTypeId) -> List[Track]:
-        return self.get(Track.MediaTypeId == mediaTypeId)
-    
+    def get_by_genreId(self, genreId) -> Sequence[Track_]:
+        return self.get(Track.GenreId == genreId) 
+
+    def get_by_mediaTypeId(self, mediaTypeId) -> Sequence[Track_]:
+        return self.get(Track.MediaTypeId == mediaTypeId) 
+    # endregion
 
