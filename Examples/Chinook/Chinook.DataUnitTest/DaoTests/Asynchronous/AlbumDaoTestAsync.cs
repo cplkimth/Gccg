@@ -1,4 +1,4 @@
-﻿#region
+#region
 using System.Linq.Expressions;
 using Chinook.Data;
 #endregion
