@@ -421,11 +421,11 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	#endregion Insert / Update / Delete
 
     #region ExecuteUpdate / ExecuteDelete
-    public int ExecuteUpdate(Expression<Func<T, bool>> predicate, Expression<Func<SetPropertyCalls<T>, SetPropertyCalls<T>>> setPropertyCalls)
+    public int ExecuteUpdate(Expression<Func<T, bool>> predicate, Action<UpdateSettersBuilder<T>> setterBuilder)
     {
         using var context = DbContextFactory.Create();
 
-        return context.Set<T>().Where(predicate).ExecuteUpdate(setPropertyCalls);
+        return context.Set<T>().Where(predicate).ExecuteUpdate(setterBuilder);
     }
 
     public int ExecuteDelete(Expression<Func<T, bool>> predicate)
@@ -536,8 +536,8 @@ public partial class `Name`Dao
     `P::/// <param name="`name`">기본키</param> ``
     /// <param name="setPropertyCalls">변경할 속성. 엔티티의 다른 속성도 참조 가능. ex)Dao.User.ExecuteUpdate(user.UserId, p => p.SetProperty(x => x.LastLoggedAt, DateTime.Now));</param>
     /// <returns></returns>
-    public int ExecuteUpdateByKey(`P:, :`Type` `name` ``, Expression<Func<SetPropertyCalls<`Name`>, SetPropertyCalls<`Name`>>> setPropertyCalls)
-        => ExecuteUpdate(x => `P:&& :x.`Name` == `name` ``, setPropertyCalls);
+    public int ExecuteUpdateByKey(`P:, :`Type` `name` ``, Action<UpdateSettersBuilder<`Name`>> setterBuilder)
+        => ExecuteUpdate(x => `P:&& :x.`Name` == `name` ``, setterBuilder);
 }
 #endregion `Name`Dao
 T`
