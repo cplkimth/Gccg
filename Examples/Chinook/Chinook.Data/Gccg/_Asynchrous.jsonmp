@@ -425,11 +425,11 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	#endregion InsertAsync / UpdateAsync / DeleteAsync
 
     #region ExecuteUpdateAsync / ExecuteDeleteAsync
-    public async Task<int> ExecuteUpdateAsync(Expression<Func<T, bool>> predicate, Expression<Func<SetPropertyCalls<T>, SetPropertyCalls<T>>> setPropertyCalls, CancellationToken ctk = default)
+    public async Task<int> ExecuteUpdateAsync(Expression<Func<T, bool>> predicate, Action<UpdateSettersBuilder<T>> setterBuilder, CancellationToken ctk = default)
     {
         await using var context = DbContextFactory.Create();
 
-        return await context.Set<T>().Where(predicate).ExecuteUpdateAsync(setPropertyCalls, ctk);
+        return await context.Set<T>().Where(predicate).ExecuteUpdateAsync(setterBuilder, ctk);
     }
 
     public async Task<int> ExecuteDeleteAsync(Expression<Func<T, bool>> predicate, CancellationToken ctk = default)
@@ -511,8 +511,8 @@ public partial class `Name`Dao
     public Task<int> ExecuteDeleteByKeyAsync(`P:, :`Type` `name` ``)
         => ExecuteDeleteAsync(x => `P:&& :x.`Name` == `name` ``);
 
-    public Task<int> ExecuteUpdateByKeyAsync(`P:, :`Type` `name` ``, Expression<Func<SetPropertyCalls<`Name`>, SetPropertyCalls<`Name`>>> setPropertyCalls)
-        => ExecuteUpdateAsync(x => `P:&& :x.`Name` == `name` ``, setPropertyCalls);
+    public Task<int> ExecuteUpdateByKeyAsync(`P:, :`Type` `name` ``, Action<UpdateSettersBuilder<`Name`>> setterBuilder)
+        => ExecuteUpdateAsync(x => `P:&& :x.`Name` == `name` ``, setterBuilder);
 }
 #endregion `Name`Dao
 T`

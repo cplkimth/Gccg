@@ -1,4 +1,4 @@
-﻿#region
+#region
 using System.Linq.Expressions;
 using Chinook.Data;
 #endregion
@@ -188,7 +188,7 @@ public partial class AlbumDaoTestAsync
     [TestMethod]
     public async Task SearchWithArtistName()
     {
-        var albums = await Dao.Album.SearchAsync("Beatles", null);
+        var albums = await Dao.Album.Search("Beatles", null);
 
         Assert.AreEqual(6, albums.Count);
     }
@@ -196,7 +196,7 @@ public partial class AlbumDaoTestAsync
     [TestMethod]
     public async Task SearchWithTrackName()
     {
-        var albums = await Dao.Album.SearchAsync(null, "You");
+        var albums = await Dao.Album.Search(null, "You");
 
         Assert.AreEqual(1, albums.Count);
     }
@@ -204,7 +204,7 @@ public partial class AlbumDaoTestAsync
     [TestMethod]
     public async Task SearchWithArtistNameAndTrackName()
     {
-        var albums = await Dao.Album.SearchAsync("Beatles", "You");
+        var albums = await Dao.Album.Search("Beatles", "You");
 
         Assert.AreEqual(0, albums.Count);
     }
