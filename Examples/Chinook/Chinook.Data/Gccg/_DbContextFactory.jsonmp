@@ -16,14 +16,15 @@ public class DbContextFactory
 {
     public static string ConnectionString => ""; // TODO : Type ConnectionString here
 
-    private static PooledDbContextFactory<`DbContextName`>? _factory;
+    private static PooledDbContextFactory<`DbContextName`> _factory;
 
     public static `DbContextName` Create()
     {
         if (_factory == null)
             InitializeFactory();
-
-        return _factory!.CreateDbContext();
+    
+        var context = _factory!.CreateDbContext();
+        return context;
     }
 
     private static void InitializeFactory()
@@ -34,8 +35,9 @@ public class DbContextFactory
 #if DEBUG
         optionsBuilder.UseLoggerFactory(`DbContextName`LoggerFactory.GetInstance(
             nameof(LogPath.Console),
-            nameof(LogPath.Debug),
-            @"`DbContextName`.log"));
+            nameof(LogPath.Debug)
+            // "`DbContextName`.log"
+        ));
 #endif
 
         // 엔터티 상태를 트랙킹하지 않음
@@ -47,7 +49,11 @@ public class DbContextFactory
         var options = optionsBuilder
             .UseSqlServer(
                 ConnectionString,
-                x => x.UseQuerySplittingBehavior(querySplittingBehavior))
+                x => x.UseQuerySplittingBehavior(querySplittingBehavior)
+                    .EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)
+                    .UseCompatibilityLevel(160)
+                    .UseParameterizedCollectionMode(ParameterTranslationMode.Parameter)
+            )
             .Options;
 
         _factory = new PooledDbContextFactory<`DbContextName`>(options);
