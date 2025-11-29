@@ -9,7 +9,7 @@ namespace Chinook.Data;
 public partial class DbContextFactory
 {
     public static string ConnectionString =>
-        "Data Source=.,3433;Initial Catalog=ChinookMP;Integrated Security=True;Encrypt=False;Trust Server Certificate=True;Trust Server Certificate=true";
+        "Data Source=.\\SQL2025;Initial Catalog=ChinookMP;Integrated Security=True;Encrypt=False;Trust Server Certificate=True";
 
     private static PooledDbContextFactory<ChinookContext> _factory;
 

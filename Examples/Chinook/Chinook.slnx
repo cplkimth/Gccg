@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/files/">
+    <File Path="gccg-commmands.txt" />
+  </Folder>
   <Project Path="Chinook.ConsoleTest/Chinook.ConsoleTest.csproj" />
   <Project Path="Chinook.Data/Chinook.Data.csproj" />
   <Project Path="Chinook.DataUnitTest/Chinook.DataUnitTest.csproj" />

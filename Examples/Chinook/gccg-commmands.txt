@@ -1,0 +1,3 @@
+﻿cd D:\git\Gccg\Examples\Chinook\Chinook.Data
+efcpt "Data Source=.,3433;Initial Catalog=EasyRepick;Persist Security Info=True;Integrated Security=True;Trust Server Certificate=True;" mssql
+dotnet run --project D:\git\Gccg\Examples\Chinook\Chinook.Gccg\Chinook.Gccg.csproj

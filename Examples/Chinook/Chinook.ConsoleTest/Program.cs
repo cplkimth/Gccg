@@ -22,6 +22,10 @@ internal class Program
         // }
         // return;
 
+        int count = await Dao.Album.GetCountAsync();
+        Console.WriteLine(count);
+        return;
+
 
         Api.BaseAddress = "https://localhost:7266";
         // await Api.Initialize();
