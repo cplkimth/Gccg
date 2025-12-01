@@ -16,18 +16,28 @@ public class DbContextFactory
 {
     public static string ConnectionString => ""; // TODO : Type ConnectionString here
 
-    private static PooledDbContextFactory<`DbContextName`> _factory;
+    private static bool _initialized;
 
-    public static `DbContextName` Create()
+    private static PooledDbContextFactory<`DbContextName`> _noTrackingFactory;
+    private static PooledDbContextFactory<`DbContextName`> _trackingFactory;
+
+    public static `DbContextName` Create(bool tracking = false)
     {
-        if (_factory == null)
-            InitializeFactory();
-    
-        var context = _factory!.CreateDbContext();
-        return context;
+        if (_initialized == false)
+        {
+            _noTrackingFactory = InitializeFactory(false);
+            _trackingFactory = InitializeFactory(true);
+            _initialized = true;
+        }
+
+        return tracking switch
+        {
+            true => _trackingFactory!.CreateDbContext(),
+            _ => _noTrackingFactory!.CreateDbContext()
+        };
     }
 
-    private static void InitializeFactory()
+    private static PooledDbContextFactory<`DbContextName`> InitializeFactory(bool tracking)
     {
         var optionsBuilder = new DbContextOptionsBuilder<`DbContextName`>();
 
@@ -41,7 +51,8 @@ public class DbContextFactory
 #endif
 
         // 엔터티 상태를 트랙킹하지 않음
-        optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        if (tracking == false)
+            optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
         // QuerySplittingBehavior
         var querySplittingBehavior = QuerySplittingBehavior.SplitQuery;
@@ -56,6 +67,6 @@ public class DbContextFactory
             )
             .Options;
 
-        _factory = new PooledDbContextFactory<`DbContextName`>(options);
+        return new PooledDbContextFactory<`DbContextName`>(options);
     }
 }

@@ -22,8 +22,10 @@ internal class Program
         // }
         // return;
 
-        int count = await Dao.Album.GetCountAsync();
-        Console.WriteLine(count);
+        var a1 = await Dao.Album.GetFirstAsync();
+        a1.ArtistName = DateTime.Now.ToString();
+        // await Dao.Album.UpdateAsync(a1);
+        await Dao.Album.UpdatePartiallyAsync(a1);
         return;
 
 

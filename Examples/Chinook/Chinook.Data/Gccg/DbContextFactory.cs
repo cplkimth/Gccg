@@ -11,18 +11,28 @@ public partial class DbContextFactory
     public static string ConnectionString =>
         "Data Source=.\\SQL2025;Initial Catalog=ChinookMP;Integrated Security=True;Encrypt=False;Trust Server Certificate=True";
 
-    private static PooledDbContextFactory<ChinookContext> _factory;
+    private static bool _initialized;
 
-    public static ChinookContext Create()
+    private static PooledDbContextFactory<ChinookContext> _noTrackingFactory;
+    private static PooledDbContextFactory<ChinookContext> _trackingFactory;
+
+    public static ChinookContext Create(bool tracking = false)
     {
-        if (_factory == null)
-            InitializeFactory();
-    
-        var context = _factory!.CreateDbContext();
-        return context;
+        if (_initialized == false)
+        {
+            _noTrackingFactory = InitializeFactory(false);
+            _trackingFactory = InitializeFactory(true);
+            _initialized = true;
+        }
+
+        return tracking switch
+        {
+            true => _trackingFactory!.CreateDbContext(),
+            _ => _noTrackingFactory!.CreateDbContext()
+        };
     }
 
-    private static void InitializeFactory()
+    private static PooledDbContextFactory<ChinookContext> InitializeFactory(bool tracking)
     {
         var optionsBuilder = new DbContextOptionsBuilder<ChinookContext>();
 
@@ -36,7 +46,8 @@ public partial class DbContextFactory
 #endif
 
         // 엔터티 상태를 트랙킹하지 않음
-        optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        if (tracking == false)
+            optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
         // QuerySplittingBehavior
         var querySplittingBehavior = QuerySplittingBehavior.SplitQuery;
@@ -51,6 +62,6 @@ public partial class DbContextFactory
             )
             .Options;
 
-        _factory = new PooledDbContextFactory<ChinookContext>(options);
+        return new PooledDbContextFactory<ChinookContext>(options);
     }
 }

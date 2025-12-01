@@ -66,6 +66,9 @@ public abstract partial class UntypedEntity : IEntity
 	[JsonIgnore]
 	public abstract string PrimaryKeyValues {get;}
 
+    [JsonIgnore]
+    public abstract object[] KeyValues { get; }
+
 	[JsonIgnore]
 	public abstract string EntityText { get; }
 
@@ -465,10 +468,10 @@ public partial class `Name` : Entity<`Name`>, IEntity
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", `P:, :`Name` ``); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", `P:, :`Name` ``);
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [`P:, :`Name` ``];
 
 	public override string GetEntityTypeName()
 	{
@@ -614,6 +617,55 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 			_ => throw new ArgumentOutOfRangeException(nameof(logType), logType, null)
         };
     }
+
+	/// <summary>
+	/// Updates the specified entity in the data store with only the changed values.
+	/// </summary>
+	/// <remarks>Only the properties of the entity that have changed are updated in the data store. The entity
+	/// must have valid key values that correspond to an existing record. This method triggers the OnSaved event if
+	/// changes are successfully saved.</remarks>
+	/// <param name="entity">The entity containing the key values and updated properties to be applied. Must not be null.</param>
+	/// <returns>The number of state entries written to the underlying database. Returns 0 if no changes were saved.</returns>
+	public int UpdatePartially(T entity)
+	{
+		using var context = DbContextFactory.Create(true);
+
+		OnSaving(entity, LogType.Update);
+
+		var entityInDb = context.Set<T>().Find(entity.KeyValues);
+		context.Entry(entityInDb).CurrentValues.SetValues(entityInDb);
+
+		int result = context.SaveChanges();
+
+		if (result > 0)
+			OnSaved(entity, LogType.Update);
+
+		return result;
+	}
+
+	/// <summary>
+	/// Updates the specified entity in the data store with only the provided values asynchronously.
+	/// </summary>
+	/// <remarks>Only the properties present in the provided entity are updated; other properties remain
+	/// unchanged. This method does not track the entity after the update completes.</remarks>
+	/// <param name="entity">The entity containing the key values and the updated properties to be applied. Must not be null.</param>
+	/// <returns>A task that represents the asynchronous operation. The task result contains the number of state entries written to the database.</returns>
+	public async Task<int> UpdatePartiallyAsync(T entity)
+	{
+		await using var context = DbContextFactory.Create(true);
+
+		OnSaving(entity, LogType.Update);
+
+		var entityInDb = await context.Set<T>().FindAsync(entity.KeyValues);
+		context.Entry(entityInDb).CurrentValues.SetValues(entityInDb);
+
+		int result = await context.SaveChangesAsync();
+
+		if (result > 0)
+			OnSaved(entity, LogType.Update);
+
+		return result;
+	}
 }
 #endregion EntityDao<T>
 

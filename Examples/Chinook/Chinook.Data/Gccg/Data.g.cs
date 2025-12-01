@@ -60,6 +60,9 @@ public abstract partial class UntypedEntity : IEntity
 	[JsonIgnore]
 	public abstract string PrimaryKeyValues {get;}
 
+    [JsonIgnore]
+    public abstract object[] KeyValues { get; }
+
 	[JsonIgnore]
 	public abstract string EntityText { get; }
 
@@ -510,10 +513,10 @@ target.TypeCode = source.TypeCode;
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", AlbumId ); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", AlbumId );
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [AlbumId ];
 
 	public override string GetEntityTypeName()
 	{
@@ -622,10 +625,10 @@ target.TypeCode = source.TypeCode;
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", ArtistId ); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", ArtistId );
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [ArtistId ];
 
 	public override string GetEntityTypeName()
 	{
@@ -734,10 +737,10 @@ target.Text = source.Text;
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", CodeId ); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", CodeId );
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [CodeId ];
 
 	public override string GetEntityTypeName()
 	{
@@ -845,10 +848,10 @@ target.Name = source.Name;
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", CodeCategoryId ); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", CodeCategoryId );
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [CodeCategoryId ];
 
 	public override string GetEntityTypeName()
 	{
@@ -965,10 +968,10 @@ target.SupportRepId = source.SupportRepId;
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", CustomerId ); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", CustomerId );
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [CustomerId ];
 
 	public override string GetEntityTypeName()
 	{
@@ -1085,10 +1088,10 @@ target.DateNull = source.DateNull;
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", Date ); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", Date );
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [Date ];
 
 	public override string GetEntityTypeName()
 	{
@@ -1207,10 +1210,10 @@ target.Title = source.Title;
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", EmployeeId ); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", EmployeeId );
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [EmployeeId ];
 
 	public override string GetEntityTypeName()
 	{
@@ -1329,10 +1332,10 @@ target.Name = source.Name;
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", GenreId ); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", GenreId );
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [GenreId ];
 
 	public override string GetEntityTypeName()
 	{
@@ -1445,10 +1448,10 @@ target.Total = source.Total;
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", InvoiceId ); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", InvoiceId );
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [InvoiceId ];
 
 	public override string GetEntityTypeName()
 	{
@@ -1564,10 +1567,10 @@ target.UnitPrice = source.UnitPrice;
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", InvoiceLineId ); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", InvoiceLineId );
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [InvoiceLineId ];
 
 	public override string GetEntityTypeName()
 	{
@@ -1676,10 +1679,10 @@ target.Name = source.Name;
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", MediaTypeId ); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", MediaTypeId );
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [MediaTypeId ];
 
 	public override string GetEntityTypeName()
 	{
@@ -1785,10 +1788,10 @@ target.Name = source.Name;
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", PlaylistId ); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", PlaylistId );
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [PlaylistId ];
 
 	public override string GetEntityTypeName()
 	{
@@ -1894,10 +1897,10 @@ target.TrackId = source.TrackId;
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", PlaylistId , TrackId ); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", PlaylistId , TrackId );
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [PlaylistId , TrackId ];
 
 	public override string GetEntityTypeName()
 	{
@@ -2006,10 +2009,10 @@ target.Memo = source.Memo;
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", PlaylistId , TrackId , WrittenAt ); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", PlaylistId , TrackId , WrittenAt );
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [PlaylistId , TrackId , WrittenAt ];
 
 	public override string GetEntityTypeName()
 	{
@@ -2119,10 +2122,10 @@ target.TimeNull = source.TimeNull;
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", Time ); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", Time );
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [Time ];
 
 	public override string GetEntityTypeName()
 	{
@@ -2274,10 +2277,10 @@ target.VarCharColNull = source.VarCharColNull;
 	}
 
 	[JsonIgnore]
-	public override string PrimaryKeyValues
-	{
-		get { return string.Join(":", TrackId ); }
-	}
+	public override string PrimaryKeyValues => string.Join(":", TrackId );
+	
+    [JsonIgnore]
+    public override object[] KeyValues => [TrackId ];
 
 	public override string GetEntityTypeName()
 	{
@@ -2471,6 +2474,55 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 			_ => throw new ArgumentOutOfRangeException(nameof(logType), logType, null)
         };
     }
+
+	/// <summary>
+	/// Updates the specified entity in the data store with only the changed values.
+	/// </summary>
+	/// <remarks>Only the properties of the entity that have changed are updated in the data store. The entity
+	/// must have valid key values that correspond to an existing record. This method triggers the OnSaved event if
+	/// changes are successfully saved.</remarks>
+	/// <param name="entity">The entity containing the key values and updated properties to be applied. Must not be null.</param>
+	/// <returns>The number of state entries written to the underlying database. Returns 0 if no changes were saved.</returns>
+	public int UpdatePartially(T entity)
+	{
+		using var context = DbContextFactory.Create(true);
+
+		OnSaving(entity, LogType.Update);
+
+		var entityInDb = context.Set<T>().Find(entity.KeyValues);
+		context.Entry(entityInDb).CurrentValues.SetValues(entityInDb);
+
+		int result = context.SaveChanges();
+
+		if (result > 0)
+			OnSaved(entity, LogType.Update);
+
+		return result;
+	}
+
+	/// <summary>
+	/// Updates the specified entity in the data store with only the provided values asynchronously.
+	/// </summary>
+	/// <remarks>Only the properties present in the provided entity are updated; other properties remain
+	/// unchanged. This method does not track the entity after the update completes.</remarks>
+	/// <param name="entity">The entity containing the key values and the updated properties to be applied. Must not be null.</param>
+	/// <returns>A task that represents the asynchronous operation. The task result contains the number of state entries written to the database.</returns>
+	public async Task<int> UpdatePartiallyAsync(T entity)
+	{
+		await using var context = DbContextFactory.Create(true);
+
+		OnSaving(entity, LogType.Update);
+
+		var entityInDb = await context.Set<T>().FindAsync(entity.KeyValues);
+		context.Entry(entityInDb).CurrentValues.SetValues(entityInDb);
+
+		int result = await context.SaveChangesAsync();
+
+		if (result > 0)
+			OnSaved(entity, LogType.Update);
+
+		return result;
+	}
 }
 #endregion EntityDao<T>
 
