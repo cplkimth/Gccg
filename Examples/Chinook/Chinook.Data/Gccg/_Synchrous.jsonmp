@@ -353,15 +353,17 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	{
         using var context = DbContextFactory.Create();
 
-        foreach (var entity in entities)
+        var entityList = entities.ToList();
+
+        foreach (var entity in entityList)
     		MarkToSave(context, logType, entity);
 			
 		int count = context.SaveChanges();
 		if (count > 0)
-            foreach (var entity in entities)
+            foreach (var entity in entityList)
     			OnSaved(entity, logType);
 
-        return (count, count > 0 ? entities.First() : null);
+        return (count, count > 0 ? entityList.First() : null);
 	}
 
 	public virtual T Insert(T entity)
@@ -384,9 +386,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 
 	public virtual int DeleteAll(Expression<Func<T, bool>> where)
 	{
-        using var context = DbContextFactory.Create();
-
-		var entities = Get(where);
+        var entities = Get(where);
 
         return DeleteMany(entities);
 	}
@@ -395,8 +395,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     {
         using var context = DbContextFactory.Create();
 
-        int count = context.Set<T>().Count(HasSameKey(entity));
-        if (count > 0)
+        bool exists = context.Set<T>().Any(HasSameKey(entity));
+        if (exists)
             return null;
 
         return Insert(entity);
@@ -406,8 +406,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     {
         using var context = DbContextFactory.Create();
 
-        int count = context.Set<T>().Count(HasSameKey(entity));
-        if (count > 0)
+        bool exists = context.Set<T>().Any(HasSameKey(entity));
+        if (exists)
         {
             Update(entity);
             return false;
@@ -465,7 +465,7 @@ public partial class `Name`Dao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<`Name`>().Count(x => `P: && : x.`Name` == `name` ``) > 0;
+		return context.Set<`Name`>().Any(x => `P: && : x.`Name` == `name` ``);
 	}
 
 	/// <summary>

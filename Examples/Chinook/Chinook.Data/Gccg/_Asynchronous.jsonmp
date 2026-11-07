@@ -317,7 +317,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
         await using var context = DbContextFactory.Create();
 
 		var query = GetScalarCore(where, orderBy, ascending, context);
-		return await query.Select(select).FirstOrDefaultAsync();
+		return await query.Select(select).FirstOrDefaultAsync(ctk);
 	}
 
     public virtual Task<S> SelectLastAsync<O, S>(Expression<Func<T, O>> orderBy, Expression<Func<T, S>> select, CancellationToken ctk = default)
@@ -329,7 +329,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 
 	#region GetCountAsync
     public virtual Task<int> GetCountAsync(CancellationToken ctk = default)
-        => GetCountAsync(null);
+        => GetCountAsync(null, ctk);
 
     public virtual async Task<int> GetCountAsync(Expression<Func<T, bool>> where, CancellationToken ctk = default)
     {
@@ -347,7 +347,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
         await using var context = DbContextFactory.Create();
 
         var query = MakeCountQuery(where, context);
-        return await query.AnyAsync();
+        return await query.AnyAsync(ctk);
     }
 	#endregion ExistAsync
 
@@ -357,15 +357,17 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	{
         await using var context = DbContextFactory.Create();
 
-        foreach (var entity in entities)
+        var entityList = entities.ToList();
+
+        foreach (var entity in entityList)
     		MarkToSave(context, logType, entity);
 			
 		int count = await context.SaveChangesAsync(ctk);
 		if (count > 0)
-            foreach (var entity in entities)
+            foreach (var entity in entityList)
     			OnSaved(entity, logType);
 
-        return (count, count > 0 ? entities.First() : null);
+        return (count, count > 0 ? entityList.First() : null);
 	}
 
 	public virtual async Task<T> InsertAsync(T entity, CancellationToken ctk = default)
@@ -388,9 +390,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 
 	public virtual async Task<int> DeleteAllAsync(Expression<Func<T, bool>> where, CancellationToken ctk = default)
 	{
-        await using var context = DbContextFactory.Create();
-
-		var entities = await GetAsync(where);
+        var entities = await GetAsync(where, ctk);
 
         return await DeleteManyAsync(entities, ctk);
 	}
@@ -399,8 +399,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     {
         await using var context = DbContextFactory.Create();
 
-        int count = await context.Set<T>().CountAsync(HasSameKey(entity), ctk);
-        if (count > 0)
+        bool exists = await context.Set<T>().AnyAsync(HasSameKey(entity), ctk);
+        if (exists)
             return null;
 
         return await InsertAsync(entity, ctk);
@@ -410,8 +410,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     {
         await using var context = DbContextFactory.Create();
 
-        int count = await context.Set<T>().CountAsync(HasSameKey(entity), ctk);
-        if (count > 0)
+        bool exists = await context.Set<T>().AnyAsync(HasSameKey(entity), ctk);
+        if (exists)
         {
             await UpdateAsync(entity, ctk);
             return false;
@@ -456,7 +456,7 @@ public partial class `Name`Dao
 	{
         await using var context = DbContextFactory.Create();
 
-		return await context.Set<`Name`>().CountAsync(x => `P: && : x.`Name` == `name` ``, ctk) > 0;
+		return await context.Set<`Name`>().AnyAsync(x => `P: && : x.`Name` == `name` ``, ctk);
 	}
 
 	public async Task<int> DeleteByKeyAsync(`P:, :`Type` `name` ``, CancellationToken ctk = default)
@@ -508,11 +508,11 @@ public partial class `Name`Dao
     #endregion
     ``
 
-    public Task<int> ExecuteDeleteByKeyAsync(`P:, :`Type` `name` ``)
-        => ExecuteDeleteAsync(x => `P:&& :x.`Name` == `name` ``);
+    public Task<int> ExecuteDeleteByKeyAsync(`P:, :`Type` `name` ``, CancellationToken ctk = default)
+        => ExecuteDeleteAsync(x => `P:&& :x.`Name` == `name` ``, ctk);
 
-    public Task<int> ExecuteUpdateByKeyAsync(`P:, :`Type` `name` ``, Action<UpdateSettersBuilder<`Name`>> setterBuilder)
-        => ExecuteUpdateAsync(x => `P:&& :x.`Name` == `name` ``, setterBuilder);
+    public Task<int> ExecuteUpdateByKeyAsync(`P:, :`Type` `name` ``, Action<UpdateSettersBuilder<`Name`>> setterBuilder, CancellationToken ctk = default)
+        => ExecuteUpdateAsync(x => `P:&& :x.`Name` == `name` ``, setterBuilder, ctk);
 }
 #endregion `Name`Dao
 T`

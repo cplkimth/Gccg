@@ -3,7 +3,7 @@ using Chinook.Data.Configurations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-#nullable disable
+#nullable enable
 
 namespace Chinook.Data;
 
@@ -18,37 +18,37 @@ public partial class ChinookContext : DbContext
     {
     }
 
-    public virtual DbSet<Album> Albums { get; set; }
+    public virtual DbSet<Album> Albums { get; set; } = null!;
 
-    public virtual DbSet<Artist> Artists { get; set; }
+    public virtual DbSet<Artist> Artists { get; set; } = null!;
 
-    public virtual DbSet<Code> Codes { get; set; }
+    public virtual DbSet<Code> Codes { get; set; } = null!;
 
-    public virtual DbSet<CodeCategory> CodeCategories { get; set; }
+    public virtual DbSet<CodeCategory> CodeCategories { get; set; } = null!;
 
-    public virtual DbSet<Customer> Customers { get; set; }
+    public virtual DbSet<Customer> Customers { get; set; } = null!;
 
-    public virtual DbSet<DateTable> DateTables { get; set; }
+    public virtual DbSet<DateTable> DateTables { get; set; } = null!;
 
-    public virtual DbSet<Employee> Employees { get; set; }
+    public virtual DbSet<Employee> Employees { get; set; } = null!;
 
-    public virtual DbSet<Genre> Genres { get; set; }
+    public virtual DbSet<Genre> Genres { get; set; } = null!;
 
-    public virtual DbSet<Invoice> Invoices { get; set; }
+    public virtual DbSet<Invoice> Invoices { get; set; } = null!;
 
-    public virtual DbSet<InvoiceLine> InvoiceLines { get; set; }
+    public virtual DbSet<InvoiceLine> InvoiceLines { get; set; } = null!;
 
-    public virtual DbSet<MediaType> MediaTypes { get; set; }
+    public virtual DbSet<MediaType> MediaTypes { get; set; } = null!;
 
-    public virtual DbSet<Playlist> Playlists { get; set; }
+    public virtual DbSet<Playlist> Playlists { get; set; } = null!;
 
-    public virtual DbSet<PlaylistTrack> PlaylistTracks { get; set; }
+    public virtual DbSet<PlaylistTrack> PlaylistTracks { get; set; } = null!;
 
-    public virtual DbSet<PlaylistTrackHistory> PlaylistTrackHistories { get; set; }
+    public virtual DbSet<PlaylistTrackHistory> PlaylistTrackHistories { get; set; } = null!;
 
-    public virtual DbSet<TimeTable> TimeTables { get; set; }
+    public virtual DbSet<TimeTable> TimeTables { get; set; } = null!;
 
-    public virtual DbSet<Track> Tracks { get; set; }
+    public virtual DbSet<Track> Tracks { get; set; } = null!;
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

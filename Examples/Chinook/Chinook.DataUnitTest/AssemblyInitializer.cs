@@ -5,7 +5,7 @@ namespace Chinook.DataUnitTest;
 [TestClass]
 public class AssemblyInitializer
 {
-    [AssemblyInitialize()]
+    // [AssemblyInitialize()]
     public static void AssemblyInit(TestContext context)
     {
         Api.BaseAddress = "https://localhost:7266";

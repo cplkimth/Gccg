@@ -17,7 +17,7 @@ public partial class EmployeeApi
 
         using var http = CreateHttpClient();
         var address = GetAddress(nameof(Load), json);
-        return await http.GetFromJsonAsync<List<Employee>>(address);
+        return await http.GetFromJsonAsync<List<Employee>>(address) ?? [];
     }
 
     public virtual async Task<int> GetCountByName(string name)

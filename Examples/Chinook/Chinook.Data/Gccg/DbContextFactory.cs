@@ -13,8 +13,8 @@ public partial class DbContextFactory
 
     private static bool _initialized;
 
-    private static PooledDbContextFactory<ChinookContext> _noTrackingFactory;
-    private static PooledDbContextFactory<ChinookContext> _trackingFactory;
+    private static PooledDbContextFactory<ChinookContext>? _noTrackingFactory;
+    private static PooledDbContextFactory<ChinookContext>? _trackingFactory;
 
     public static ChinookContext Create(bool tracking = false)
     {

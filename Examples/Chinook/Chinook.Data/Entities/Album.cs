@@ -13,7 +13,7 @@ namespace Chinook.Data;
 public partial class Album
 {
     [NotMapped]
-    public string ArtistName { get; set; }
+    public string? ArtistName { get; set; }
 
     [NotMapped]
     public int TrackCount { get; set; }

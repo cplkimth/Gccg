@@ -23,7 +23,7 @@ public partial class AlbumApi
 
         using var http = CreateHttpClient();
         var address = GetAddress(nameof(Search), json);
-        return await http.GetFromJsonAsync<List<Album>>(address);
+        return await http.GetFromJsonAsync<List<Album>>(address) ?? [];
     }
 }
 

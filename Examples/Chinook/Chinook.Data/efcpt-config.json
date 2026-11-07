@@ -1,0 +1,104 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/ErikEJ/EFCorePowerTools/master/samples/efcpt-config.schema.json",
+  "code-generation": {
+    "enable-on-configuring": false,
+    "generate-mermaid-diagram": false,
+    "merge-dacpacs": false,
+    "refresh-object-lists": true,
+    "remove-defaultsql-from-bool-properties": false,
+    "soft-delete-obsolete-files": true,
+    "t4-template-path": null,
+    "type": "all",
+    "use-alternate-stored-procedure-resultset-discovery": false,
+    "use-data-annotations": false,
+    "use-database-names": false,
+    "use-database-names-for-routines": true,
+    "use-decimal-data-annotation-for-sproc-results": true,
+    "use-inflector": true,
+    "use-internal-access-modifiers-for-sprocs-and-functions": false,
+    "use-legacy-inflector": false,
+    "use-many-to-many-entity": false,
+    "use-nullable-reference-types": true,
+    "use-prefix-navigation-naming": false,
+    "use-typed-tvp-parameters": true,
+    "use-t4": false,
+    "use-t4-split": false
+  },
+  "file-layout": {
+    "output-dbcontext-path": null,
+    "output-path": "Models"
+  },
+  "names": {
+    "dbcontext-name": "EasyRepickContext",
+    "dbcontext-namespace": null,
+    "model-namespace": null,
+    "root-namespace": "Chinook"
+  },
+  "stored-procedures": [
+    {
+      "name": "[dbo].[usp_GetMaxId]"
+    },
+    {
+      "name": "[dbo].[usp_GetSystemTime]"
+    },
+    {
+      "name": "[dbo].[usp_Initialize]"
+    }
+  ],
+  "tables": [
+    {
+      "name": "[dbo].[Code]"
+    },
+    {
+      "name": "[dbo].[CodeCategory]"
+    },
+    {
+      "name": "[dbo].[Customer]"
+    },
+    {
+      "name": "[dbo].[Album]"
+    },
+    {
+      "name": "[dbo].[Artist]"
+    },
+    {
+      "name": "[dbo].[DateTable]"
+    },
+    {
+      "name": "[dbo].[Employee]"
+    },
+    {
+      "name": "[dbo].[Genre]"
+    },
+    {
+      "name": "[dbo].[Invoice]"
+    },
+    {
+      "name": "[dbo].[InvoiceLine]"
+    },
+    {
+      "name": "[dbo].[MediaType]"
+    },
+    {
+      "name": "[dbo].[Playlist]"
+    },
+    {
+      "name": "[dbo].[PlaylistTrack]"
+    },
+    {
+      "name": "[dbo].[PlaylistTrackHistory]"
+    },
+    {
+      "name": "[dbo].[TimeTable]"
+    },
+    {
+      "name": "[dbo].[Track]"
+    }
+  ],
+  "type-mappings": {
+    "use-DateOnly-TimeOnly": true,
+    "use-HierarchyId": false,
+    "use-NodaTime": false,
+    "use-spatial": false
+  }
+}
