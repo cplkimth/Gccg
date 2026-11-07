@@ -633,7 +633,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 		OnSaving(entity, LogType.Update);
 
 		var entityInDb = context.Set<T>().Find(entity.KeyValues);
-		context.Entry(entityInDb).CurrentValues.SetValues(entityInDb);
+		context.Entry(entityInDb).CurrentValues.SetValues(entity);
 
 		int result = context.SaveChanges();
 
@@ -650,16 +650,16 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	/// unchanged. This method does not track the entity after the update completes.</remarks>
 	/// <param name="entity">The entity containing the key values and the updated properties to be applied. Must not be null.</param>
 	/// <returns>A task that represents the asynchronous operation. The task result contains the number of state entries written to the database.</returns>
-	public async Task<int> UpdatePartiallyAsync(T entity)
+	public async Task<int> UpdatePartiallyAsync(T entity, CancellationToken ctk = default)
 	{
 		await using var context = DbContextFactory.Create(true);
 
 		OnSaving(entity, LogType.Update);
 
-		var entityInDb = await context.Set<T>().FindAsync(entity.KeyValues);
-		context.Entry(entityInDb).CurrentValues.SetValues(entityInDb);
+		var entityInDb = await context.Set<T>().FindAsync(entity.KeyValues, ctk);
+		context.Entry(entityInDb).CurrentValues.SetValues(entity);
 
-		int result = await context.SaveChangesAsync();
+		int result = await context.SaveChangesAsync(ctk);
 
 		if (result > 0)
 			OnSaved(entity, LogType.Update);

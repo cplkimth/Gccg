@@ -23,9 +23,14 @@ internal class Program
         // return;
 
         var a1 = await Dao.Album.GetFirstAsync();
-        a1.ArtistName = DateTime.Now.ToString();
+        var oldName = a1.Title;
+        a1.Title = DateTime.Now.Ticks.ToString();
         // await Dao.Album.UpdateAsync(a1);
-        await Dao.Album.UpdatePartiallyAsync(a1);
+        int result = await Dao.Album.UpdatePartiallyAsync(a1);
+        Console.WriteLine(result);
+        
+        var a2 = await Dao.Album.GetFirstAsync();
+        Console.WriteLine($"{oldName} -> {a2.Title}");
         return;
 
 
