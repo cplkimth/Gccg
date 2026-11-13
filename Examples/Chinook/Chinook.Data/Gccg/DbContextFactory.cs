@@ -13,8 +13,8 @@ public partial class DbContextFactory
 
     private static bool _initialized;
 
-    private static PooledDbContextFactory<ChinookContext>? _noTrackingFactory;
-    private static PooledDbContextFactory<ChinookContext>? _trackingFactory;
+    private static PooledDbContextFactory<ChinookContext> _noTrackingFactory;
+    private static PooledDbContextFactory<ChinookContext> _trackingFactory;
 
     public static ChinookContext Create(bool tracking = false)
     {
@@ -41,7 +41,7 @@ public partial class DbContextFactory
         optionsBuilder.UseLoggerFactory(ChinookContextLoggerFactory.GetInstance(
             nameof(LogPath.Console),
             nameof(LogPath.Debug)
-            // "ChinookContext.log"
+        // "ChinookContext.log"
         ));
 #endif
 
@@ -57,7 +57,7 @@ public partial class DbContextFactory
                 ConnectionString,
                 x => x.UseQuerySplittingBehavior(querySplittingBehavior)
                     .EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)
-                    .UseCompatibilityLevel(160)
+                    .UseCompatibilityLevel(170)
                     .UseParameterizedCollectionMode(ParameterTranslationMode.Parameter)
             )
             .Options;

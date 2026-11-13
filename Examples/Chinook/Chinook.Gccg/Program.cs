@@ -1,11 +1,10 @@
 ﻿#region
-using System.Text.Json;
 using Chinook.Data;
 using Gccg.Core;
 
 #endregion
 
-string Root = @"d:\git\Gccg\Examples\Chinook";
+string Root = @"d:\git\Chinook";
 
 string solutionName = new DirectoryInfo(Root).Name;
 string dataEf = $@"{Root}\{solutionName}.Data\EF";

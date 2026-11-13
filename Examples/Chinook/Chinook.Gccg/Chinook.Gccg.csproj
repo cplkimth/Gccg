@@ -4,9 +4,6 @@
     <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Templates\**" />
-    <EmbeddedResource Remove="Templates\**" />
-    <None Remove="Templates\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
@@ -15,6 +12,6 @@
 
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Gccg.Core\Gccg.Core.csproj" />
+    <ProjectReference Include="r:\git\Gccg\Gccg.Core\Gccg.Core.csproj" />
   </ItemGroup>
 </Project>

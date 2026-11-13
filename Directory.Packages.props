@@ -1,6 +1,9 @@
 <Project>
   <PropertyGroup>
-    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+	  <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+	  <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+	  <CentralPackageVersionOverrideEnabled>true</CentralPackageVersionOverrideEnabled>
+	  <NoWarn>$(NoWarn);NU1507</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="coverlet.collector" Version="10.1.0" />
@@ -17,5 +20,6 @@
     <PackageVersion Include="MSTest.TestAdapter" Version="4.5.2" />
     <PackageVersion Include="MSTest.TestFramework" Version="4.5.2" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
+    <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
   </ItemGroup>
 </Project>

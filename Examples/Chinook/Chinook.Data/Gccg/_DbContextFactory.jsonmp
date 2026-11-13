@@ -62,7 +62,7 @@ public class DbContextFactory
                 ConnectionString,
                 x => x.UseQuerySplittingBehavior(querySplittingBehavior)
                     .EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)
-                    .UseCompatibilityLevel(160)
+                    .UseCompatibilityLevel(170)
                     .UseParameterizedCollectionMode(ParameterTranslationMode.Parameter)
             )
             .Options;

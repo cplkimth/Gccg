@@ -347,15 +347,17 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 	{
         using var context = DbContextFactory.Create();
 
-        foreach (var entity in entities)
+        var entityList = entities.ToList();
+
+        foreach (var entity in entityList)
     		MarkToSave(context, logType, entity);
 			
 		int count = context.SaveChanges();
 		if (count > 0)
-            foreach (var entity in entities)
+            foreach (var entity in entityList)
     			OnSaved(entity, logType);
 
-        return (count, count > 0 ? entities.First() : null);
+        return (count, count > 0 ? entityList.First() : null);
 	}
 
 	public virtual T Insert(T entity)
@@ -378,9 +380,7 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
 
 	public virtual int DeleteAll(Expression<Func<T, bool>> where)
 	{
-        using var context = DbContextFactory.Create();
-
-		var entities = Get(where);
+        var entities = Get(where);
 
         return DeleteMany(entities);
 	}
@@ -389,8 +389,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     {
         using var context = DbContextFactory.Create();
 
-        int count = context.Set<T>().Count(HasSameKey(entity));
-        if (count > 0)
+        bool exists = context.Set<T>().Any(HasSameKey(entity));
+        if (exists)
             return null;
 
         return Insert(entity);
@@ -400,8 +400,8 @@ public abstract partial class EntityDao<T> where T : Entity<T>, new()
     {
         using var context = DbContextFactory.Create();
 
-        int count = context.Set<T>().Count(HasSameKey(entity));
-        if (count > 0)
+        bool exists = context.Set<T>().Any(HasSameKey(entity));
+        if (exists)
         {
             Update(entity);
             return false;
@@ -459,7 +459,7 @@ public partial class AlbumDao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<Album>().Count(x =>  x.AlbumId == albumId ) > 0;
+		return context.Set<Album>().Any(x =>  x.AlbumId == albumId );
 	}
 
 	/// <summary>
@@ -562,7 +562,7 @@ public partial class ArtistDao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<Artist>().Count(x =>  x.ArtistId == artistId ) > 0;
+		return context.Set<Artist>().Any(x =>  x.ArtistId == artistId );
 	}
 
 	/// <summary>
@@ -628,7 +628,7 @@ public partial class CodeDao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<Code>().Count(x =>  x.CodeId == codeId ) > 0;
+		return context.Set<Code>().Any(x =>  x.CodeId == codeId );
 	}
 
 	/// <summary>
@@ -731,7 +731,7 @@ public partial class CodeCategoryDao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<CodeCategory>().Count(x =>  x.CodeCategoryId == codeCategoryId ) > 0;
+		return context.Set<CodeCategory>().Any(x =>  x.CodeCategoryId == codeCategoryId );
 	}
 
 	/// <summary>
@@ -797,7 +797,7 @@ public partial class CustomerDao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<Customer>().Count(x =>  x.CustomerId == customerId ) > 0;
+		return context.Set<Customer>().Any(x =>  x.CustomerId == customerId );
 	}
 
 	/// <summary>
@@ -900,7 +900,7 @@ public partial class DateTableDao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<DateTable>().Count(x =>  x.Date == date ) > 0;
+		return context.Set<DateTable>().Any(x =>  x.Date == date );
 	}
 
 	/// <summary>
@@ -966,7 +966,7 @@ public partial class EmployeeDao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<Employee>().Count(x =>  x.EmployeeId == employeeId ) > 0;
+		return context.Set<Employee>().Any(x =>  x.EmployeeId == employeeId );
 	}
 
 	/// <summary>
@@ -1069,7 +1069,7 @@ public partial class GenreDao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<Genre>().Count(x =>  x.GenreId == genreId ) > 0;
+		return context.Set<Genre>().Any(x =>  x.GenreId == genreId );
 	}
 
 	/// <summary>
@@ -1135,7 +1135,7 @@ public partial class InvoiceDao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<Invoice>().Count(x =>  x.InvoiceId == invoiceId ) > 0;
+		return context.Set<Invoice>().Any(x =>  x.InvoiceId == invoiceId );
 	}
 
 	/// <summary>
@@ -1238,7 +1238,7 @@ public partial class InvoiceLineDao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<InvoiceLine>().Count(x =>  x.InvoiceLineId == invoiceLineId ) > 0;
+		return context.Set<InvoiceLine>().Any(x =>  x.InvoiceLineId == invoiceLineId );
 	}
 
 	/// <summary>
@@ -1341,7 +1341,7 @@ public partial class MediaTypeDao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<MediaType>().Count(x =>  x.MediaTypeId == mediaTypeId ) > 0;
+		return context.Set<MediaType>().Any(x =>  x.MediaTypeId == mediaTypeId );
 	}
 
 	/// <summary>
@@ -1407,7 +1407,7 @@ public partial class PlaylistDao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<Playlist>().Count(x =>  x.PlaylistId == playlistId ) > 0;
+		return context.Set<Playlist>().Any(x =>  x.PlaylistId == playlistId );
 	}
 
 	/// <summary>
@@ -1475,7 +1475,7 @@ public partial class PlaylistTrackDao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<PlaylistTrack>().Count(x =>  x.PlaylistId == playlistId  &&  x.TrackId == trackId ) > 0;
+		return context.Set<PlaylistTrack>().Any(x =>  x.PlaylistId == playlistId  &&  x.TrackId == trackId );
 	}
 
 	/// <summary>
@@ -1619,7 +1619,7 @@ public partial class PlaylistTrackHistoryDao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<PlaylistTrackHistory>().Count(x =>  x.PlaylistId == playlistId  &&  x.TrackId == trackId  &&  x.WrittenAt == writtenAt ) > 0;
+		return context.Set<PlaylistTrackHistory>().Any(x =>  x.PlaylistId == playlistId  &&  x.TrackId == trackId  &&  x.WrittenAt == writtenAt );
 	}
 
 	/// <summary>
@@ -1759,7 +1759,7 @@ public partial class TimeTableDao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<TimeTable>().Count(x =>  x.Time == time ) > 0;
+		return context.Set<TimeTable>().Any(x =>  x.Time == time );
 	}
 
 	/// <summary>
@@ -1825,7 +1825,7 @@ public partial class TrackDao
 	{
         using var context = DbContextFactory.Create();
 
-		return context.Set<Track>().Count(x =>  x.TrackId == trackId ) > 0;
+		return context.Set<Track>().Any(x =>  x.TrackId == trackId );
 	}
 
 	/// <summary>

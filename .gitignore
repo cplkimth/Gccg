@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Examples/Chinook/.idea/.idea.Chinook/.idea/vcs.xml
+/Examples/Chinook/Chinook.Data/efcpt-readme.md

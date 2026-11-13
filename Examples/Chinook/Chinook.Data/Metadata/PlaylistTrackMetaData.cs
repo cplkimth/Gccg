@@ -17,5 +17,7 @@ public class PlaylistTrackMetaData
 	public int PlaylistId {get; set;}
 
 	public int TrackId {get; set;}
+
+	public bool? Dummy {get; set;}
 } 
 

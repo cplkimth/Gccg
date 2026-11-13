@@ -1,8 +1,10 @@
 ﻿{
   "$schema": "https://raw.githubusercontent.com/ErikEJ/EFCorePowerTools/master/samples/efcpt-config.schema.json",
   "code-generation": {
-    "enable-on-configuring": false,
+    "enable-on-configuring": true,
     "generate-mermaid-diagram": false,
+    "file-charset": "utf-8-bom",
+    "file-line-endings": "native",
     "merge-dacpacs": false,
     "refresh-object-lists": true,
     "remove-defaultsql-from-bool-properties": false,
@@ -10,6 +12,7 @@
     "t4-template-path": null,
     "type": "all",
     "use-alternate-stored-procedure-resultset-discovery": false,
+    "use-stored-procedure-resultset-fallback": true,
     "use-data-annotations": false,
     "use-database-names": false,
     "use-database-names-for-routines": true,
@@ -18,6 +21,7 @@
     "use-internal-access-modifiers-for-sprocs-and-functions": false,
     "use-legacy-inflector": false,
     "use-many-to-many-entity": false,
+    "use-max-size-for-string-input-parameters": false,
     "use-nullable-reference-types": true,
     "use-prefix-navigation-naming": false,
     "use-typed-tvp-parameters": true,
@@ -25,13 +29,13 @@
     "use-t4-split": false
   },
   "file-layout": {
-    "output-dbcontext-path": null,
-    "output-path": "Models"
+    "output-dbcontext-path": "EF",
+    "output-path": "EF"
   },
   "names": {
-    "dbcontext-name": "EasyRepickContext",
-    "dbcontext-namespace": null,
-    "model-namespace": null,
+    "dbcontext-name": "ChinookContext",
+    "dbcontext-namespace": "Data",
+    "model-namespace": "Data",
     "root-namespace": "Chinook"
   },
   "stored-procedures": [
@@ -47,6 +51,12 @@
   ],
   "tables": [
     {
+      "name": "[dbo].[Album]"
+    },
+    {
+      "name": "[dbo].[Artist]"
+    },
+    {
       "name": "[dbo].[Code]"
     },
     {
@@ -54,12 +64,6 @@
     },
     {
       "name": "[dbo].[Customer]"
-    },
-    {
-      "name": "[dbo].[Album]"
-    },
-    {
-      "name": "[dbo].[Artist]"
     },
     {
       "name": "[dbo].[DateTable]"

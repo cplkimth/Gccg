@@ -1,6 +1,8 @@
 <Solution>
   <Folder Name="/files/">
     <File Path="gccg-commmands.txt" />
+    <File Path="Directory.Packages.props" />
+    <File Path="Directory.Build.props" />
   </Folder>
   <Project Path="Chinook.ConsoleTest/Chinook.ConsoleTest.csproj" />
   <Project Path="Chinook.Data/Chinook.Data.csproj" />

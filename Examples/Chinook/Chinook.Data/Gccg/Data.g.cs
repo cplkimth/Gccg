@@ -1849,7 +1849,8 @@ public partial class PlaylistTrack : Entity<PlaylistTrack>, IEntity
 	public static void Copy(PlaylistTrack source, PlaylistTrack target)
 	{
 		target.PlaylistId = source.PlaylistId; 		
-target.TrackId = source.TrackId; 
+target.TrackId = source.TrackId; 		
+target.Dummy = source.Dummy; 
 	}
 
 	public override PlaylistTrack Clone()
@@ -1887,7 +1888,7 @@ target.TrackId = source.TrackId;
 		if (value != null)
 			return value;
 
-		return "[PlaylistId]" + PlaylistId  + ", " + "[TrackId]" + TrackId ;
+		return "[PlaylistId]" + PlaylistId  + ", " + "[TrackId]" + TrackId  + ", " + "[Dummy]" + Dummy ;
 	}
 
 	public override void CancelEdit()
@@ -1924,7 +1925,8 @@ TrackId = default;
 public enum PlaylistTrackColumn
 {
 	PlaylistId ,
-TrackId 
+TrackId ,
+Dummy 
 }
 
 public class PlaylistTrackEqualityComparer : IEqualityComparer<PlaylistTrack>
